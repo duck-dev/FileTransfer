@@ -9,10 +9,10 @@ public class ViewLocator : IDataTemplate
 {
     public IControl Build(object data)
     {
-        var name = data.GetType().FullName!.Replace("ViewModel", "View");
+        string name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
 
-        if (type == null || Activator.CreateInstance(type) is not Control view)
+        if (type is null || Activator.CreateInstance(type) is not Control view)
             return new TextBlock {Text = "Not Found: " + name};
             
         view.DataContext = data;
