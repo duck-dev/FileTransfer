@@ -1,0 +1,39 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+        <!-- Window -->
+        
+        <Style Selector="Window">
+                <Setter Property="Background" Value="{DynamicResource LightMainBackground}"/>
+        </Style>
+        
+        <!-- Selectable -->
+        
+        <Style Selector=":is(InputElement).selectable-button:pointerover">
+                <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        
+        <Style Selector=":is(InputElement).selectable-button-effect">
+                <Setter Property="Transitions">
+                        <Transitions>
+                                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                        </Transitions>
+                </Setter>
+                <Setter Property="RenderTransform" Value="scale(1)"/>
+        </Style>
+        <Style Selector=":is(InputElement).selectable-button-effect:pointerover">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="RenderTransform" Value="scale(0.95)"/>
+        </Style>
+        <Style Selector=":is(InputElement).selectable-button-effect:pressed">
+                <Setter Property="RenderTransform" Value="scale(0.90)"/>
+        </Style>
+        
+        <Style Selector=":is(InputElement).highlight-no-change:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="{TemplateBinding Background}"/>
+        </Style>
+        <Style Selector=":is(InputElement).highlight-no-change:pressed /template/ ContentPresenter">
+                <Setter Property="Background" Value="{TemplateBinding Background}"/>
+        </Style>
+        
+</Styles>
