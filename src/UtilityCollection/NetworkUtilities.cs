@@ -8,7 +8,7 @@ namespace FileTransfer.UtilityCollection;
 
 public static partial class Utilities
 {
-    public static async Task<IPAddress> GetIpAddress()
+    public static async Task<IPAddress> GetIpAddressAsync()
     {
         IPAddress[] ipAddresses = await Dns.GetHostAddressesAsync(Dns.GetHostName());
         IPAddress? finalIp;

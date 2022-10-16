@@ -19,9 +19,9 @@ public sealed class MainWindowViewModel : ViewModelBase
         UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE: {e.TextMessage}\n");
     }
 
-    private async void Send()
+    private async void SendAsync()
     {
-        IPAddress ip = await UtilityCollection.Utilities.GetIpAddress();
+        IPAddress ip = await UtilityCollection.Utilities.GetIpAddressAsync();
         var client = new NetworkClient(ip);
         await client.InvokeSendingDataAsync();
     }

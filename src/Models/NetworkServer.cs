@@ -12,10 +12,10 @@ internal class NetworkServer : NetworkObject
 
     internal NetworkServer(IPAddress? ipAddress = null) : base(ipAddress)
     {
-        Task.Run(ReceiveData);
+        Task.Run(ReceiveDataAsync);
     }
 
-    private async Task ReceiveData()
+    private async Task ReceiveDataAsync()
     {
         while (true)
         {
