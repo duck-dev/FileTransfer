@@ -27,30 +27,45 @@ internal class NetworkServer : NetworkObject
             Socket handler = await listener.AcceptAsync();
             while (true)
             {
-                // Receive message
-                var buffer = new byte[1024]; // TODO: Update size accordingly (receive overall size, calculate optimal buffer)
-                int received = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                string response = Encoding.UTF8.GetString(buffer, 0, received);
+                // Receive length
+                var buffer = new byte[4];
+                _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                int messageLength = BitConverter.ToInt32(buffer, 0);
+                
+                // Send Acknowledgement
+                await SendAcknowledgementAsync(handler);
 
-                const string eom = "<|EOM|>";
-                if (response.IndexOf(eom, StringComparison.Ordinal) <= -1) 
-                    continue;
+                int handledBytes = 0;
+                string response = string.Empty;
+                int received = 0;
+                while (handledBytes < messageLength)
+                {
+                    // Receive message
+                    buffer = new byte[1024];
+                    received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                    response += Encoding.UTF8.GetString(buffer, 0, received);
+                    handledBytes += received;
+                }
+                UtilityCollection.Utilities.Log($"Socket server received message: \"{response}\"");
+
+                // Send acknowledgement
+                await SendAcknowledgementAsync(handler);
                 
                 var eventArgs = new MessageReceivedEventArgs
                 {
                     Content = null, TextMessage = response, Received = received, Time = DateTime.Now
                 };
                 MessageReceived?.Invoke(this, eventArgs);
-
-                UtilityCollection.Utilities.Log($"Socket server received message: \"{response.Replace(eom, string.Empty)}\"");
-
-                // Send acknowledgement
-                const string acknowledgement = "<|ACK|>";
-                byte[] echoBytes = Encoding.UTF8.GetBytes(acknowledgement);
-                await handler.SendAsync(echoBytes, 0);
-                UtilityCollection.Utilities.Log($"Socket server sent acknowledgment: \"{acknowledgement}\"");
                 break;
             }
         }
+    }
+
+    private static async Task SendAcknowledgementAsync(Socket handler)
+    {
+        const string acknowledgement = "<|ACK|>";
+        byte[] echoBytes = Encoding.UTF8.GetBytes(acknowledgement);
+        await handler.SendAsync(echoBytes, 0);
+        UtilityCollection.Utilities.Log("Socket server sent acknowledgment: \"<|ACK|>\"");
     }
 }

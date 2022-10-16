@@ -16,12 +16,13 @@ public sealed class MainWindowViewModel : ViewModelBase
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
         // TODO: Do something
+        UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE: {e.TextMessage}\n");
     }
 
     private async void Send()
     {
         IPAddress ip = await UtilityCollection.Utilities.GetIpAddress();
         var client = new NetworkClient(ip);
-        await client.SendData();
+        await client.InvokeSendingDataAsync();
     }
 }
