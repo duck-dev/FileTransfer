@@ -28,15 +28,19 @@ internal class NetworkServer : NetworkObject
             while (true)
             {
                 // Receive message
-                var buffer = new byte[1024];
+                var buffer = new byte[1024]; // TODO: Update size accordingly (receive overall size, calculate optimal buffer)
                 int received = await handler.ReceiveAsync(buffer, SocketFlags.None);
                 string response = Encoding.UTF8.GetString(buffer, 0, received);
 
-                var eventArgs = new MessageReceivedEventArgs {Buffer = buffer, Received = received, Time = DateTime.Now};
-                MessageReceived?.Invoke(this, eventArgs);
-
                 const string eom = "<|EOM|>";
-                if (response.IndexOf(eom, StringComparison.Ordinal) <= -1) continue;
+                if (response.IndexOf(eom, StringComparison.Ordinal) <= -1) 
+                    continue;
+                
+                var eventArgs = new MessageReceivedEventArgs
+                {
+                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now
+                };
+                MessageReceived?.Invoke(this, eventArgs);
 
                 UtilityCollection.Utilities.Log($"Socket server received message: \"{response.Replace(eom, string.Empty)}\"");
 

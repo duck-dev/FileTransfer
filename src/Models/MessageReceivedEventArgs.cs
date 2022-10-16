@@ -7,7 +7,12 @@ public class MessageReceivedEventArgs : EventArgs
     /// <summary>
     /// The received data (nullable).
     /// </summary>
-    public byte[]? Buffer { get; set; }
+    public object[]? Content { get; set; }
+    
+    /// <summary>
+    /// Optional text message (string).
+    /// </summary>
+    public string? TextMessage { get; set; } 
     
     /// <summary>
     /// The total number of read bytes.
