@@ -7,6 +7,7 @@
     
     <UserControl.Styles>
         <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
+        <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
     
     <Grid RowDefinitions="Auto,*,Auto" Margin="40,40"> <!-- When changing top-/bottom-margin, apply to send button as well (see comment there) -->
@@ -14,13 +15,33 @@
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" Background="Red">
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="section-title" Text="Receiver:"/>
+                    <ComboBox Grid.Row="1" Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
+                              MaxDropDownHeight="150" SelectedIndex="{Binding ContactIndex}" 
+                              AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
+                              HorizontalAlignment="Stretch" Height="50" Background="{StaticResource FullyTransparent}"
+                              BorderThickness="5" BorderBrush="{StaticResource AppPurple}" CornerRadius="20"
+                              PlaceholderText="None (select a contact)" PlaceholderForeground="{StaticResource MainGrey}">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center" 
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <!-- TODO: Content -->
+                                </ComboBoxItem>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto">
             
                 </Grid>
-                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" Background="Red">
-            
-                </Grid>
-                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" Background="Red">
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
             
                 </Grid>
             </StackPanel>
