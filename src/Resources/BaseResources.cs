@@ -7,6 +7,8 @@ namespace FileTransfer.Resources;
 public static partial class Resources
 {
     private const int StyleIndex = 2;
+    
+    // SolidColorBrush
 
     public static readonly SolidColorBrush FullyTransparentBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "FullyTransparent", StyleIndex)
@@ -18,4 +20,11 @@ public static partial class Resources
     public static readonly SolidColorBrush MainGreyBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainGrey", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#808080"));
+    
+    // Color
+
+    public static readonly Color FullyTransparent = FullyTransparentBrush.Color;
+    public static readonly Color AppPurple = AppPurpleBrush.Color;
+    
+    public static readonly Color MainGrey = MainGreyBrush.Color;
 }
