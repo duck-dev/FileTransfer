@@ -7,7 +7,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FileTransfer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="FileTransfer">
+        Title="FileTransfer"
+        MinWidth="990"
+        MinHeight="500">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
