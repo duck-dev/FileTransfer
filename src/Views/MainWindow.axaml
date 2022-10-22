@@ -16,7 +16,8 @@
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <views:SidebarView DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="150" Background="{StaticResource AppPurple}"/>
         <Grid ColumnDefinitions="*,*" DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            
+            <views:SendView Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            BorderThickness="0,0,3.5,0" BorderBrush="{StaticResource AppPurple}"/>
         </Grid>
     </DockPanel>
 
