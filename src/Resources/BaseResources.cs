@@ -14,4 +14,8 @@ public static partial class Resources
     public static readonly SolidColorBrush AppPurpleBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "AppPurple", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#660099"));
+
+    public static readonly SolidColorBrush MainGreyBrush =
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainGrey", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#808080"));
 }
