@@ -45,12 +45,16 @@
                         </ComboBox>
                     </views:TitledElement.InnerContent>
                 </views:TitledElement>
-                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto">
-            
-                </Grid>
-                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
-            
-                </Grid>
+                <views:TitledElement Title="Message (optional):">
+                    <views:TitledElement.InnerContent>
+                        <!-- TODO: Set content -->
+                    </views:TitledElement.InnerContent>
+                </views:TitledElement>
+                <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
+                    <views:TitledElement.InnerContent>
+                        <!-- TODO: Set content -->
+                    </views:TitledElement.InnerContent>
+                </views:TitledElement>
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
