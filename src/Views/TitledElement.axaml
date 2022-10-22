@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.TitledElement">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
+        <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+        <TextBlock Grid.Row="0" Grid.Column="0" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
+        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding $parent[UserControl].InnerContent}"/>
+    </Grid>
+
+</UserControl>
