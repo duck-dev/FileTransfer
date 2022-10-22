@@ -26,11 +26,10 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
-            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change send-button" 
-                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" FontWeight="Bold" 
-                           Foreground="{StaticResource SameAccent}" Text="Send"/>
-            </Button>
+            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send"
+                    FontSize="26" FontWeight="Bold" Foreground="{StaticResource SameAccent}"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled-->
         </Grid>
     </Grid>
     
