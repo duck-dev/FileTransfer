@@ -23,6 +23,7 @@
                                   AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
                                   HorizontalAlignment="Stretch" Height="50" Background="{StaticResource FullyTransparent}"
                                   BorderThickness="5" BorderBrush="{StaticResource AppPurple}" CornerRadius="20">
+                            <!-- TODO: Bind to `ContactIndex` and `Contacts` properties -->
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Vertical"/>
