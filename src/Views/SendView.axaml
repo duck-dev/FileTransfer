@@ -59,9 +59,9 @@
         </ScrollViewer>
         <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
             <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
-                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send"
-                    FontSize="26" FontWeight="Bold" Foreground="{StaticResource SameAccent}"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled-->
+                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold" 
+                    Foreground="{StaticResource SameAccent}" Background="{StaticResource AppPurple}"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled in -->
         </Grid>
     </Grid>
     
