@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace FileTransfer.Views;
 
-public class Sidebar : UserControl
+public class SidebarView : UserControl
 {
-    public Sidebar()
+    public SidebarView()
     {
         InitializeComponent();
     }

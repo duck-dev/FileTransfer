@@ -14,7 +14,7 @@
     </Design.DataContext>
     
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <views:Sidebar DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="150" Background="{StaticResource AppPurple}"/>
+        <views:SidebarView DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="150" Background="{StaticResource AppPurple}"/>
         <Grid ColumnDefinitions="*,*" DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             
         </Grid>
