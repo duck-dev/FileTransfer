@@ -5,6 +5,33 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.SendView">
     
-    <!-- Content -->
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
+    </UserControl.Styles>
+    
+    <Grid RowDefinitions="Auto,*,Auto" Margin="40,40"> <!-- When changing top-/bottom-margin, apply to send button as well (see comment there) -->
+        <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" Background="Red">
+            
+                </Grid>
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" Background="Red">
+            
+                </Grid>
+                <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" Background="Red">
+            
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
+            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change send-button" 
+                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" FontWeight="Bold" 
+                           Foreground="{StaticResource SameAccent}" Text="Send"/>
+            </Button>
+        </Grid>
+    </Grid>
     
 </UserControl>
