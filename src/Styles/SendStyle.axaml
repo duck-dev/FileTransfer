@@ -1,0 +1,11 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+        <Style Selector="TextBlock.section-title">
+              <Setter Property="FontSize" Value="28"/>
+              <Setter Property="FontWeight" Value="Bold"/>
+              <Setter Property="Foreground" Value="{StaticResource AppPurple}"/>
+              <Setter Property="Margin" Value="0,0,0,7.5"/>
+        </Style>
+        
+</Styles>
