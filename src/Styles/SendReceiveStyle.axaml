@@ -6,7 +6,7 @@
         </Style>
     
         <Style Selector="TextBlock.title-text">
-                <Setter Property="FontSize" Value="72"/>
+                <Setter Property="FontSize" Value="68"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="{StaticResource AppPurple}"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
