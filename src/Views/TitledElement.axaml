@@ -12,7 +12,8 @@
 
     <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
         <TextBlock Grid.Row="0" Grid.Column="0" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
-        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding $parent[UserControl].InnerContent}"/>
+        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding $parent[UserControl].InnerContent}"
+                        Margin="0,0,0,25"/>
     </Grid>
 
 </UserControl>
