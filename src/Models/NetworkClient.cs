@@ -53,7 +53,7 @@ internal class NetworkClient : NetworkObject
     private static async Task<bool> SendDataAsync(byte[] buffer, Socket client)
     {
         _ = await client.SendAsync(buffer, SocketFlags.None);
-        UtilityCollection.Utilities.Log($"Socket client sent data!");
+        UtilityCollection.Utilities.Log("Socket client sent data!");
         return await ReceivedAcknowledgementAsync(client);
     }
 
@@ -62,7 +62,7 @@ internal class NetworkClient : NetworkObject
         var buffer = new byte[8];
         int received = await client.ReceiveAsync(buffer, SocketFlags.None);
         string response = Encoding.UTF8.GetString(buffer, 0, received);
-        UtilityCollection.Utilities.Log($"Socket client received acknowledgment: \"<|ACK|>\"");
+        UtilityCollection.Utilities.Log("Socket client received acknowledgment: \"<|ACK|>\"");
         return response == "<|ACK|>";
     }
 }
