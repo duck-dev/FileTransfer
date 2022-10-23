@@ -31,9 +31,13 @@
         
         <Style Selector=":is(InputElement).highlight-no-change:pointerover /template/ ContentPresenter">
                 <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/>
+                <Setter Property="BorderThickness" Value="{TemplateBinding BorderThickness}"/>
         </Style>
         <Style Selector=":is(InputElement).highlight-no-change:pressed /template/ ContentPresenter">
                 <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/>
+                <Setter Property="BorderThickness" Value="{TemplateBinding BorderThickness}"/>
         </Style>
         
         <!-- ComboBox -->
