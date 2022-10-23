@@ -87,8 +87,7 @@
                                     </ItemsControl>
                                     <TextBlock FontSize="24" FontWeight="Bold" Margin="0,5,0,0"
                                                Foreground="{StaticResource MainGrey}"
-                                               Text="No files uploaded yet." IsEnabled="True"/>
-                                    <!-- TODO: Only enable if NO files-->
+                                               Text="No files uploaded yet." IsVisible="True"/> <!-- TODO: Only enable if NO files-->
                                 </Panel>
                             </ScrollViewer>
                             <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
