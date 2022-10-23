@@ -34,8 +34,8 @@
                                     <Grid Grid.Column="0" RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           Margin="0,0,30,0">
                                         <TextBlock Grid.Row="0" FontSize="28" FontWeight="Bold" VerticalAlignment="Center"
-                                                   Foreground="{StaticResource SameAccent}"/> <!-- TODO: Nickname of sender -->
-                                        <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource SameAccent}"
+                                                   Foreground="{StaticResource White}"/> <!-- TODO: Nickname of sender -->
+                                        <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource White}"
                                                    VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"
                                                    TextAlignment="Left"/> <!-- TODO: ^ (Optional) message -->
                                     </Grid>
@@ -45,10 +45,10 @@
                                             <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="30" Height="30"
                                                    Margin="0,0,7.5,0"/> <!-- TODO: Icon: File-Light.png -->
                                             <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold"
-                                                       Foreground="{StaticResource SameAccent}"/> <!-- TODO: Number of files -->
+                                                       Foreground="{StaticResource White}"/> <!-- TODO: Number of files -->
                                         </Grid>
                                         <TextBlock Grid.Row="1" FontSize="26" FontWeight="Bold"
-                                                   Foreground="{StaticResource SameAccent}"/> <!-- TODO: Overall size of files (only files, not text message too) -->
+                                                   Foreground="{StaticResource White}"/> <!-- TODO: Overall size of files (only files, not text message too) -->
                                     </Grid>
                                 </Grid>
                             </Button>
