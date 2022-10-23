@@ -29,8 +29,30 @@
                                     Background="{StaticResource AppPurple}" CornerRadius="50"
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="120">
                                 <!-- TODO: Add ContextMenu with: Open message, Delete message, Mark as unread, Mark as read -->
+                                <Grid ColumnDefinitions="*,Auto" Margin="40,0">
+                                    <Grid Grid.Column="0" RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          Margin="0,0,30,0">
+                                        <TextBlock Grid.Row="0" FontSize="28" FontWeight="Bold" VerticalAlignment="Center"
+                                                   Foreground="{StaticResource SameAccent}"/> <!-- TODO: Nickname of sender -->
+                                        <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource SameAccent}"
+                                                   VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                                   TextAlignment="Left"/> <!-- TODO: ^ (Optional) message -->
+                                    </Grid>
+                                    <Grid Grid.Column="1" RowDefinitions="*,*" VerticalAlignment="Stretch">
+                                        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto" 
+                                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="30" Height="30"
+                                                   Margin="0,0,7.5,0"/> <!-- TODO: Icon: File-Light.png -->
+                                            <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold"
+                                                       Foreground="{StaticResource SameAccent}"/> <!-- TODO: Number of files -->
+                                        </Grid>
+                                        <TextBlock Grid.Row="1" FontSize="26" FontWeight="Bold"
+                                                   Foreground="{StaticResource SameAccent}"/> <!-- TODO: Overall size of files (only files, not text message too) -->
+                                    </Grid>
+                                </Grid>
                             </Button>
-                            <Button Grid.Column="2" Margin="35,0,0,0" VerticalAlignment="Center">
+                            <Button Grid.Column="2" Classes="selectable-button-effect" Margin="35,0,0,0" 
+                                    VerticalAlignment="Center">
                                 <!-- TODO: Open confirmation dialog (confirmation: download ZIP-archive)  -->
                                 <Button.Template>
                                     <ControlTemplate>
