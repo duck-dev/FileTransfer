@@ -10,10 +10,9 @@
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
 
-    <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
-        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding $parent[UserControl].InnerContent}"
-                        Margin="0,0,0,25"/>
+    <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto">
+        <TextBlock Grid.Row="0" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
+        <ContentControl Grid.Row="1" Content="{Binding $parent[UserControl].InnerContent}" Margin="0,0,0,25"/>
     </Grid>
 
 </UserControl>
