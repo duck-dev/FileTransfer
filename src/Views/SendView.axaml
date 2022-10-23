@@ -68,7 +68,7 @@
                                           Margin="0,0,40,0">
                                 <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                  IsVisible="False"> <!-- TODO: Only enable if THERE ARE files -->
+                                                  IsVisible="False" Items="{Binding Files}"> <!-- TODO: Only enable if THERE ARE files -->
                                         <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -79,7 +79,7 @@
                                             <DataTemplate>
                                                 <Border BorderThickness="0,0,0,1"
                                                         BorderBrush="{StaticResource MainGrey}"
-                                                        HorizontalAlignment="Stretch" Height="60" Margin="0,5">
+                                                        HorizontalAlignment="Stretch" Height="50" Margin="0,5">
                                                     <!-- TODO: Style content of an uploaded file -->
                                                 </Border>
                                             </DataTemplate>
