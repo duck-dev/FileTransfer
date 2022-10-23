@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:FileTransfer.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.SendView">
-    
+
     <UserControl.Styles>
         <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
@@ -13,7 +13,7 @@
 
     <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="40,40"> <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
         <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
-        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
@@ -71,5 +71,5 @@
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled in -->
         </Grid>
     </Grid>
-    
+
 </UserControl>
