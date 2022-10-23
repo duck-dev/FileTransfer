@@ -54,7 +54,11 @@
                 </Grid>
                 <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
                     <views:TitledElement.InnerContent>
-                        <!-- TODO: Set content -->
+                        <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch" Height="150"
+                                 BorderBrush="{StaticResource AppPurple}" BorderThickness="5"
+                                 Foreground="{StaticResource OppositeAccent}" AcceptsReturn="True"
+                                 AcceptsTab="False" Watermark="An optional message you wish to send..." CornerRadius="15"
+                                 TextAlignment="Left" TextWrapping="Wrap"/> <!-- TODO: Bind `Text` to property -->
                     </views:TitledElement.InnerContent>
                 </views:TitledElement>
                 <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
