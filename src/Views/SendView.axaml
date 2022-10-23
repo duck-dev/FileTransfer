@@ -16,11 +16,10 @@
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
-                    <views:TitledElement Title="Receiver:">
-                        <views:TitledElement.InnerContent>
-                            <ComboBox Grid.Row="1" Grid.Column="0"
-                                      Classes="highlight-no-change-combo selectable-button"
+                <views:TitledElement Title="Receiver:">
+                    <views:TitledElement.InnerContent>
+                        <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
+                            <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
                                       MaxDropDownHeight="150" SelectedIndex="{Binding ContactIndex}"
                                       AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
                                       HorizontalAlignment="Stretch" Height="50"
@@ -49,9 +48,9 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                        </views:TitledElement.InnerContent>
-                    </views:TitledElement>
-                </Grid>
+                        </Grid>
+                    </views:TitledElement.InnerContent>
+                </views:TitledElement>
                 <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
                     <views:TitledElement.InnerContent>
                         <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch" Height="150"
@@ -70,7 +69,7 @@
         </ScrollViewer>
         <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
             <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
-                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold" 
+                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
                     Foreground="{StaticResource SameAccent}" Background="{StaticResource AppPurple}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled in -->
         </Grid>
