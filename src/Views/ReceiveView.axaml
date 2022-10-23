@@ -5,6 +5,44 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.ReceiveView">
     
-    <!-- Content -->
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
+    </UserControl.Styles>
+    
+    <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch" Margin="40,40">
+        <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Receive"/>
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <ItemsControl Items="{Binding Messages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,20">
+                            <Ellipse Grid.Column="0" Width="40" Height="40" Fill="{StaticResource MattBlue}"
+                                     Margin="0,0,40,0" VerticalAlignment="Center" 
+                                     IsVisible="True"/> <!-- TODO: Only enable if unread (not read or marked as unread) -->
+                            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                                    Background="{StaticResource AppPurple}" CornerRadius="50"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="120">
+                                <!-- TODO: Add ContextMenu with: Open message, Delete message, Mark as unread, Mark as read -->
+                            </Button>
+                            <Button Grid.Column="2" Margin="35,0,0,0" VerticalAlignment="Center">
+                                <!-- TODO: Open confirmation dialog (confirmation: download ZIP-archive)  -->
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image Source="/Assets/avalonia-logo.ico" Width="70" Height="70"/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
     
 </UserControl>

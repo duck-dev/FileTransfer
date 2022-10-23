@@ -11,7 +11,8 @@
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="40,40"> <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
+    <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="40,40">
+         <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
         <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
