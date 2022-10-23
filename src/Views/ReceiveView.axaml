@@ -13,7 +13,8 @@
         <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Receive"/>
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <ItemsControl Items="{Binding Messages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ItemsControl Items="{Binding Messages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          IsVisible="True"> <!-- TODO: Only enable if there are any messages -->
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
