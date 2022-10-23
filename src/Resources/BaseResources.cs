@@ -16,6 +16,12 @@ public static partial class Resources
     public static readonly SolidColorBrush AppPurpleBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "AppPurple", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#660099"));
+    public static readonly SolidColorBrush WhiteBrush =
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "White", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#FFFFFF"));
+    public static readonly SolidColorBrush BlackBrush =
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "Black", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#0A0A0A"));
     
     public static readonly SolidColorBrush MattBlueBrush = 
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MattBlue", StyleIndex)
@@ -29,6 +35,8 @@ public static partial class Resources
 
     public static readonly Color FullyTransparent = FullyTransparentBrush.Color;
     public static readonly Color AppPurple = AppPurpleBrush.Color;
+    public static readonly Color White = WhiteBrush.Color;
+    public static readonly Color Black = BlackBrush.Color;
 
     public static readonly Color MattBlue = MattBlueBrush.Color;
     
