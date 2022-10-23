@@ -5,6 +5,8 @@
         <SolidColorBrush x:Key="FullyTransparent" Color="#0000FFFF"/>
         <SolidColorBrush x:Key="AppPurple" Color="#660099"/>
         
+        <SolidColorBrush x:Key="MattBlue" Color="#91A1E8"/>
+        
         <SolidColorBrush x:Key="MainGrey" Color="#808080"/>
     </Style.Resources>
     
