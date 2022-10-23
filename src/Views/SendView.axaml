@@ -46,7 +46,7 @@
                         </ComboBox>
                     </views:TitledElement.InnerContent>
                 </views:TitledElement>
-                <views:TitledElement Title="Message (optional):">
+                <views:TitledElement Title="Message:">
                     <views:TitledElement.InnerContent>
                         <!-- TODO: Set content -->
                     </views:TitledElement.InnerContent>
