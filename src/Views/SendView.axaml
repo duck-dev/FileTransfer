@@ -62,7 +62,62 @@
                 </views:TitledElement>
                 <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
                     <views:TitledElement.InnerContent>
-                        <!-- TODO: Set content -->
+                        <Grid ColumnDefinitions="*,*" Height="230">
+                            <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                  IsVisible="False"> <!-- TODO: Only enable if THERE ARE files -->
+                                        <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderThickness="0,0,0,1"
+                                                        BorderBrush="{StaticResource MainGrey}"
+                                                        HorizontalAlignment="Stretch" Height="60" Margin="0,5">
+                                                    <!-- TODO: Style content of an uploaded file -->
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock FontSize="24" FontWeight="Bold" Margin="0,5,0,0"
+                                               Foreground="{StaticResource MainGrey}"
+                                               Text="No files uploaded yet." IsEnabled="True"/>
+                                    <!-- TODO: Only enable if NO files-->
+                                </Panel>
+                            </ScrollViewer>
+                            <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    CornerRadius="15" BorderDashArray="5,5" BorderThickness="5"
+                                    BorderBrush="{StaticResource AppPurple}"
+                                    Background="{StaticResource FullyTransparent}">
+                                <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Grid Grid.Row="0" RowDefinitions="*,Auto"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
+                                               HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+                                        <!-- TODO: Icon: Upload-Purple.png-->
+                                        <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
+                                                   Foreground="{StaticResource AppPurple}"
+                                                   Text="Drag and drop your files here" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                                                HorizontalAlignment="Stretch" Height="50"
+                                                Background="{StaticResource FullyTransparent}"
+                                                BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
+                                                CornerRadius="10" FontSize="20" FontWeight="Bold"
+                                                Foreground="{StaticResource AppPurple}"
+                                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                Content="Browse files"/> <!-- TODO: Set command -->
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
                     </views:TitledElement.InnerContent>
                 </views:TitledElement>
             </StackPanel>
