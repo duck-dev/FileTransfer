@@ -68,4 +68,13 @@
                 <Setter Property="BorderThickness" Value="{TemplateBinding BorderThickness}"/>
         </Style>
         
+        <!-- ScrollViewer -->
+        
+        <Style Selector="ScrollViewer[VerticalScrollBarVisibility=Visible], ScrollViewer[VerticalScrollBarVisibility=Auto]">
+                <Setter Property="Padding" Value="0,0,21,0"/>
+        </Style>
+        <Style Selector="ScrollViewer[HorizontalScrollBarVisibility=Visible], ScrollViewer[HorizontalScrollBarVisibility=Auto]">
+                <Setter Property="Padding" Value="0,0,0,21"/>
+        </Style>
+        
 </Styles>
