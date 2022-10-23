@@ -10,43 +10,49 @@
         <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
-    
-    <Grid RowDefinitions="Auto,*,Auto" Margin="40,40"> <!-- When changing top-/bottom-margin, apply to send button as well (see comment there) -->
+
+    <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="40,40"> <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
         <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <views:TitledElement Title="Receiver:">
-                    <views:TitledElement.InnerContent>
-                        <ComboBox Grid.Row="1" Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
-                                  MaxDropDownHeight="150" SelectedIndex="{Binding ContactIndex}"
-                                  AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
-                                  HorizontalAlignment="Stretch" Height="50" Background="{StaticResource FullyTransparent}"
-                                  BorderThickness="5" BorderBrush="{StaticResource AppPurple}" CornerRadius="20">
-                            <!-- TODO: Bind to `ContactIndex` and `Contacts` properties -->
-                            <ComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical"/>
-                                </ItemsPanelTemplate>
-                            </ComboBox.ItemsPanel>
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
-                                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Grid ColumnDefinitions="Auto,Auto">
-                                            <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="34" Height="34"
-                                                   Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple" -->
-                                            <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
-                                                       Foreground="{StaticResource AppPurple}"
-                                                       VerticalAlignment="Center" Text="User"/> <!-- TODO: Replace placeholder text -->
-                                        </Grid>
-                                    </ComboBoxItem>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </views:TitledElement.InnerContent>
-                </views:TitledElement>
-                <views:TitledElement Title="Message:">
+                <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
+                    <views:TitledElement Title="Receiver:">
+                        <views:TitledElement.InnerContent>
+                            <ComboBox Grid.Row="1" Grid.Column="0"
+                                      Classes="highlight-no-change-combo selectable-button"
+                                      MaxDropDownHeight="150" SelectedIndex="{Binding ContactIndex}"
+                                      AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
+                                      HorizontalAlignment="Stretch" Height="50"
+                                      Background="{StaticResource FullyTransparent}"
+                                      BorderThickness="5" BorderBrush="{StaticResource AppPurple}" CornerRadius="20">
+                                <!-- TODO: Bind to `ContactIndex` and `Contacts` properties -->
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Grid ColumnDefinitions="Auto,Auto">
+                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="34"
+                                                       Height="34"
+                                                       Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple" -->
+                                                <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
+                                                           Foreground="{StaticResource AppPurple}"
+                                                           VerticalAlignment="Center" Text="User"/>
+                                                <!-- TODO: Replace placeholder text -->
+                                            </Grid>
+                                        </ComboBoxItem>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </views:TitledElement.InnerContent>
+                    </views:TitledElement>
+                </Grid>
+                <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
                     <views:TitledElement.InnerContent>
                         <!-- TODO: Set content -->
                     </views:TitledElement.InnerContent>
