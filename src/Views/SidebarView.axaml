@@ -12,7 +12,18 @@
                 <!-- TODO: Open inbox as small popup that sticks to sidebar -->
                 <Button.Template>
                     <ControlTemplate>
-                        <Image Source="/Assets/avalonia-logo.ico"/> <!-- TODO: Icon: Bell-Light.png -->
+                        <Panel>
+                            <Image Source="/Assets/avalonia-logo.ico"/> <!-- TODO: Icon: Bell-Light.png -->
+                            <Panel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,-5,0"
+                                   IsVisible="False"> <!-- TODO: Only visible if there are unread notifications -->
+                                <!-- TODO: Adjust margin when adding real icon (Bell-Light.png) -->
+                                <Ellipse Fill="{StaticResource MainRed}" Stroke="{StaticResource AppPurple}"
+                                         StrokeThickness="5" Width="38" Height="38" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource White}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <!-- TODO: Text: Number of unread notifications -->
+                            </Panel>
+                        </Panel>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
@@ -20,7 +31,18 @@
                 <!-- TODO: Open friends menu as small popup that sticks to sidebar (bigger than inbox) -->
                 <Button.Template>
                     <ControlTemplate>
-                        <Image Source="/Assets/avalonia-logo.ico"/> <!-- TODO: Icon: Contacts-Light.png -->
+                        <Panel>
+                            <Image Source="/Assets/avalonia-logo.ico"/> <!-- TODO: Icon: Contacts-Light.png -->
+                            <Panel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,-5,0"
+                                   IsVisible="False"> <!-- TODO: Only visible if there are friend requests -->
+                                <!-- TODO: Adjust margin when adding real icon (Contacts-Light.png) -->
+                                <Ellipse Fill="{StaticResource MainRed}" Stroke="{StaticResource AppPurple}"
+                                         StrokeThickness="5" Width="38" Height="38" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource White}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <!-- TODO: Text: Number of friend requests -->
+                            </Panel>
+                        </Panel>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
