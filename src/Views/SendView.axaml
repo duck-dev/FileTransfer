@@ -3,8 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:FileTransfer.Views"
+             xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.SendView">
+    
+    <UserControl.DataContext>
+        <viewModels:SendViewModel/>
+    </UserControl.DataContext>
 
     <UserControl.Styles>
         <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
@@ -21,7 +26,7 @@
                     <views:TitledElement.InnerContent>
                         <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
                             <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
-                                      MaxDropDownHeight="150" SelectedIndex="{Binding ContactIndex}"
+                                      MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
                                       AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
                                       HorizontalAlignment="Stretch" Height="50"
                                       Background="{StaticResource FullyTransparent}"
@@ -58,7 +63,7 @@
                                  BorderBrush="{StaticResource AppPurple}" BorderThickness="5"
                                  Foreground="{StaticResource OppositeAccent}" AcceptsReturn="True"
                                  AcceptsTab="False" Watermark="An optional message you wish to send..." CornerRadius="15"
-                                 TextAlignment="Left" TextWrapping="Wrap"/> <!-- TODO: Bind `Text` to property -->
+                                 TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
                     </views:TitledElement.InnerContent>
                 </views:TitledElement>
                 <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
@@ -127,7 +132,8 @@
             <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
                     HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
                     Foreground="{StaticResource White}" Background="{StaticResource AppPurple}"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/> <!-- TODO: Enable if necessary data filled in -->
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Command="{Binding SendAsync}" IsEnabled="True"/> <!-- TODO: Enable if necessary data filled in -->
         </Grid>
     </Grid>
 
