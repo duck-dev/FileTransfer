@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Media;
 using FileTransfer.UtilityCollection;
 
-namespace FileTransfer.Resources;
+namespace FileTransfer.ResourcesNamespace;
 
 public static partial class Resources
 {
