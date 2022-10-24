@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.SendView">
-    
+
     <UserControl.DataContext>
         <viewModels:SendViewModel/>
     </UserControl.DataContext>
@@ -16,125 +16,130 @@
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="40,40">
-         <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
-        <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
-        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <views:TitledElement Title="Receiver:">
-                    <views:TitledElement.InnerContent>
-                        <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
-                            <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
-                                      MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
-                                      AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
-                                      HorizontalAlignment="Stretch" Height="50"
-                                      Background="{StaticResource FullyTransparent}"
-                                      BorderThickness="5" BorderBrush="{StaticResource AppPurple}" CornerRadius="20">
-                                <!-- TODO: Bind to `Contacts` properties -->
-                                <ComboBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Vertical"/>
-                                    </ItemsPanelTemplate>
-                                </ComboBox.ItemsPanel>
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
-                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Grid ColumnDefinitions="Auto,Auto">
-                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="34"
-                                                       Height="34"
-                                                       Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple" -->
-                                                <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
-                                                           Foreground="{StaticResource AppPurple}"
-                                                           VerticalAlignment="Center" Text="User"/>
-                                                <!-- TODO: Replace placeholder text -->
-                                            </Grid>
-                                        </ComboBoxItem>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </Grid>
-                    </views:TitledElement.InnerContent>
-                </views:TitledElement>
-                <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
-                    <views:TitledElement.InnerContent>
-                        <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch" Height="150"
-                                 BorderBrush="{StaticResource AppPurple}" BorderThickness="5"
-                                 Foreground="{StaticResource OppositeAccent}" AcceptsReturn="True"
-                                 AcceptsTab="False" Watermark="An optional message you wish to send..." CornerRadius="15"
-                                 TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
-                    </views:TitledElement.InnerContent>
-                </views:TitledElement>
-                <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
-                    <views:TitledElement.InnerContent>
-                        <Grid ColumnDefinitions="*,*" Height="230">
-                            <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                                          Margin="0,0,40,0">
-                                <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                  IsVisible="False" Items="{Binding Files}"> <!-- TODO: Only enable if THERE ARE files -->
-                                        <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Vertical"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border BorderThickness="0,0,0,1"
-                                                        BorderBrush="{StaticResource MainGrey}"
-                                                        HorizontalAlignment="Stretch" Height="50" Margin="0,5">
-                                                    <!-- TODO: Style content of an uploaded file -->
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <TextBlock FontSize="24" FontWeight="Bold" Margin="0,10,0,0"
-                                               Foreground="{StaticResource MainGrey}" TextWrapping="Wrap"
-                                               Text="No files uploaded yet." IsVisible="True"/> <!-- TODO: Only enable if NO files-->
-                                </Panel>
-                            </ScrollViewer>
-                            <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                    CornerRadius="15" BorderDashArray="5,5" BorderThickness="5"
-                                    BorderBrush="{StaticResource AppPurple}"
-                                    Background="{StaticResource FullyTransparent}">
-                                <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <Grid Grid.Row="0" RowDefinitions="*,Auto"
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
-                                               HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-                                        <!-- TODO: Icon: Upload-Purple.png-->
-                                        <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
-                                                   Foreground="{StaticResource AppPurple}"
-                                                   Text="Drag and drop your files here" HorizontalAlignment="Center"/>
+    <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="40,40">
+            <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
+            <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
+            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <views:TitledElement Title="Receiver:">
+                        <views:TitledElement.InnerContent>
+                            <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
+                                <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
+                                          MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
+                                          AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
+                                          HorizontalAlignment="Stretch" Height="50" CornerRadius="20"
+                                          Background="{StaticResource FullyTransparent}"
+                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}" >
+                                    <!-- TODO: Bind to `Contacts` properties -->
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
+                                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                <Grid ColumnDefinitions="Auto,Auto">
+                                                    <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" 
+                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple" -->
+                                                    <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
+                                                               Foreground="{StaticResource AppPurple}"
+                                                               VerticalAlignment="Center" Text="User"/>
+                                                    <!-- TODO: Replace placeholder text -->
+                                                </Grid>
+                                            </ComboBoxItem>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </views:TitledElement.InnerContent>
+                    </views:TitledElement>
+                    <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
+                        <views:TitledElement.InnerContent>
+                            <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch" Height="150"
+                                     BorderBrush="{StaticResource AppPurple}" BorderThickness="5"
+                                     Foreground="{StaticResource OppositeAccent}" AcceptsReturn="True"
+                                     AcceptsTab="False" Watermark="An optional message you wish to send..." CornerRadius="15"
+                                     TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
+                        </views:TitledElement.InnerContent>
+                    </views:TitledElement>
+                    <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
+                        <views:TitledElement.InnerContent>
+                            <Grid ColumnDefinitions="*,*" Height="230">
+                                <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                              Margin="0,0,40,0">
+                                    <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                      IsVisible="False" Items="{Binding Files}"> <!-- TODO: Only enable if THERE ARE files -->
+                                            <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderThickness="0,0,0,1"
+                                                            BorderBrush="{StaticResource MainGrey}"
+                                                            HorizontalAlignment="Stretch" Height="50" Margin="0,5">
+                                                        <!-- TODO: Style content of an uploaded file -->
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock FontSize="24" FontWeight="Bold" Margin="0,10,0,0"
+                                                   Foreground="{StaticResource MainGrey}" TextWrapping="Wrap"
+                                                   Text="No files uploaded yet." IsVisible="True"/>
+                                        <!-- TODO: Only enable if NO files-->
+                                    </Panel>
+                                </ScrollViewer>
+                                <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        CornerRadius="15" BorderDashArray="5,5" BorderThickness="5"
+                                        BorderBrush="{StaticResource AppPurple}"
+                                        Background="{StaticResource FullyTransparent}">
+                                    <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch">
+                                        <Grid Grid.Row="0" RowDefinitions="*,Auto"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+                                            <!-- TODO: Icon: Upload-Purple.png-->
+                                            <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
+                                                       Foreground="{StaticResource AppPurple}"
+                                                       Text="Drag and drop your files here" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Button Grid.Column="1"
+                                                    Classes="selectable-button-effect highlight-no-change"
+                                                    HorizontalAlignment="Stretch" Height="50"
+                                                    Background="{StaticResource FullyTransparent}"
+                                                    BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
+                                                    CornerRadius="10" FontSize="20" FontWeight="Bold"
+                                                    Foreground="{StaticResource AppPurple}"
+                                                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                    Content="Browse files"/> <!-- TODO: Set command -->
+                                        </Grid>
                                     </Grid>
-                                    <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*"
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
-                                                HorizontalAlignment="Stretch" Height="50"
-                                                Background="{StaticResource FullyTransparent}"
-                                                BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
-                                                CornerRadius="10" FontSize="20" FontWeight="Bold"
-                                                Foreground="{StaticResource AppPurple}"
-                                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                Content="Browse files"/> <!-- TODO: Set command -->
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </Grid>
-                    </views:TitledElement.InnerContent>
-                </views:TitledElement>
-            </StackPanel>
-        </ScrollViewer>
-        <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
-            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
-                    HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
-                    Foreground="{StaticResource White}" Background="{StaticResource AppPurple}"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    Command="{Binding SendAsync}" IsEnabled="True"/> <!-- TODO: Enable if necessary data filled in -->
+                                </Border>
+                            </Grid>
+                        </views:TitledElement.InnerContent>
+                    </views:TitledElement>
+                </StackPanel>
+            </ScrollViewer>
+            <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
+                <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                        HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
+                        Foreground="{StaticResource White}" Background="{StaticResource AppPurple}"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                        Command="{Binding Send}" IsEnabled="True"/> <!-- TODO: Enable if necessary data filled in -->
+            </Grid>
         </Grid>
-    </Grid>
+        <UserControl Content="{Binding CurrentDialog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </Panel>
 
 </UserControl>
