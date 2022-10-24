@@ -1,5 +1,4 @@
-﻿using System.Net;
-using FileTransfer.Models;
+﻿using FileTransfer.Models;
 
 namespace FileTransfer.ViewModels;
 
@@ -17,12 +16,5 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         // TODO: Do something
         UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE: {e.TextMessage}\n");
-    }
-
-    private async void SendAsync()
-    {
-        IPAddress ip = await UtilityCollection.Utilities.GetIpAddressAsync();
-        var client = new NetworkClient(ip);
-        await client.InvokeSendingDataAsync();
     }
 }
