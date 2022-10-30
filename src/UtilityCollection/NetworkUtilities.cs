@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +10,7 @@ namespace FileTransfer.UtilityCollection;
 
 public static partial class Utilities
 {
-    internal static List<User> UsersList { get; set; } = new();
+    public static ObservableCollection<User>? UsersList { get; set; }
     
     internal static User? LocalUser { get; set; }
     

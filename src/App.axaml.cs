@@ -17,6 +17,7 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            MainWindowViewModel.InitUsers(); // TODO: Temporary, load actual data here
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),
