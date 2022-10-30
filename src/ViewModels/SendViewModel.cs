@@ -1,9 +1,10 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using FileTransfer.Exceptions;
 using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
+using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels.Dialogs;
 using ReactiveUI;
 
@@ -27,7 +28,8 @@ public sealed class SendViewModel : ViewModelBase, IDialogContainer
     {
         async Task ConfirmAction()
         {
-            IPAddress ip = await UtilityCollection.Utilities.GetIpAddressAsync(); // TODO: Replace by selected receiver
+            if (Utilities.UsersList[ReceiverIndex].IP is not { } ip)
+                throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
             await client.InvokeSendingDataAsync(Message); // TODO: Pass files
         }

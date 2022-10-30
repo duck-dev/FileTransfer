@@ -16,6 +16,8 @@ public sealed class ReceiveViewModel : ViewModelBase
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
         // TODO: Do something
-        UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE: {e.TextMessage}\n");
+        UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE:");
+        UtilityCollection.Utilities.Log($"From: {UtilityCollection.Utilities.UsersList.Find(x => x.UniqueGuid == e.SenderGuid)?.Nickname}");
+        UtilityCollection.Utilities.Log($"Message: {e.TextMessage}\n");
     }
 }
