@@ -23,4 +23,9 @@ public class MessageReceivedEventArgs : EventArgs
     /// The time the message has been received.
     /// </summary>
     public DateTime Time { get; set; }
+    
+    /// <summary>
+    /// The <see cref="Guid"/> of the sender.
+    /// </summary>
+    public Guid SenderGuid { get; set; }
 }
