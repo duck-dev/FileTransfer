@@ -39,10 +39,11 @@
                                     <Grid Grid.Column="0" RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           Margin="0,0,30,0">
                                         <TextBlock Grid.Row="0" FontSize="28" FontWeight="Bold" VerticalAlignment="Center"
-                                                   Foreground="{StaticResource White}"/> <!-- TODO: Nickname of sender -->
+                                                   Foreground="{StaticResource White}"
+                                                   Text="{Binding Sender.Nickname}"/>
                                         <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource White}"
                                                    VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"
-                                                   TextAlignment="Left"/> <!-- TODO: ^ (Optional) message -->
+                                                   TextAlignment="Left" Text="{Binding TextMessage}"/>
                                     </Grid>
                                     <Grid Grid.Column="1" RowDefinitions="*,*" VerticalAlignment="Stretch">
                                         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto" 
