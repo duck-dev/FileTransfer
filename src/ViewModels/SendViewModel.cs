@@ -34,6 +34,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
             await client.InvokeSendingDataAsync(Message); // TODO: Pass files
+            Reset();
         }
 
         // TODO: Turn method into async Task: `private async Task Send()`
@@ -49,5 +50,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             new[] { Colors.White, Colors.White },
             new[] { "Yes, send data!", "Cancel" },
             (Func<Task>) ConfirmAction);
+    }
+
+    private void Reset()
+    {
+        Message = string.Empty;
+        // TODO: Reset files
     }
 }
