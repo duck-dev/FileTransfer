@@ -19,7 +19,7 @@
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <ItemsControl Items="{Binding Messages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                          IsVisible="False"> <!-- TODO: Only enable if there are any messages -->
+                          IsVisible="{Binding MessagesAvailable}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -73,7 +73,7 @@
         </ScrollViewer>
         <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
                    FontSize="38" FontWeight="Bold" Foreground="{StaticResource MainGrey}"
-                   Text="No messages received yet." IsVisible="True"/> <!-- TODO: Only visible if no received messages -->
+                   Text="No messages received yet." IsVisible="{Binding !MessagesAvailable}"/>
     </Grid>
     
 </UserControl>
