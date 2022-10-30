@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models.NetworkTransmission;
 
@@ -27,11 +28,17 @@ internal class NetworkServer : NetworkObject
             Socket handler = await listener.AcceptAsync();
             while (true)
             {
+                // Receive sender
+                var buffer = new byte[16];
+                _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                Guid userGuid = new Guid(buffer);
+                // Send Acknowledgement
+                await SendAcknowledgementAsync(handler);
+
                 // Receive length
-                var buffer = new byte[4];
+                buffer = new byte[4];
                 _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
                 int messageLength = BitConverter.ToInt32(buffer, 0);
-                
                 // Send Acknowledgement
                 await SendAcknowledgementAsync(handler);
 
@@ -46,14 +53,13 @@ internal class NetworkServer : NetworkObject
                     response += Encoding.UTF8.GetString(buffer, 0, received);
                     handledBytes += received;
                 }
-                UtilityCollection.Utilities.Log($"Socket server received message: \"{response}\"");
-
+                Utilities.Log($"Socket server received message: \"{response}\"");
                 // Send acknowledgement
                 await SendAcknowledgementAsync(handler);
                 
                 var eventArgs = new MessageReceivedEventArgs
                 {
-                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now
+                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now, SenderGuid = userGuid
                 };
                 MessageReceived?.Invoke(this, eventArgs);
                 break;
@@ -66,6 +72,6 @@ internal class NetworkServer : NetworkObject
         const string acknowledgement = "<|ACK|>";
         byte[] echoBytes = Encoding.UTF8.GetBytes(acknowledgement);
         await handler.SendAsync(echoBytes, 0);
-        UtilityCollection.Utilities.Log("Socket server sent acknowledgment: \"<|ACK|>\"");
+        Utilities.Log("Socket server sent acknowledgment: \"<|ACK|>\"");
     }
 }

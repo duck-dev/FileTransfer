@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using FileTransfer.Exceptions;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models.NetworkTransmission;
 
@@ -20,22 +22,31 @@ internal class NetworkClient : NetworkObject
         }
         catch (SocketException e)
         {
-            UtilityCollection.Utilities.Log(e.Message);
+            Utilities.Log(e.Message);
             // TODO: Handle failure
             return;
         }
+
+        bool sentGuid = false;
         while (true)
         {
+            // Send own GUID
+            if (Utilities.LocalUser is null)
+                throw new UserNotFoundException("LocalUser could not be found.");
+            
+            bool receivedAcknowledgement = sentGuid || await SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
+            if(!receivedAcknowledgement)
+                continue;
+            sentGuid = true;
+
             // Send length of message
-            bool receivedAcknowledgement = await SendSizeAsync(message.Length, client);
-            // Receive acknowledgement => continue
+            receivedAcknowledgement = await SendSizeAsync(message.Length, client);
             if(!receivedAcknowledgement)
                 continue;
 
             // Send text message
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
             receivedAcknowledgement = await SendDataAsync(messageBytes, client);
-            // Receive acknowledgement => terminate operation
             if (!receivedAcknowledgement) 
                 continue;
             
@@ -57,7 +68,7 @@ internal class NetworkClient : NetworkObject
     private static async Task<bool> SendDataAsync(byte[] buffer, Socket client)
     {
         _ = await client.SendAsync(buffer, SocketFlags.None);
-        UtilityCollection.Utilities.Log("Socket client sent data!");
+        Utilities.Log("Socket client sent data!");
         return await ReceivedAcknowledgementAsync(client);
     }
 
@@ -66,7 +77,7 @@ internal class NetworkClient : NetworkObject
         var buffer = new byte[8];
         int received = await client.ReceiveAsync(buffer, SocketFlags.None);
         string response = Encoding.UTF8.GetString(buffer, 0, received);
-        UtilityCollection.Utilities.Log("Socket client received acknowledgment: \"<|ACK|>\"");
+        Utilities.Log("Socket client received acknowledgment: \"<|ACK|>\"");
         return response == "<|ACK|>";
     }
 }
