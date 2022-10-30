@@ -1,4 +1,5 @@
 using FileTransfer.Models;
+using FileTransfer.Models.NetworkTransmission;
 
 namespace FileTransfer.ViewModels;
 

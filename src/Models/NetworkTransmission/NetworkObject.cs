@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace FileTransfer.Models;
+namespace FileTransfer.Models.NetworkTransmission;
 
 internal abstract class NetworkObject
 {

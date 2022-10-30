@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Avalonia.Media;
-using FileTransfer.Models;
+using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.ViewModels.Dialogs;
 using ReactiveUI;

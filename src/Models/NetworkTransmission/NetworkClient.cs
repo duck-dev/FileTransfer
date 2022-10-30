@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileTransfer.Models;
+namespace FileTransfer.Models.NetworkTransmission;
 
 internal class NetworkClient : NetworkObject
 {
