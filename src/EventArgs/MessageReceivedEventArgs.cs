@@ -25,7 +25,7 @@ public class MessageReceivedEventArgs : EventArgs
     public DateTime Time { get; set; }
     
     /// <summary>
-    /// The <see cref="Guid"/> of the sender.
+    /// The sender as a <see cref="User"/> instance.
     /// </summary>
-    public Guid SenderGuid { get; set; }
+    public User? Sender { get; set; }
 }

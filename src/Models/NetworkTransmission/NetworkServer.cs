@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using FileTransfer.Exceptions;
 using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models.NetworkTransmission;
@@ -56,10 +58,14 @@ internal class NetworkServer : NetworkObject
                 Utilities.Log($"Socket server received message: \"{response}\"");
                 // Send acknowledgement
                 await SendAcknowledgementAsync(handler);
-                
+
+                if (Utilities.UsersList is null)
+                    throw new Exception("UsersList is null!");
+                User sender = Utilities.UsersList.FirstOrDefault(x => x.UniqueGuid == userGuid) 
+                              ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
                 var eventArgs = new MessageReceivedEventArgs
                 {
-                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now, SenderGuid = userGuid
+                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
                 };
                 MessageReceived?.Invoke(this, eventArgs);
                 break;
