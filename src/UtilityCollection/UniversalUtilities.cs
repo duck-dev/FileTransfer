@@ -5,7 +5,7 @@ using Avalonia.Styling;
 
 namespace FileTransfer.UtilityCollection;
 
-public static partial class Utilities
+internal static partial class Utilities
 {
     /// <summary>
     /// Log a message to the debug output (for debugging purposes).
