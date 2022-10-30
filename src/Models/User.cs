@@ -3,7 +3,7 @@ using System.Net;
 
 namespace FileTransfer.Models;
 
-internal class User
+public class User
 {
     internal User(byte[] guid, string username, string ipString)
     {
