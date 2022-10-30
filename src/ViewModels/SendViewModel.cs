@@ -13,6 +13,7 @@ namespace FileTransfer.ViewModels;
 public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 {
     private DialogViewModelBase? _currentDialog;
+    private string _message = string.Empty;
 
     public SendViewModel() : base(Utilities.UsersList) { }
     
@@ -23,7 +24,12 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     }
     
     private int ReceiverIndex { get; set; }
-    private string Message { get; set; } = string.Empty;
+
+    private string Message
+    {
+        get => _message; 
+        set => this.RaiseAndSetIfChanged(ref _message, value);
+    }
     // TODO: Add collection of files
 
     private void Send()
