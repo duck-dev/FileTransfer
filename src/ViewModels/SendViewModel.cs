@@ -10,9 +10,11 @@ using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
 
-public sealed class SendViewModel : ViewModelBase, IDialogContainer
+public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 {
     private DialogViewModelBase? _currentDialog;
+
+    public SendViewModel() : base(Utilities.UsersList) { }
     
     public DialogViewModelBase? CurrentDialog
     {
@@ -28,7 +30,7 @@ public sealed class SendViewModel : ViewModelBase, IDialogContainer
     {
         async Task ConfirmAction()
         {
-            if (Utilities.UsersList[ReceiverIndex].IP is not { } ip)
+            if (UsersList?[ReceiverIndex].IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
             await client.InvokeSendingDataAsync(Message); // TODO: Pass files

@@ -1,13 +1,15 @@
+using System.Linq;
 using FileTransfer.Models;
 using FileTransfer.Models.NetworkTransmission;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.ViewModels;
 
-public sealed class ReceiveViewModel : ViewModelBase
+public sealed class ReceiveViewModel : NetworkViewModelBase
 {
     internal NetworkServer Server { get; }
     
-    public ReceiveViewModel()
+    public ReceiveViewModel() : base(Utilities.UsersList)
     {
         Server = new NetworkServer();
         Server.MessageReceived += OnMessageReceived;
@@ -16,8 +18,8 @@ public sealed class ReceiveViewModel : ViewModelBase
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
         // TODO: Do something
-        UtilityCollection.Utilities.Log($"\nRECEIVED MESSAGE:");
-        UtilityCollection.Utilities.Log($"From: {UtilityCollection.Utilities.UsersList.Find(x => x.UniqueGuid == e.SenderGuid)?.Nickname}");
-        UtilityCollection.Utilities.Log($"Message: {e.TextMessage}\n");
+        Utilities.Log($"\nRECEIVED MESSAGE:");
+        Utilities.Log($"From: {UsersList?.FirstOrDefault(x => x.UniqueGuid == e.SenderGuid)?.Nickname}");
+        Utilities.Log($"Message: {e.TextMessage}\n");
     }
 }
