@@ -28,10 +28,10 @@
                             <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
                                 <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
                                           MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
-                                          AutoScrollToSelectedItem="True" Items="{Binding Contacts}"
+                                          AutoScrollToSelectedItem="True" Items="{Binding UsersList}"
                                           HorizontalAlignment="Stretch" Height="50" CornerRadius="20"
                                           Background="{StaticResource FullyTransparent}"
-                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}" >
+                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}">
                                     <!-- TODO: Bind to `Contacts` properties -->
                                     <ComboBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -44,11 +44,10 @@
                                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                 <Grid ColumnDefinitions="Auto,Auto">
                                                     <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" 
-                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple" -->
+                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple.png" -->
                                                     <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                                Foreground="{StaticResource AppPurple}"
-                                                               VerticalAlignment="Center" Text="User"/>
-                                                    <!-- TODO: Replace placeholder text -->
+                                                               VerticalAlignment="Center" Text="{Binding Nickname}"/>
                                                 </Grid>
                                             </ComboBoxItem>
                                         </DataTemplate>
