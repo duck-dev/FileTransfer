@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FileTransfer.Models;
 using FileTransfer.ViewModels;
 using FileTransfer.Views;
 
@@ -17,7 +18,7 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            MainWindowViewModel.InitUsers(); // TODO: Temporary, load actual data here
+            PlaceholderServices.InitUsers(); // TODO: Temporary, load actual data here
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),
