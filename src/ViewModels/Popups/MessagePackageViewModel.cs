@@ -7,5 +7,5 @@ internal class MessagePackageViewModel : ViewModelBase
     public MessagePackageViewModel(MessagePackage message)
         => this.Message = message;
     
-    private MessagePackage Message { get; }
+    internal MessagePackage Message { get; }
 }

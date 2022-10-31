@@ -18,6 +18,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         this.Received = received;
         this.Time = time;
         this.Sender = sender;
+
+        this.TimeString = $"{time.ToShortDateString()}    {time.ToLongTimeString()}";
     }
 
     internal MessagePackage(MessageReceivedEventArgs args)
@@ -27,13 +29,15 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         this.Received = args.Received;
         this.Time = args.Time;
         this.Sender = args.Sender;
+        
+        this.TimeString = $"{args.Time.ToShortDateString()}    {args.Time.ToLongTimeString()}";
     }
     
-    internal object[]? Content { get; set; }
-    internal string? TextMessage { get; set; }
-    internal int Received { get; set; }
-    internal DateTime Time { get; set; }
-    internal User? Sender { get; set; }
+    internal object[]? Content { get; }
+    internal string? TextMessage { get; }
+    internal int Received { get; }
+    internal DateTime Time { get; }
+    internal User? Sender { get; }
 
     internal bool IsRead
     {
@@ -44,6 +48,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
             NotifyPropertyChanged();
         }
     }
+    
+    internal string TimeString { get; }
     
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

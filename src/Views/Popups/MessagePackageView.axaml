@@ -2,13 +2,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FileTransfer.Views.MessagePackageView">
+             x:Class="FileTransfer.Views.MessagePackageView"
+             x:DataType="viewModels:MessagePackageViewModel"
+             x:CompileBindings="True">
     
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource DarkenedDialogBackground}">
-        <Border CornerRadius="20" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
-                Height="350" Margin="40,0">
-            
+        <Border CornerRadius="30" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
+                Height="400" Margin="40,0">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="Auto,Auto,Auto,Auto,*"
+                  Margin="20,10">
+                <Viewbox Grid.Row="0" HorizontalAlignment="Left" MaxHeight="54">
+                    <TextBlock HorizontalAlignment="Left" FontSize="48" FontWeight="Bold" TextAlignment="Left"
+                               Foreground="{StaticResource White}" Margin="0,0,0,5" 
+                               Text="{Binding Message.Sender.Nickname}"/>
+                </Viewbox>
+                <TextBlock Grid.Row="1" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource White}"
+                           Text="{Binding Message.TimeString}" FontStyle="Italic" 
+                           Margin="0,0,0,20"/>
+                <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right" Margin="0,0,2.5,7.5">
+                    <Button Grid.Column="0" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
+                            Background="{StaticResource MainGrey}" CornerRadius="20" Margin="0,0,3,0">
+                        <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Copy-Light.png -->
+                    </Button>
+                    <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
+                            Background="{StaticResource MainGrey}" CornerRadius="20" Margin="3,0,0,0">
+                        <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Maximize-Light.png -->
+                    </Button>
+                </Grid>
+                <ScrollViewer Grid.Row="3" HorizontalAlignment="Stretch" MaxHeight="87" Margin="0,0,0,30"
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <TextBox Classes="text-acting-textbox" HorizontalAlignment="Left" FontSize="24" 
+                             Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
+                             Text="{Binding Message.TextMessage}"/>
+                </ScrollViewer>
+                <ScrollViewer Grid.Row="4" HorizontalAlignment="Stretch" MinHeight="100"
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl HorizontalAlignment="Stretch"> <!-- TODO: Set `Items` -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button CornerRadius="20" Background="{StaticResource TransparentWhite}"
+                                        Height="40" Width="110">
+                                
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Panel>
     
