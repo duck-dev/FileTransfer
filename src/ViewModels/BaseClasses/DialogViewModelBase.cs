@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Media;
 using FileTransfer.Extensions;
+using FileTransfer.Interfaces;
 
 namespace FileTransfer.ViewModels;
 

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using FileTransfer.Exceptions;
+using FileTransfer.Interfaces;
 using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;

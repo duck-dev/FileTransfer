@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using FileTransfer.Interfaces;
 
 namespace FileTransfer.ViewModels.Dialogs;
 

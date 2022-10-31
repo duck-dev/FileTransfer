@@ -1,6 +1,6 @@
 using FileTransfer.ViewModels;
 
-namespace FileTransfer;
+namespace FileTransfer.Interfaces;
 
 public interface IDialogContainer
 {
