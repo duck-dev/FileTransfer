@@ -11,7 +11,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
 {
     internal NetworkServer Server { get; }
     
-    private ObservableCollection<MessageReceivedEventArgs> Messages { get; } = new();
+    private ObservableCollection<MessagePackage> Messages { get; } = new();
     private bool MessagesAvailable => Messages.Count > 0;
     
     public ReceiveViewModel() : base(Utilities.UsersList)
@@ -21,11 +21,12 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
         Messages.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(MessagesAvailable));
     }
     
-    private void OnMessageReceived(object? sender, MessageReceivedEventArgs e)
+    private void OnMessageReceived(object? sender, MessageReceivedEventArgs args)
     {
-        Messages.Insert(0, e);
+        var message = new MessagePackage(args);
+        Messages.Insert(0, message);
         Utilities.Log($"\nRECEIVED MESSAGE:");
-        Utilities.Log($"From: {e.Sender?.Nickname}");
-        Utilities.Log($"Message: {e.TextMessage}\n");
+        Utilities.Log($"From: {message.Sender?.Nickname}");
+        Utilities.Log($"Message: {message.TextMessage}\n");
     }
 }
