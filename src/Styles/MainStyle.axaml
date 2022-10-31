@@ -81,4 +81,22 @@
                 <Setter Property="Padding" Value="0,0,0,26"/>
         </Style>
         
+        <!-- TextBox -->
+        
+        <Style Selector="TextBox.text-acting-textbox">
+                <Setter Property="Background" Value="{DynamicResource FullyTransparent}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="CaretBrush" Value="{DynamicResource FullyTransparent}"/>
+                <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style Selector="TextBox.text-acting-textbox:pointerover /template/ Border#PART_BorderElement">
+                <Setter Property="Background" Value="{DynamicResource FullyTransparent}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style Selector="TextBox.text-acting-textbox:focus /template/ Border#PART_BorderElement">
+                <Setter Property="Background" Value="{DynamicResource FullyTransparent}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
 </Styles>
