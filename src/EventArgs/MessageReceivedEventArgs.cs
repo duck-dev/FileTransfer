@@ -1,6 +1,7 @@
 using System;
+using FileTransfer.Models;
 
-namespace FileTransfer.Models;
+namespace FileTransfer.Events;
 
 public class MessageReceivedEventArgs : EventArgs
 {
@@ -28,4 +29,9 @@ public class MessageReceivedEventArgs : EventArgs
     /// The sender as a <see cref="User"/> instance.
     /// </summary>
     public User? Sender { get; set; }
+    
+    /// <summary>
+    /// Saves whether the message has been read or not.
+    /// </summary>
+    public bool IsRead { get; set; }
 }
