@@ -9,10 +9,18 @@ namespace FileTransfer.ViewModels;
 
 public sealed class ReceiveViewModel : NetworkViewModelBase
 {
+    private MessagePackageViewModel? _messageViewModel;
+    
     internal NetworkServer Server { get; }
     
     private ObservableCollection<MessagePackage> Messages { get; } = new();
     private bool MessagesAvailable => Messages.Count > 0;
+
+    private MessagePackageViewModel? MessageViewModel
+    {
+        get => _messageViewModel; 
+        set => this.RaiseAndSetIfChanged(ref _messageViewModel, value);
+    }
     
     public ReceiveViewModel() : base(Utilities.UsersList)
     {
@@ -25,7 +33,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
     {
         var message = new MessagePackage(args);
         Messages.Insert(0, message);
-        Utilities.Log($"\nRECEIVED MESSAGE:");
+        Utilities.Log("\nRECEIVED MESSAGE:");
         Utilities.Log($"From: {message.Sender?.Nickname}");
         Utilities.Log($"Message: {message.TextMessage}\n");
     }
@@ -33,6 +41,6 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
     private void OpenMessage(MessagePackage message)
     {
         message.IsRead = true;
-        // Create a new ViewModel for the View that should be displayed with data filled in
+        MessageViewModel = new MessagePackageViewModel(message);
     }
 }
