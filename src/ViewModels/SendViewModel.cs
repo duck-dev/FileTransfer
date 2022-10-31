@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using FileTransfer.Exceptions;
 using FileTransfer.Interfaces;
+using FileTransfer.Models;
 using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
@@ -35,9 +36,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void Send()
     {
+        User? user = UsersList?[ReceiverIndex];
+        
         async Task ConfirmAction()
         {
-            if (UsersList?[ReceiverIndex].IP is not { } ip)
+            if (user?.IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
             await client.InvokeSendingDataAsync(Message); // TODO: Pass files
@@ -51,7 +54,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         //     return;
         // }
 
-        const string dialogTitle = $"Are you sure you want to transmit the uploaded content to [USER]?"; // TODO: Add nickname of selected receiver instead of [USER]
+        string dialogTitle = $"Are you sure you want to transmit the uploaded content to {user?.Nickname}?";
         CurrentDialog = new ConfirmationDialogViewModel(this, dialogTitle,
             new [] { Resources.MainRed, Resources.MainGrey },
             new[] { Colors.White, Colors.White },
