@@ -29,4 +29,10 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
         Utilities.Log($"From: {message.Sender?.Nickname}");
         Utilities.Log($"Message: {message.TextMessage}\n");
     }
+    
+    private void OpenMessage(MessagePackage message)
+    {
+        message.IsRead = true;
+        // Create a new ViewModel for the View that should be displayed with data filled in
+    }
 }
