@@ -22,7 +22,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
     
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
-        Messages.Add(e);
+        Messages.Insert(0, e);
         Utilities.Log($"\nRECEIVED MESSAGE:");
         Utilities.Log($"From: {e.Sender?.Nickname}");
         Utilities.Log($"Message: {e.TextMessage}\n");
