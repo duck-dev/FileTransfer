@@ -50,6 +50,7 @@ internal class NetworkClient : NetworkObject
             if (!receivedAcknowledgement) 
                 continue;
             
+            // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
             // TODO: Send size of files (if no files, send 0)
             // TODO: Send files (if no files, send "empty" byte array)
             break;
