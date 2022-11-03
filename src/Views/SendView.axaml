@@ -65,7 +65,7 @@
                                      TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
                         </views:TitledElement.InnerContent>
                     </views:TitledElement>
-                    <views:TitledElement Title="{Binding Path=FileNames.Count, StringFormat='Files ({0}):'}">
+                    <views:TitledElement Title="{Binding Path=FileCount, StringFormat='Files ({0}):'}">
                         <views:TitledElement.InnerContent>
                             <Grid ColumnDefinitions="*,*" Height="230">
                                 <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

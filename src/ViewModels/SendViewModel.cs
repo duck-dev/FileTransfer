@@ -22,7 +22,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     public SendViewModel() : base(Utilities.UsersList)
     {
-        FileNames.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(HasFiles));
+        FileNames.CollectionChanged += (sender, args) =>
+        {
+            this.RaisePropertyChanged(nameof(HasFiles));
+            this.RaisePropertyChanged(nameof(FileCount));
+        };
     }
     
     public DialogViewModelBase? CurrentDialog
@@ -34,6 +38,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     internal RangeObservableCollection<string> FileNames { get; } = new();
 
     private bool HasFiles => FileNames.Count > 0;
+    private int FileCount => FileNames.Count;
 
     private int ReceiverIndex { get; set; }
 
