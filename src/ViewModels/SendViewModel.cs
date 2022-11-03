@@ -44,8 +44,12 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private int ReceiverIndex
     {
-        get => _receiverIndex; 
-        set => this.RaiseAndSetIfChanged(ref _receiverIndex, value);
+        get => _receiverIndex;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _receiverIndex, value);
+            this.RaisePropertyChanged(nameof(SendingEnabled));
+        }
     }
 
     private bool SendingEnabled => ReceiverIndex >= 0 && (FileNames.Count > 0 || !string.IsNullOrEmpty(Message));
