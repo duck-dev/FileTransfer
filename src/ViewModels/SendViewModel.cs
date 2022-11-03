@@ -26,6 +26,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         {
             this.RaisePropertyChanged(nameof(HasFiles));
             this.RaisePropertyChanged(nameof(FileCount));
+            this.RaisePropertyChanged(nameof(SendingEnabled));
         };
     }
     
@@ -40,12 +41,18 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private bool HasFiles => FileNames.Count > 0;
     private int FileCount => FileNames.Count;
 
-    private int ReceiverIndex { get; set; }
+    private int ReceiverIndex { get; set; } = -1;
+
+    private bool SendingEnabled => ReceiverIndex >= 0 && (FileNames.Count > 0 || !string.IsNullOrEmpty(Message));
 
     private string Message
     {
-        get => _message; 
-        set => this.RaiseAndSetIfChanged(ref _message, value);
+        get => _message;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _message, value);
+            this.RaisePropertyChanged(nameof(SendingEnabled));
+        }
     }
 
     private void Send()

@@ -31,8 +31,17 @@
                                           AutoScrollToSelectedItem="True" Items="{Binding UsersList}"
                                           HorizontalAlignment="Stretch" Height="50" CornerRadius="20"
                                           Background="{StaticResource FullyTransparent}"
-                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}">
-                                    <!-- TODO: Bind to `Contacts` properties -->
+                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
+                                          PlaceholderText="None (select a receiver)"
+                                          PlaceholderForeground="{StaticResource AppPurple}">
+                                    <ComboBox.Styles>
+                                        <Style Selector="ComboBox[SelectedIndex=-1] /template/ TextBlock#PlaceholderTextBlock">
+                                            <Setter Property="FontSize" Value="24"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="Margin" Value="63.5,0,0,0"/> <!-- Align with text of selected item -->
+                                        </Style>
+                                    </ComboBox.Styles>
                                     <ComboBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Vertical"/>
@@ -133,7 +142,7 @@
                         HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
                         Foreground="{StaticResource White}" Background="{StaticResource AppPurple}"
                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                        Command="{Binding Send}" IsEnabled="True"/> <!-- TODO: Enable if necessary data filled in -->
+                        Command="{Binding Send}" IsEnabled="{Binding SendingEnabled}"/>
             </Grid>
         </Grid>
         <UserControl Content="{Binding CurrentDialog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
