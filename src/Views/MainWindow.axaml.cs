@@ -12,7 +12,10 @@ public class MainWindow : Window
 #if DEBUG
         this.AttachDevTools();
 #endif
+        Instance = this;
     }
+    
+    internal static MainWindow? Instance { get; private set; }
 
     private void InitializeComponent()
     {

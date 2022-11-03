@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Media;
 using FileTransfer.Exceptions;
 using FileTransfer.Extensions.ExtendedTypes;
@@ -9,6 +10,7 @@ using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels.Dialogs;
+using FileTransfer.Views;
 using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
@@ -67,6 +69,21 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             new[] { Colors.White, Colors.White },
             new[] { "Yes, send data!", "Cancel" },
             (Func<Task>) ConfirmAction);
+    }
+
+    private async Task BrowseFiles()
+    {
+        if (MainWindow.Instance is not { } mainWindow)
+            return;
+        
+        var fileDialog = new OpenFileDialog
+        {
+            AllowMultiple = true, Title = "Select one or multiple files"
+        };
+        
+        string[]? result = await fileDialog.ShowAsync(mainWindow);
+        if (result != null)
+            FileNames.AddRange(result);
     }
 
     private void Reset()
