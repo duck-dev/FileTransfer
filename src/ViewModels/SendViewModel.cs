@@ -19,6 +19,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 {
     private DialogViewModelBase? _currentDialog;
     private string _message = string.Empty;
+    private int _receiverIndex = -1;
 
     public SendViewModel() : base(Utilities.UsersList)
     {
@@ -41,7 +42,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private bool HasFiles => FileNames.Count > 0;
     private int FileCount => FileNames.Count;
 
-    private int ReceiverIndex { get; set; } = -1;
+    private int ReceiverIndex
+    {
+        get => _receiverIndex; 
+        set => this.RaiseAndSetIfChanged(ref _receiverIndex, value);
+    }
 
     private bool SendingEnabled => ReceiverIndex >= 0 && (FileNames.Count > 0 || !string.IsNullOrEmpty(Message));
 
@@ -100,7 +105,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void Reset()
     {
+        ReceiverIndex = -1;
         Message = string.Empty;
-        // TODO: Reset files
+        FileNames.Clear();
     }
 }
