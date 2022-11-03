@@ -65,7 +65,7 @@
                                      TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
                         </views:TitledElement.InnerContent>
                     </views:TitledElement>
-                    <views:TitledElement Title="Files (0):"> <!-- TODO: Replace placeholder number by real amount of uploaded files -->
+                    <views:TitledElement Title="{Binding Path=FileNames.Count, StringFormat='Files ({0}):'}">
                         <views:TitledElement.InnerContent>
                             <Grid ColumnDefinitions="*,*" Height="230">
                                 <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -73,7 +73,7 @@
                                               Margin="0,0,40,0">
                                     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                         <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      IsVisible="False" Items="{Binding Files}"> <!-- TODO: Only enable if THERE ARE files -->
+                                                      Items="{Binding FileNames}"  IsVisible="{Binding HasFiles}">
                                             <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -92,30 +92,28 @@
                                         </ItemsControl>
                                         <TextBlock FontSize="24" FontWeight="Bold" Margin="0,10,0,0"
                                                    Foreground="{StaticResource MainGrey}" TextWrapping="Wrap"
-                                                   Text="No files uploaded yet." IsVisible="True"/>
-                                        <!-- TODO: Only enable if NO files-->
+                                                   Text="No files uploaded yet." IsVisible="{Binding !HasFiles}"/>
                                     </Panel>
                                 </ScrollViewer>
                                 <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                         CornerRadius="15" BorderDashArray="5,5" BorderThickness="5"
                                         BorderBrush="{StaticResource AppPurple}"
-                                        Background="{StaticResource FullyTransparent}">
-                                    <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch">
-                                        <Grid Grid.Row="0" RowDefinitions="*,Auto"
+                                        Background="{StaticResource FullyTransparent}" DragDrop.AllowDrop="True">
+                                    <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          DragDrop.AllowDrop="True">
+                                        <Grid Grid.Row="0" RowDefinitions="*,Auto" DragDrop.AllowDrop="True"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch" DragDrop.AllowDrop="True"/>
                                             <!-- TODO: Icon: Upload-Purple.png-->
-                                            <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
+                                            <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold" DragDrop.AllowDrop="True"
                                                        Foreground="{StaticResource AppPurple}"
                                                        Text="Drag and drop your files here" HorizontalAlignment="Center"/>
                                         </Grid>
-                                        <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*"
+                                        <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*" DragDrop.AllowDrop="True"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Button Grid.Column="1"
-                                                    Classes="selectable-button-effect highlight-no-change"
-                                                    HorizontalAlignment="Stretch" Height="50"
+                                            <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                                                    HorizontalAlignment="Stretch" Height="50" DragDrop.AllowDrop="True"
                                                     Background="{StaticResource FullyTransparent}"
                                                     BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
                                                     CornerRadius="10" FontSize="20" FontWeight="Bold"

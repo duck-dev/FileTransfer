@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using FileTransfer.Exceptions;
+using FileTransfer.Extensions.ExtendedTypes;
 using FileTransfer.Interfaces;
 using FileTransfer.Models;
 using FileTransfer.Models.NetworkTransmission;
@@ -17,14 +18,21 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private DialogViewModelBase? _currentDialog;
     private string _message = string.Empty;
 
-    public SendViewModel() : base(Utilities.UsersList) { }
+    public SendViewModel() : base(Utilities.UsersList)
+    {
+        FileNames.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(HasFiles));
+    }
     
     public DialogViewModelBase? CurrentDialog
     {
         get => _currentDialog;
         set => this.RaiseAndSetIfChanged(ref _currentDialog, value);
     }
-    
+
+    internal RangeObservableCollection<string> FileNames { get; } = new();
+
+    private bool HasFiles => FileNames.Count > 0;
+
     private int ReceiverIndex { get; set; }
 
     private string Message
@@ -32,7 +40,6 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         get => _message; 
         set => this.RaiseAndSetIfChanged(ref _message, value);
     }
-    // TODO: Add collection of files
 
     private void Send()
     {
