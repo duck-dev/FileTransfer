@@ -93,8 +93,24 @@
                                                 <DataTemplate>
                                                     <Border BorderThickness="0,0,0,1"
                                                             BorderBrush="{StaticResource MainGrey}"
-                                                            HorizontalAlignment="Stretch" Height="50" Margin="0,5">
-                                                        <!-- TODO: Style content of an uploaded file -->
+                                                            HorizontalAlignment="Stretch" MinHeight="50" Margin="0,5">
+                                                        <Grid ColumnDefinitions="Auto,*,Auto" 
+                                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                            <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" 
+                                                                   Width="40" Height="40" Margin="0,0,12,0"
+                                                                   VerticalAlignment="Center"/> 
+                                                            <!-- TODO: File-Icon based on file type -->
+                                                            <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
+                                                                       Foreground="{StaticResource OppositeAccent}"
+                                                                       Text="{Binding}" VerticalAlignment="Center"
+                                                                       MinWidth="120" HorizontalAlignment="Left" ZIndex="2"
+                                                                       Background="{StaticResource MainBackground}"
+                                                                       TextWrapping="Wrap"/>
+                                                            <TextBlock Grid.Column="2" FontSize="20" FontWeight="Thin"
+                                                                       Foreground="{StaticResource MainGrey}"
+                                                                       Text="27.9 MB" VerticalAlignment="Center" ZIndex="1"
+                                                                       Margin="15,0,0,0"/> <!-- TODO: Bind to file-size -->
+                                                        </Grid>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
