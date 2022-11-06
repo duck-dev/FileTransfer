@@ -99,7 +99,8 @@
                                                         <Border Grid.Column="0" BorderThickness="0,0,0,1"
                                                                 BorderBrush="{StaticResource MainGrey}"
                                                                 HorizontalAlignment="Stretch" MinHeight="50"
-                                                                Margin="0,5,20,5">
+                                                                Margin="0,5,20,5" 
+                                                                ToolTip.Tip="{Binding}">
                                                             <Grid ColumnDefinitions="Auto,*,Auto"
                                                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                                 <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
