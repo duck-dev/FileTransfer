@@ -17,7 +17,7 @@
                         Command="{Binding $parent[UserControl;1].DataContext.SetMessage}">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" Width="40" Height="40"/>
+                            <Image Source="/Assets/avalonia-logo.ico" Width="40" Height="40"/> <!-- TODO: Icon: Close-Light.png (X)-->
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
