@@ -11,9 +11,10 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private bool _isRead;
 
-    internal MessagePackage(int received, DateTime time, User? sender, object[]? content = null, string? textMessage = null)
+    // TODO: Change `files` type to actual type representing files
+    internal MessagePackage(int received, DateTime time, User? sender, object[]? files = null, string? textMessage = null)
     {
-        this.Content = content;
+        this.Files = files;
         this.TextMessage = textMessage;
         this.Received = received;
         this.Time = time;
@@ -24,7 +25,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     internal MessagePackage(MessageReceivedEventArgs args)
     {
-        this.Content = args.Content;
+        this.Files = args.Files;
         this.TextMessage = args.TextMessage;
         this.Received = args.Received;
         this.Time = args.Time;
@@ -33,7 +34,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         this.TimeString = $"{args.Time.ToShortDateString()}    {args.Time.ToLongTimeString()}";
     }
     
-    internal object[]? Content { get; }
+    internal object[]? Files { get; } // TODO: Change to actual type
     internal string? TextMessage { get; }
     internal int Received { get; }
     internal DateTime Time { get; }

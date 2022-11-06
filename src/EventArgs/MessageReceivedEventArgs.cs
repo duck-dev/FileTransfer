@@ -6,9 +6,9 @@ namespace FileTransfer.Events;
 public class MessageReceivedEventArgs : EventArgs
 {
     /// <summary>
-    /// The received data (nullable).
+    /// The received files (nullable).
     /// </summary>
-    public object[]? Content { get; set; }
+    public object[]? Files { get; set; }
     
     /// <summary>
     /// Optional text message (string).

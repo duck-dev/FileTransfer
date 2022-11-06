@@ -66,7 +66,7 @@ internal class NetworkServer : NetworkObject
                               ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
                 var eventArgs = new MessageReceivedEventArgs
                 {
-                    Content = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
+                    Files = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
                 };
                 MessageReceived?.Invoke(this, eventArgs);
                 break;
