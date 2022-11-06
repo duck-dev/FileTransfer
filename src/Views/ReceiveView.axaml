@@ -39,12 +39,18 @@
                                         CommandParameter="{Binding}">
                                     <!-- TODO: Add ContextMenu with: Open message, Delete message, Mark as unread, Mark as read -->
                                     <Grid ColumnDefinitions="*,Auto" Margin="40,0">
-                                        <Grid Grid.Column="0" RowDefinitions="*,*" HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch" Margin="0,0,30,0">
-                                            <TextBlock Grid.Row="0" FontSize="28" FontWeight="Bold"
+                                        <Grid Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="Auto,Auto"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,30,0">
+                                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="28" FontWeight="Bold"
                                                        VerticalAlignment="Center" Foreground="{StaticResource White}"
-                                                       Text="{Binding Sender.Nickname}"/>
-                                            <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource White}"
+                                                       Text="{Binding Sender.Nickname}"
+                                                       Margin="0,0,15,0"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" FontWeight="Light"
+                                                       Foreground="{StaticResource LightGrey}"
+                                                       Text="Just now" VerticalAlignment="Center"/> 
+                                            <!-- TODO: Time as string (e.g. 5 minutes ago, yesterday etc.) -->
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                       FontSize="14" Foreground="{StaticResource White}"
                                                        VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="2"
                                                        TextTrimming="CharacterEllipsis" TextAlignment="Left" 
                                                        Text="{Binding TextMessage}"/>
