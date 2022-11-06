@@ -35,7 +35,7 @@
                                 <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
                                         Background="{StaticResource AppPurple}" CornerRadius="50"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="120"
-                                        Command="{Binding $parent[UserControl].DataContext.OpenMessage}"
+                                        Command="{Binding $parent[UserControl].DataContext.SetMessage}"
                                         CommandParameter="{Binding}">
                                     <!-- TODO: Add ContextMenu with: Open message, Delete message, Mark as unread, Mark as read -->
                                     <Grid ColumnDefinitions="*,Auto" Margin="40,0">

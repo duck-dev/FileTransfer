@@ -12,6 +12,15 @@
                 Height="400" Margin="40,0">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="Auto,Auto,Auto,Auto,*"
                   Margin="20,10">
+                <Button Grid.Row="0" Grid.RowSpan="5" Classes="selectable-button-effect highlight-no-change"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" 
+                        Command="{Binding $parent[UserControl;1].DataContext.SetMessage}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Assets/avalonia-logo.ico" Width="40" Height="40"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <Viewbox Grid.Row="0" HorizontalAlignment="Left" MaxHeight="54">
                     <TextBlock HorizontalAlignment="Left" FontSize="48" FontWeight="Bold" TextAlignment="Left"
                                Foreground="{StaticResource White}" Margin="0,0,0,5" 
@@ -49,7 +58,7 @@
                             <DataTemplate>
                                 <Button CornerRadius="20" Background="{StaticResource TransparentWhite}"
                                         Height="40" Width="110">
-                                
+                                    <!-- TODO: Design content of element representing a file -->
                                 </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

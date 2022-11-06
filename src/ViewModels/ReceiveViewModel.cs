@@ -38,8 +38,14 @@ public sealed class ReceiveViewModel : NetworkViewModelBase
         Utilities.Log($"Message: {message.TextMessage}\n");
     }
     
-    private void OpenMessage(MessagePackage message)
+    private void SetMessage(MessagePackage? message)
     {
+        if (message is null)
+        {
+            MessageViewModel = null;
+            return;
+        }
+        
         message.IsRead = true;
         MessageViewModel = new MessagePackageViewModel(message);
     }
