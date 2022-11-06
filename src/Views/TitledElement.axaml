@@ -3,16 +3,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FileTransfer.Views.TitledElement">
+             x:Class="FileTransfer.Views.TitledElement"
+             Margin="0,0,0,40">
     
     <UserControl.Styles>
-        <StyleInclude Source="/src/Styles/SendReceiveStyle.axaml"/>
         <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
     </UserControl.Styles>
 
-    <Grid Classes="send-receive-element" RowDefinitions="Auto,Auto">
-        <TextBlock Grid.Row="0" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
-        <ContentControl Grid.Row="1" Content="{Binding $parent[UserControl].InnerContent}" Margin="0,0,0,25"/>
+    <Grid x:Name="ParentGrid" RowDefinitions="Auto,Auto">
+        <TextBlock Grid.Row="0" x:Name="Title" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
+        <ContentControl Grid.Row="1" x:Name="InnerContent" Content="{Binding $parent[UserControl].InnerContent}"/>
     </Grid>
 
 </UserControl>

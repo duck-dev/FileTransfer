@@ -107,6 +107,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             FileNames.AddRange(result);
     }
 
+    private void RemoveFile(string file) // TODO: Change parameter according to passed value (probably not string in the future)
+    {
+        FileNames.Remove(file);
+    }
+
     private void Reset()
     {
         ReceiverIndex = -1;

@@ -1,9 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-        
-        <Style Selector=":is(Layoutable).send-receive-element">
-                <Setter Property="Margin" Value="0,0,0,20"/>
-        </Style>
     
         <Style Selector="TextBlock.title-text">
                 <Setter Property="FontSize" Value="68"/>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                     x:Class="FileTransfer.Views.StretchedTitledElement"
+                     Margin="0,0,0,40">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/SendStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid x:Name="ParentGrid" RowDefinitions="Auto,*" VerticalAlignment="Stretch">
+        <TextBlock Grid.Row="0" x:Name="Title" Classes="section-title" Text="{Binding $parent[UserControl].Title}"/>
+        <ContentControl Grid.Row="1" x:Name="InnerContent" Content="{Binding $parent[UserControl].InnerContent}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </Grid>
+    
+</UserControl>

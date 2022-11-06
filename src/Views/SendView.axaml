@@ -19,11 +19,11 @@
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="40,40">
             <!-- When changing top-/bottom-margin,apply to send button as well (see comment there) -->
-            <TextBlock Grid.Row="0" Classes="send-receive-element title-text" Text="Send"/>
+            <TextBlock Grid.Row="0" Classes="title-text" Text="Send" Margin="0,0,0,20"/>
             <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <views:TitledElement Title="Receiver:">
+                <Grid RowDefinitions="Auto,Auto,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <views:TitledElement Grid.Row="0" Title="Receiver:">
                         <views:TitledElement.InnerContent>
                             <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
                                 <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
@@ -39,7 +39,8 @@
                                             <Setter Property="FontSize" Value="24"/>
                                             <Setter Property="FontWeight" Value="Bold"/>
                                             <Setter Property="VerticalAlignment" Value="Center"/>
-                                            <Setter Property="Margin" Value="63.5,0,0,0"/> <!-- Align with text of selected item -->
+                                            <Setter Property="Margin" Value="63.5,0,0,0"/>
+                                            <!-- Align with text of selected item -->
                                         </Style>
                                     </ComboBox.Styles>
                                     <ComboBox.ItemsPanel>
@@ -52,8 +53,9 @@
                                             <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
                                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                 <Grid ColumnDefinitions="Auto,Auto">
-                                                    <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" 
-                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/> <!-- TODO: Image: "Contacts-Purple.png" -->
+                                                    <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
+                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/>
+                                                    <!-- TODO: Image: "Contacts-Purple.png" -->
                                                     <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                                Foreground="{StaticResource AppPurple}"
                                                                VerticalAlignment="Center" Text="{Binding Nickname}"/>
@@ -65,24 +67,25 @@
                             </Grid>
                         </views:TitledElement.InnerContent>
                     </views:TitledElement>
-                    <views:TitledElement Title="Message:" HorizontalAlignment="Stretch">
+                    <views:TitledElement Grid.Row="1" Title="Message:" HorizontalAlignment="Stretch">
                         <views:TitledElement.InnerContent>
-                            <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch" Height="150"
+                            <TextBox Background="{StaticResource SameAccent}" HorizontalAlignment="Stretch"
+                                     Height="150" CornerRadius="15"  AcceptsReturn="True" AcceptsTab="False"
                                      BorderBrush="{StaticResource AppPurple}" BorderThickness="5"
-                                     Foreground="{StaticResource OppositeAccent}" AcceptsReturn="True"
-                                     AcceptsTab="False" Watermark="An optional message you wish to send..." CornerRadius="15"
+                                     Foreground="{StaticResource OppositeAccent}"
+                                     Watermark="An optional message you wish to send..."
                                      TextAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}"/>
                         </views:TitledElement.InnerContent>
                     </views:TitledElement>
-                    <views:TitledElement Title="{Binding Path=FileCount, StringFormat='Files ({0}):'}">
-                        <views:TitledElement.InnerContent>
-                            <Grid ColumnDefinitions="*,*" Height="230">
+                    <views:StretchedTitledElement Grid.Row="2" MinHeight="320" Margin="0,0,0,20" VerticalAlignment="Stretch"
+                                                  Title="{Binding Path=FileCount, StringFormat='Files ({0}):'}">
+                        <views:StretchedTitledElement.InnerContent>
+                            <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <ScrollViewer Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                                              Margin="0,0,40,0">
+                                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                         <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Items="{Binding FileNames}"  IsVisible="{Binding HasFiles}">
+                                                      Items="{Binding FileNames}" IsVisible="{Binding HasFiles}">
                                             <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -91,73 +94,93 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border BorderThickness="0,0,0,1"
-                                                            BorderBrush="{StaticResource MainGrey}"
-                                                            HorizontalAlignment="Stretch" MinHeight="50" Margin="0,5">
-                                                        <Grid ColumnDefinitions="Auto,*,Auto" 
-                                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                            <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" 
-                                                                   Width="40" Height="40" Margin="0,0,12,0"
-                                                                   VerticalAlignment="Center"/> 
-                                                            <!-- TODO: File-Icon based on file type -->
-                                                            <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
-                                                                       Foreground="{StaticResource OppositeAccent}"
-                                                                       Text="{Binding}" VerticalAlignment="Center"
-                                                                       MinWidth="120" HorizontalAlignment="Left" ZIndex="2"
-                                                                       Background="{StaticResource MainBackground}"
-                                                                       TextWrapping="Wrap"/>
-                                                            <TextBlock Grid.Column="2" FontSize="20" FontWeight="Thin"
-                                                                       Foreground="{StaticResource MainGrey}"
-                                                                       Text="27.9 MB" VerticalAlignment="Center" ZIndex="1"
-                                                                       Margin="15,0,0,0"/> <!-- TODO: Bind to file-size -->
-                                                        </Grid>
-                                                    </Border>
+                                                    <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch"
+                                                          MaxHeight="150">
+                                                        <Border Grid.Column="0" BorderThickness="0,0,0,1"
+                                                                BorderBrush="{StaticResource MainGrey}"
+                                                                HorizontalAlignment="Stretch" MinHeight="50"
+                                                                Margin="0,5,20,5">
+                                                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
+                                                                       Width="40" Height="40" Margin="0,0,12,0"
+                                                                       VerticalAlignment="Center"/>
+                                                                <!-- TODO: File-Icon based on file type -->
+                                                                <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
+                                                                           Foreground="{StaticResource OppositeAccent}"
+                                                                           Text="{Binding}" MinWidth="120"
+                                                                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                           Background="{StaticResource MainBackground}"
+                                                                           TextWrapping="Wrap" ZIndex="2" MaxLines="3"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                <TextBlock Grid.Column="2" FontSize="20" FontWeight="SemiLight"
+                                                                           Foreground="{StaticResource MainGrey}"
+                                                                           Text="27.9 MB" VerticalAlignment="Center"
+                                                                           ZIndex="1" Margin="15,0,0,0"/>
+                                                                <!-- TODO: Bind to file-size -->
+                                                            </Grid>
+                                                        </Border>
+                                                        <Button Grid.Column="1" Classes="selectable-button-effect" 
+                                                                Command="{Binding $parent[UserControl].DataContext.RemoveFile}"
+                                                                CommandParameter="{Binding}" VerticalAlignment="Center">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Image Source="/Assets/avalonia-logo.ico" 
+                                                                           Width="36" Height="36"/> <!-- TODO: Trash.png -->
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+                                                    </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock FontSize="24" FontWeight="Bold" Margin="0,10,0,0"
-                                                   Foreground="{StaticResource MainGrey}" TextWrapping="Wrap"
-                                                   Text="No files uploaded yet." IsVisible="{Binding !HasFiles}"/>
                                     </Panel>
                                 </ScrollViewer>
+                                <TextBlock Grid.Column="0" FontSize="24" FontWeight="Bold" Margin="0,10,0,0" 
+                                           VerticalAlignment="Top" Foreground="{StaticResource MainGrey}" 
+                                           TextWrapping="Wrap" Text="No files uploaded yet." 
+                                           IsVisible="{Binding !HasFiles}"/>
                                 <Border Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                         CornerRadius="15" BorderDashArray="5,5" BorderThickness="5"
-                                        BorderBrush="{StaticResource AppPurple}"
+                                        BorderBrush="{StaticResource AppPurple}" Margin="5,0,0,0"
                                         Background="{StaticResource FullyTransparent}" DragDrop.AllowDrop="True">
                                     <Grid RowDefinitions="*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           DragDrop.AllowDrop="True">
                                         <Grid Grid.Row="0" RowDefinitions="*,Auto" DragDrop.AllowDrop="True"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch" DragDrop.AllowDrop="True"/>
+                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                                   MaxWidth="85" MaxHeight="85" DragDrop.AllowDrop="True"/>
                                             <!-- TODO: Icon: Upload-Purple.png-->
-                                            <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold" DragDrop.AllowDrop="True"
+                                            <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
+                                                       DragDrop.AllowDrop="True" Margin="0,10"
                                                        Foreground="{StaticResource AppPurple}"
-                                                       Text="Drag and drop your files here" HorizontalAlignment="Center"/>
+                                                       Text="Drag and drop your files here"
+                                                       HorizontalAlignment="Center"/>
                                         </Grid>
-                                        <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*" DragDrop.AllowDrop="True"
+                                        <Grid Grid.Row="1" ColumnDefinitions="1*,2*,1*"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
                                                     HorizontalAlignment="Stretch" Height="50" DragDrop.AllowDrop="True"
                                                     Background="{StaticResource FullyTransparent}"
                                                     BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
-                                                    CornerRadius="10" FontSize="20" FontWeight="Bold"
-                                                    Foreground="{StaticResource AppPurple}"
+                                                    CornerRadius="10" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"
+                                                    Foreground="{StaticResource AppPurple}" Margin="0,10"
                                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                                     Content="Browse files" Command="{Binding BrowseFiles}"/>
                                         </Grid>
                                     </Grid>
                                 </Border>
                             </Grid>
-                        </views:TitledElement.InnerContent>
-                    </views:TitledElement>
-                </StackPanel>
+                        </views:StretchedTitledElement.InnerContent>
+                    </views:StretchedTitledElement>
+                </Grid>
             </ScrollViewer>
             <Grid Grid.Row="2" ColumnDefinitions="*,1.25*,*" Margin="0,40,0,0"> <!-- Top-margin same as bottom-margin of outer Grid (first) -->
                 <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
                         HorizontalAlignment="Stretch" Height="70" CornerRadius="15" Content="Send" FontSize="26" FontWeight="Bold"
                         Foreground="{StaticResource White}" Background="{StaticResource AppPurple}"
-                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Command="{Binding Send}" IsEnabled="{Binding SendingEnabled}"/>
             </Grid>
         </Grid>
