@@ -11,6 +11,7 @@
         <SolidColorBrush x:Key="MainRed" Color="#FF0000"/>
         
         <SolidColorBrush x:Key="MainGrey" Color="#808080"/>
+        <SolidColorBrush x:Key="LightGrey" Color="#C6C6C6"/>
     </Style.Resources>
     
 </Style>
