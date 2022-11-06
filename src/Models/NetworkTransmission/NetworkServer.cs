@@ -28,7 +28,7 @@ internal class NetworkServer : NetworkObject
             listener.Bind(IpEndPoint);
             listener.Listen(100);
 
-            Socket handler = await listener.AcceptAsync();
+            using Socket handler = await listener.AcceptAsync();
             while (true)
             {
                 // Receive sender
