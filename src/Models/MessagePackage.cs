@@ -69,6 +69,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+    private void ToggleReadStatus() => IsRead = !IsRead;
+
     private void UpdateTime(WaitTime waitTimeType)
     {
         this.FormattedTimeString = DateFormatter.FormatDate(Time);

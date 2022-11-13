@@ -37,7 +37,31 @@
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="120"
                                         Command="{Binding $parent[UserControl].DataContext.SetMessage}"
                                         CommandParameter="{Binding}">
-                                    <!-- TODO: Add ContextMenu with: Open message, Delete message, Mark as unread, Mark as read -->
+                                    <Button.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open message" 
+                                                      Command="{Binding $parent[UserControl].DataContext.SetMessage}"
+                                                      CommandParameter="{Binding}"/>
+                                            <MenuItem Header="Delete message"
+                                                      Command="{Binding $parent[UserControl].DataContext.DeleteMessage}"
+                                                      CommandParameter="{Binding}">
+                                                <MenuItem.Styles>
+                                                    <Style Selector="MenuItem:pointerover /template/ Border">
+                                                        <Setter Property="Background"
+                                                                Value="{StaticResource LightRedContextMenu}"/>
+                                                    </Style>
+                                                    <Style Selector="MenuItem:pressed /template/ Border">
+                                                        <Setter Property="Background"
+                                                                Value="{StaticResource DarkerLightRedContextMenu}"/>
+                                                    </Style>
+                                                </MenuItem.Styles>
+                                            </MenuItem>
+                                            <MenuItem Header="Mark as unread" IsVisible="{Binding IsRead}"
+                                                      Command="{Binding ToggleReadStatus}"/>
+                                            <MenuItem Header="Mark as read" IsVisible="{Binding !IsRead}"
+                                                      Command="{Binding ToggleReadStatus}"/>
+                                        </ContextMenu>
+                                    </Button.ContextMenu>
                                     <Grid ColumnDefinitions="*,Auto" Margin="40,0">
                                         <Grid Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="Auto,Auto"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,30,0">
@@ -87,6 +111,7 @@
                        Text="No messages received yet." IsVisible="{Binding !MessagesAvailable}"/>
         </Grid>
         <ContentControl Content="{Binding MessageViewModel}"/>
+        <UserControl Content="{Binding CurrentDialog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Panel>
 
 </UserControl>

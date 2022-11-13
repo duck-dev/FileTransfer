@@ -12,6 +12,9 @@
         
         <SolidColorBrush x:Key="MainGrey" Color="#808080"/>
         <SolidColorBrush x:Key="LightGrey" Color="#C6C6C6"/>
+        
+        <SolidColorBrush x:Key="LightRedContextMenu" Color="#D4735B"/>
+        <SolidColorBrush x:Key="DarkerLightRedContextMenu" Color="#C96047"/>
     </Style.Resources>
     
 </Style>
