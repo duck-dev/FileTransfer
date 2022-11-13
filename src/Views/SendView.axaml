@@ -85,8 +85,7 @@
                                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                         <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Items="{Binding FileNames}" IsVisible="{Binding HasFiles}">
-                                            <!-- TODO: Bind `Items` to `ObservableCollection` of files -->
+                                                      Items="{Binding Files}" IsVisible="{Binding HasFiles}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Vertical"/>
@@ -100,25 +99,24 @@
                                                                 BorderBrush="{StaticResource MainGrey}"
                                                                 HorizontalAlignment="Stretch" MinHeight="50"
                                                                 Margin="0,5,20,5" 
-                                                                ToolTip.Tip="{Binding}">
+                                                                ToolTip.Tip="{Binding FileInformation.Name}">
                                                             <Grid ColumnDefinitions="Auto,*,Auto"
                                                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
+                                                                <Image Grid.Column="0" Source="{Binding FileIcon}"
                                                                        Width="40" Height="40" Margin="0,0,12,0"
                                                                        VerticalAlignment="Center"/>
-                                                                <!-- TODO: File-Icon based on file type -->
                                                                 <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                                            Foreground="{StaticResource OppositeAccent}"
-                                                                           Text="{Binding}" MinWidth="120"
+                                                                           Text="{Binding FileInformation.Name}" 
                                                                            HorizontalAlignment="Left" VerticalAlignment="Center"
                                                                            Background="{StaticResource MainBackground}"
                                                                            TextWrapping="Wrap" ZIndex="2" MaxLines="3"
-                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                           TextTrimming="CharacterEllipsis" MinWidth="120"/>
                                                                 <TextBlock Grid.Column="2" FontSize="20" FontWeight="SemiLight"
                                                                            Foreground="{StaticResource MainGrey}"
-                                                                           Text="27.9 MB" VerticalAlignment="Center"
-                                                                           ZIndex="1" Margin="15,0,0,0"/>
-                                                                <!-- TODO: Bind to file-size -->
+                                                                           Text="{Binding Size}" 
+                                                                           VerticalAlignment="Center" ZIndex="1" 
+                                                                           Margin="15,0,0,0"/>
                                                             </Grid>
                                                         </Border>
                                                         <Button Grid.Column="1" Classes="selectable-button-effect" 

@@ -23,7 +23,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     public SendViewModel() : base(Utilities.UsersList)
     {
-        FileNames.CollectionChanged += (sender, args) =>
+        Files.CollectionChanged += (sender, args) =>
         {
             this.RaisePropertyChanged(nameof(HasFiles));
             this.RaisePropertyChanged(nameof(FileCount));
@@ -37,10 +37,10 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         set => this.RaiseAndSetIfChanged(ref _currentDialog, value);
     }
 
-    internal RangeObservableCollection<string> FileNames { get; } = new();
+    internal RangeObservableCollection<FileObject> Files { get; } = new();
 
-    private bool HasFiles => FileNames.Count > 0;
-    private int FileCount => FileNames.Count;
+    private bool HasFiles => Files.Count > 0;
+    private int FileCount => Files.Count;
 
     private int ReceiverIndex
     {
@@ -52,7 +52,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         }
     }
 
-    private bool SendingEnabled => ReceiverIndex >= 0 && (FileNames.Count > 0 || !string.IsNullOrEmpty(Message));
+    private bool SendingEnabled => ReceiverIndex >= 0 && (Files.Count > 0 || !string.IsNullOrEmpty(Message));
 
     private string Message
     {
@@ -73,7 +73,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             if (user?.IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
-            await client.InvokeSendingDataAsync(Message); // TODO: Pass files
+            await client.InvokeSendingDataAsync(Files, Message);
             Reset();
         }
 
@@ -103,19 +103,22 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         };
         
         string[]? result = await fileDialog.ShowAsync(mainWindow);
-        if (result != null)
-            FileNames.AddRange(result);
+        if (result is null)
+            return;
+        
+        foreach(string path in result)
+            Files.Add(new FileObject(path));
     }
 
-    private void RemoveFile(string file) // TODO: Change parameter according to passed value (probably not string in the future)
+    private void RemoveFile(FileObject file)
     {
-        FileNames.Remove(file);
+        Files.Remove(file);
     }
 
     private void Reset()
     {
         ReceiverIndex = -1;
         Message = string.Empty;
-        FileNames.Clear();
+        Files.Clear();
     }
 }

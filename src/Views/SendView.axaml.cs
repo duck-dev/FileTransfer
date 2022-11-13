@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using FileTransfer.Models;
 using FileTransfer.ViewModels;
 
 namespace FileTransfer.Views;
@@ -30,7 +31,13 @@ public class SendView : UserControl
     private void Drop(object? sender, DragEventArgs args)
     {
         UtilityCollection.Utilities.Log("Drop");
-        if (args.Data.Contains(DataFormats.FileNames) && this.DataContext is SendViewModel viewModel && args.Data.GetFileNames() is { } fileNames)
-            viewModel.FileNames.AddRange(fileNames);
+        if (!args.Data.Contains(DataFormats.FileNames) || this.DataContext is not SendViewModel viewModel ||
+            args.Data.GetFileNames() is not { } fileNames)
+        {
+            return;
+        }
+
+        foreach(string fileName in fileNames)
+            viewModel.Files.Add(new FileObject(fileName));
     }
 }

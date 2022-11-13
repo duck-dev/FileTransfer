@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,7 +13,7 @@ internal class NetworkClient : NetworkObject
 {
     internal NetworkClient(IPAddress? ipAddress = null) : base(ipAddress) { }
 
-    internal async Task InvokeSendingDataAsync(string message) // TODO: Add parameter for files
+    internal async Task InvokeSendingDataAsync(IEnumerable<FileObject> files, string message)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         
