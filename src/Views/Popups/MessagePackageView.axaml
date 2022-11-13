@@ -7,6 +7,28 @@
              x:Class="FileTransfer.Views.MessagePackageView"
              x:DataType="viewModels:MessagePackageViewModel">
     
+    <UserControl.Styles>
+        <Style Selector=":is(Border).fade-in">
+            <Style.Animations>
+                <Animation Duration="0:0:2.8">
+                    <KeyFrame Cue="0%"> <!-- Start fade in -->
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="14.286%"> <!-- End fade in -->
+                        <Setter Property="Opacity" Value="1.0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="85.714%"> <!-- Start fade out -->
+                        <Setter Property="Opacity" Value="1.0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%"> <!-- End fade out -->
+                        <Setter Property="Opacity" Value="0.0"/>
+                        <Setter Property="IsVisible" Value="False"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+    
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource DarkenedDialogBackground}">
         <Border CornerRadius="30" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
                 Height="400" Margin="40,0">
@@ -30,15 +52,23 @@
                            Text="{Binding Message.TimeString}" FontStyle="Italic" 
                            Margin="0,0,0,20"/>
                 <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right" Margin="0,0,2.5,7.5">
-                    <Button Grid.Column="0" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
-                            Background="{StaticResource MainGrey}" CornerRadius="20" Margin="0,0,3,0"
-                            Command="{Binding CopyToClipboard}">
-                        <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Copy-Light.png -->
-                    </Button>
-                    <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
-                            Background="{StaticResource MainGrey}" CornerRadius="20" Margin="3,0,0,0">
-                        <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Maximize-Light.png -->
-                    </Button>
+                    <Border Grid.Column="0" x:Name="CopiedTextDisplay" Margin="0,0,20,0" VerticalAlignment="Stretch"
+                            Classes.fade-in="{Binding $self.IsVisible}" CornerRadius="10" Width="150" 
+                            Background="{StaticResource DarkenedDialogBackground}">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Text copied!"
+                                   FontSize="18" Foreground="{StaticResource SameAccent}"/>
+                    </Border>
+                    <Grid Grid.Column="1" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right">
+                        <Button Grid.Column="0" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
+                                Background="{StaticResource MainGrey}" CornerRadius="20" Margin="0,0,3,0"
+                                Command="{Binding CopyToClipboard}">
+                            <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Copy-Light.png -->
+                        </Button>
+                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
+                                Background="{StaticResource MainGrey}" CornerRadius="20" Margin="3,0,0,0">
+                            <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Maximize-Light.png -->
+                        </Button>
+                    </Grid>
                 </Grid>
                 <ScrollViewer Grid.Row="3" HorizontalAlignment="Stretch" MaxHeight="87" Margin="0,0,0,30"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
