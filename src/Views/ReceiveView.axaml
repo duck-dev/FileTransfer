@@ -17,7 +17,7 @@
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch" Margin="40,40">
             <TextBlock Grid.Row="0" Classes="title-text" Text="Receive" Margin="0,0,0,20"/>
-            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <ScrollViewer Grid.Row="1" Classes="standard" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <ItemsControl Items="{Binding Messages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               IsVisible="{Binding MessagesAvailable}">

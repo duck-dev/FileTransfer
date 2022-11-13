@@ -74,10 +74,10 @@
         
         <!-- ScrollViewer -->
         
-        <Style Selector="ScrollViewer[VerticalScrollBarVisibility=Visible], ScrollViewer[VerticalScrollBarVisibility=Auto]">
+        <Style Selector="ScrollViewer[VerticalScrollBarVisibility=Visible].standard, ScrollViewer[VerticalScrollBarVisibility=Auto].standard">
                 <Setter Property="Padding" Value="0,0,26,0"/>
         </Style>
-        <Style Selector="ScrollViewer[HorizontalScrollBarVisibility=Visible], ScrollViewer[HorizontalScrollBarVisibility=Auto]">
+        <Style Selector="ScrollViewer[HorizontalScrollBarVisibility=Visible].standard, ScrollViewer[HorizontalScrollBarVisibility=Auto].standard">
                 <Setter Property="Padding" Value="0,0,0,26"/>
         </Style>
         

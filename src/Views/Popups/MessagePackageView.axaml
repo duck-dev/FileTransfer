@@ -70,15 +70,15 @@
                         </Button>
                     </Grid>
                 </Grid>
-                <ScrollViewer Grid.Row="3" HorizontalAlignment="Stretch" MaxHeight="87" Margin="0,0,0,30"
-                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Grid.Row="3" Classes="standard" HorizontalAlignment="Stretch" MaxHeight="87"
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,30">
                     <TextBox Classes="text-acting-textbox" HorizontalAlignment="Left" FontSize="24" 
                              Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
                              Text="{Binding Message.TextMessage}"/>
                 </ScrollViewer>
-                <ScrollViewer Grid.Row="4" HorizontalAlignment="Stretch" MinHeight="100"
+                <ScrollViewer Grid.Row="4" Classes="standard" HorizontalAlignment="Stretch" MinHeight="100"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Message.Files}"> <!-- TODO: Set `Items` -->
+                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Message.Files}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
