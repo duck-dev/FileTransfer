@@ -7,6 +7,7 @@
         
         <SolidColorBrush x:Key="MainBackground" Color="#D8DDE6"/>
         <SolidColorBrush x:Key="DarkenedDialogBackground" Color="#66000000"/>
+        <SolidColorBrush x:Key="TransparentWhite" Color="#CCFFFFFF"/>
     </Style.Resources>
     
 </Style>

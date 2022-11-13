@@ -31,7 +31,7 @@
     
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource DarkenedDialogBackground}">
         <Border CornerRadius="30" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
-                Height="400" Margin="40,0">
+                Height="420" Margin="40,0">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="Auto,Auto,Auto,Auto,*"
                   Margin="20,10">
                 <Button Grid.Row="0" Grid.RowSpan="5" Classes="selectable-button-effect highlight-no-change"
@@ -78,18 +78,38 @@
                 </ScrollViewer>
                 <ScrollViewer Grid.Row="4" HorizontalAlignment="Stretch" MinHeight="100"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl HorizontalAlignment="Stretch"> <!-- TODO: Set `Items` -->
+                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Message.Files}"> <!-- TODO: Set `Items` -->
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal"/>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button CornerRadius="20" Background="{StaticResource TransparentWhite}"
-                                        Height="40" Width="110">
-                                    <!-- TODO: Design content of element representing a file -->
-                                </Button>
+                                <Border CornerRadius="7.5" Background="{StaticResource TransparentWhite}" 
+                                        Height="60" Width="236" Margin="5" Padding="0" ToolTip.Tip="File.txt">
+                                    <!-- TODO: Set `ToolTip.Tip` to whole name of file (with extension) -->
+                                    <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="36" Height="36"
+                                               Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
+                                        <!-- TODO: Icon: File icon depending on file type -->
+                                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   FontSize="20" FontWeight="Bold" TextWrapping="Wrap"
+                                                   TextTrimming="CharacterEllipsis" Text="File.txt"
+                                                   Foreground="{StaticResource OppositeAccent}"/> 
+                                        <!-- TODO: Binding to file name -->
+                                        <Button Grid.Column="2" Classes="selectable-button-effect highlight-no-change" 
+                                                VerticalAlignment="Center" Margin="7.5,0,7.5,0">
+                                            <!-- TODO: Set Command for downloading -->
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Image Source="/Assets/avalonia-logo.ico" Width="36" Height="36"/>
+                                                    <!-- TODO: Download-Light.png -->
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
