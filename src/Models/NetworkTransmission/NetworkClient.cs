@@ -51,9 +51,9 @@ internal class NetworkClient : NetworkObject
             if (!receivedAcknowledgement) 
                 continue;
             
-            // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
             // TODO: Send size of files (if no files, send 0)
             // TODO: Send files (if no files, send "empty" byte array)
+            // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
             break;
         }
         client.Shutdown(SocketShutdown.Both);
@@ -70,7 +70,6 @@ internal class NetworkClient : NetworkObject
     private static async Task<bool> SendDataAsync(byte[] buffer, Socket client)
     {
         _ = await client.SendAsync(buffer, SocketFlags.None);
-        Utilities.Log("Socket client sent data!");
         return await ReceivedAcknowledgementAsync(client);
     }
 
@@ -79,7 +78,6 @@ internal class NetworkClient : NetworkObject
         var buffer = new byte[8];
         int received = await client.ReceiveAsync(buffer, SocketFlags.None);
         string response = Encoding.UTF8.GetString(buffer, 0, received);
-        Utilities.Log("Socket client received acknowledgment: \"<|ACK|>\"");
         return response == "<|ACK|>";
     }
 }

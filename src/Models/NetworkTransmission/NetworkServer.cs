@@ -56,9 +56,10 @@ internal class NetworkServer : NetworkObject
                     response += Encoding.UTF8.GetString(buffer, 0, received);
                     handledBytes += received;
                 }
-                Utilities.Log($"Socket server received message: \"{response}\"");
                 // Send acknowledgement
                 await SendAcknowledgementAsync(handler);
+                
+                // TODO: Receive files
 
                 if (Utilities.UsersList is null)
                     throw new Exception("UsersList is null!");
@@ -79,6 +80,5 @@ internal class NetworkServer : NetworkObject
         const string acknowledgement = "<|ACK|>";
         byte[] echoBytes = Encoding.UTF8.GetBytes(acknowledgement);
         await handler.SendAsync(echoBytes, 0);
-        Utilities.Log("Socket server sent acknowledgment: \"<|ACK|>\"");
     }
 }
