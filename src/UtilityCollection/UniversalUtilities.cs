@@ -1,12 +1,18 @@
 using System;
+using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Styling;
 
 namespace FileTransfer.UtilityCollection;
 
 public static partial class Utilities
 {
+    public const string AssetsPath = "avares://FileTransfer/Assets/";
+    
     /// <summary>
     /// Log a message to the debug output (for debugging purposes).
     /// </summary>
@@ -48,5 +54,44 @@ public static partial class Utilities
     {
         var styleInclude = element?.Styles[styleIndex] as StyleInclude;
         return (styleInclude?.Loaded is Style style ? GetResource<TResource>(style, resourceName) : null);
+    }
+    
+    /// <summary>
+    /// Creates a <see cref="Bitmap"/> image, based on an image-file whose path is specified as a passed argument.
+    /// </summary>
+    /// <param name="path">The path of the image-file.</param>
+    /// <returns>The <see cref="Bitmap"/> image or null if the operation was successful due to a wrong path for example.</returns>
+    public static Bitmap? CreateImage(string path)
+    {
+        Log(path);
+        var uri = new Uri(path);
+        Stream? asset = null;
+        try
+        {
+            IAssetLoader? assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            asset = assets?.Open(uri);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return asset is null ? null : new Bitmap(asset);
+    }
+
+    /// <summary>
+    /// Formats a given data size in bytes into a matching representation of Bytes, Kilobytes, Megabytes or Gigabytes as a <see cref="string"/>.
+    /// </summary>
+    /// <param name="bytes">The data size in bytes.</param>
+    /// <returns>The formatted representation of the data size.</returns>
+    public static string DataSizeRepresentation(long bytes)
+    {
+        return bytes switch
+        {
+            < 1000 => $"{bytes} B",
+            < 1000000 => $"{(bytes / (float)1000):F1} KB",
+            < 1000000000 => $"{(bytes / 1000000):F1} MB",
+            _ => $"{(bytes / 1000000000):F1} GB"
+        };
     }
 }
