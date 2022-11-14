@@ -19,7 +19,7 @@ internal class FileObject
         { new [] { "TXT", "RTF", "XML", "XAML", "AXAML, JSON" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Text
         { new [] { "ZIP", "Z", "7Z", "DEB", "PKG", "RAR", "TAR.GZ", "RPM", "ARJ", "JAR" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Archives (ZIP etc.)
         { new [] { "PNG", "JPG", "JPEG", "GIF", "BMP", "ICO", "SGV", "RAW", "TIF", "TIFF" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Images
-        { new [] { "PSD" }, "" }, // Photoshop
+        { new [] { "PSD" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Photoshop
         { new [] { "MP3", "WAV", "PCM", "AIF", "AIFF", "AAC", "OGG", "WMA", "FLAC", "ALAC", "CDA", "MPA", "WPL" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Audio
         { new [] { "MP4", "MOV", "WMV", "AVI", "MKV", "AVCHD", "MPEG2", "FLV", "H264", "M4V", "MPG", "MPEG" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Video
         // Programming languages
