@@ -29,49 +29,46 @@ internal class NetworkServer : NetworkObject
             listener.Listen(100);
 
             using Socket handler = await listener.AcceptAsync();
-            while (true)
+            
+            // Receive sender
+            var buffer = new byte[16];
+            _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            Guid userGuid = new Guid(buffer);
+            // Send Acknowledgement
+            await SendAcknowledgementAsync(handler);
+
+            // Receive length
+            buffer = new byte[4];
+            _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            int messageLength = BitConverter.ToInt32(buffer, 0);
+            // Send Acknowledgement
+            await SendAcknowledgementAsync(handler);
+
+            int handledBytes = 0;
+            string response = string.Empty;
+            int received = 0;
+            while (handledBytes < messageLength)
             {
-                // Receive sender
-                var buffer = new byte[16];
-                _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                Guid userGuid = new Guid(buffer);
-                // Send Acknowledgement
-                await SendAcknowledgementAsync(handler);
-
-                // Receive length
-                buffer = new byte[4];
-                _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                int messageLength = BitConverter.ToInt32(buffer, 0);
-                // Send Acknowledgement
-                await SendAcknowledgementAsync(handler);
-
-                int handledBytes = 0;
-                string response = string.Empty;
-                int received = 0;
-                while (handledBytes < messageLength)
-                {
-                    // Receive message
-                    buffer = new byte[1024];
-                    received = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                    response += Encoding.UTF8.GetString(buffer, 0, received);
-                    handledBytes += received;
-                }
-                // Send acknowledgement
-                await SendAcknowledgementAsync(handler);
-                
-                // TODO: Receive files
-
-                if (Utilities.UsersList is null)
-                    throw new Exception("UsersList is null!");
-                User sender = Utilities.UsersList.FirstOrDefault(x => x.UniqueGuid == userGuid) 
-                              ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
-                var eventArgs = new MessageReceivedEventArgs
-                {
-                    Files = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
-                };
-                MessageReceived?.Invoke(this, eventArgs);
-                break;
+                // Receive message
+                buffer = new byte[1024];
+                received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                response += Encoding.UTF8.GetString(buffer, 0, received);
+                handledBytes += received;
             }
+            // Send acknowledgement
+            await SendAcknowledgementAsync(handler);
+                
+            // TODO: Receive files
+
+            if (Utilities.UsersList is null)
+                throw new Exception("UsersList is null!");
+            User sender = Utilities.UsersList.FirstOrDefault(x => x.UniqueGuid == userGuid) 
+                          ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
+            var eventArgs = new MessageReceivedEventArgs
+            {
+                Files = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
+            };
+            MessageReceived?.Invoke(this, eventArgs);
         }
     }
 

@@ -73,7 +73,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             if (user?.IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
-            await client.InvokeSendingDataAsync(Files, Message);
+            await client.InvokeSendingPackageAsync(Files, Message);
             Reset();
         }
 

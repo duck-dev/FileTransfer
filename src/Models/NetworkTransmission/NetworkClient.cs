@@ -13,7 +13,7 @@ internal class NetworkClient : NetworkObject
 {
     internal NetworkClient(IPAddress? ipAddress = null) : base(ipAddress) { }
 
-    internal async Task InvokeSendingDataAsync(IEnumerable<FileObject> files, string message)
+    internal async Task InvokeSendingPackageAsync(IEnumerable<FileObject> files, string message)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         
@@ -28,37 +28,40 @@ internal class NetworkClient : NetworkObject
             return;
         }
 
-        bool sentGuid = false;
-        while (true)
-        {
-            // Send own GUID
-            if (Utilities.LocalUser is null)
-                throw new UserNotFoundException("LocalUser could not be found.");
-            
-            bool receivedAcknowledgement = sentGuid || await SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
-            if(!receivedAcknowledgement)
-                continue;
-            sentGuid = true;
-
-            // Send length of message
-            receivedAcknowledgement = await SendSizeAsync(message.Length, client);
-            if(!receivedAcknowledgement)
-                continue;
-
-            // Send text message
-            byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-            receivedAcknowledgement = await SendDataAsync(messageBytes, client);
-            if (!receivedAcknowledgement) 
-                continue;
-            
-            // TODO: Send size of files (if no files, send 0)
-            // TODO: Send files (if no files, send "empty" byte array)
-            // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
-            break;
-        }
+        // Send own GUID
+        if (Utilities.LocalUser is null)
+            throw new UserNotFoundException("LocalUser could not be found.");
+        Task<bool> sendTask = SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
+        await InvokeSendingAsync(sendTask, client);
+        
+        // Send length of message
+        sendTask = SendSizeAsync(message.Length, client);
+        await InvokeSendingAsync(sendTask, client);
+        
+        // Send text message
+        byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+        sendTask = SendDataAsync(messageBytes, client);
+        await InvokeSendingAsync(sendTask, client);
+        
+        // TODO: Send how many files
+        // TODO: Send size of files (if no files, send 0)
+        // TODO: Send files (if no files, send "empty" byte array)
+        // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
+        
+        // Close connection
         client.Shutdown(SocketShutdown.Both);
         await client.DisconnectAsync(false);
         client.Close();
+    }
+
+    private static async Task InvokeSendingAsync(Task<bool> task, Socket client)
+    {
+        while (true)
+        {
+            bool receivedAcknowledgement = await task;
+            if (receivedAcknowledgement)
+                break;
+        }
     }
 
     private static async Task<bool> SendSizeAsync(int messageLength, Socket client)
