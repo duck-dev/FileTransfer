@@ -16,7 +16,7 @@ internal class FileObject
         { new [] { "XLS", "XLSL", "XLSM", "XLSX", "XLT", "XLTM", "XLTX", "XLW", "XLSB", "UOS", "ODS", "CSV" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Excel
         { new [] { "PPT", "PPTX", "ODP", "POT", "POTM", "POTX", "PPA", "PPAM", "PPS", "PPTM", "UOP" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // PowerPoint
         { new [] { "PDF" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // PDF
-        { new [] { "TXT", "RTF", "XML", "XAML", "AXAML" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Text
+        { new [] { "TXT", "RTF", "XML", "XAML", "AXAML, JSON" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Text
         { new [] { "ZIP", "Z", "7Z", "DEB", "PKG", "RAR", "TAR.GZ", "RPM", "ARJ", "JAR" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Archives (ZIP etc.)
         { new [] { "PNG", "JPG", "JPEG", "GIF", "BMP", "ICO", "SGV", "RAW", "TIF", "TIFF" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Images
         { new [] { "PSD" }, "" }, // Photoshop
