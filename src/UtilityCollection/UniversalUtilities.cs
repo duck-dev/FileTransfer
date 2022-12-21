@@ -63,7 +63,6 @@ public static partial class Utilities
     /// <returns>The <see cref="Bitmap"/> image or null if the operation was successful due to a wrong path for example.</returns>
     public static Bitmap? CreateImage(string path)
     {
-        Log(path);
         var uri = new Uri(path);
         Stream? asset = null;
         try
