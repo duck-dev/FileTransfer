@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Views;
 
@@ -13,8 +14,11 @@ public class MainWindow : Window
         this.AttachDevTools();
 #endif
         Instance = this;
+        this.Closing += (sender, args) => Utilities.DeleteFilesInDirectory(Utilities.TemporaryFilesPath);
     }
     
+    ~MainWindow() => Utilities.DeleteFilesInDirectory(Utilities.TemporaryFilesPath);
+
     internal static MainWindow? Instance { get; private set; }
 
     private void InitializeComponent()

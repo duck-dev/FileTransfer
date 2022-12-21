@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -37,7 +39,7 @@ internal class NetworkServer : NetworkObject
             // Send Acknowledgement
             await SendAcknowledgementAsync(handler);
 
-            // Receive length
+            // Receive message length
             buffer = new byte[4];
             _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
             int messageLength = BitConverter.ToInt32(buffer, 0);
@@ -45,20 +47,79 @@ internal class NetworkServer : NetworkObject
             await SendAcknowledgementAsync(handler);
 
             int handledBytes = 0;
-            string response = string.Empty;
+            string textMessage = string.Empty;
             int received = 0;
             while (handledBytes < messageLength)
             {
                 // Receive message
-                buffer = new byte[1024];
+                buffer = new byte[BufferSize];
                 received = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                response += Encoding.UTF8.GetString(buffer, 0, received);
+                textMessage += Encoding.UTF8.GetString(buffer, 0, received);
                 handledBytes += received;
             }
             // Send acknowledgement
             await SendAcknowledgementAsync(handler);
-                
-            // TODO: Receive files
+
+            // Receive file count
+            buffer = new byte[4];
+            _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            int fileCount = BitConverter.ToInt32(buffer, 0);
+            // Send Acknowledgement
+            await SendAcknowledgementAsync(handler);
+
+            List<FileObject>? files = null;
+            if (fileCount > 0)
+            {
+                files = new List<FileObject>();
+                // Receive files
+                for (int i = 0; i < fileCount; i++)
+                {
+                    // Get file size
+                    buffer = new byte[8];
+                    _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                    long fileSize = BitConverter.ToInt64(buffer, 0);
+                    // Send Acknowledgement
+                    await SendAcknowledgementAsync(handler);
+                    
+                    // Get size of file name
+                    buffer = new byte[4];
+                    _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                    messageLength = BitConverter.ToInt32(buffer, 0);
+                    // Send Acknowledgement
+                    await SendAcknowledgementAsync(handler);
+                    
+                    // Get file name
+                    handledBytes = 0;
+                    string fileName = string.Empty;
+                    received = 0;
+                    while (handledBytes < messageLength)
+                    {
+                        // Receive message
+                        buffer = new byte[BufferSize];
+                        received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                        fileName += Encoding.UTF8.GetString(buffer, 0, received);
+                        handledBytes += received;
+                    }
+                    // Send acknowledgement
+                    await SendAcknowledgementAsync(handler);
+ 
+                    string directory = Path.Combine(Directory.GetCurrentDirectory(),Utilities.TemporaryFilesPath);
+                    if (!Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+                    string path = Path.Combine(directory, fileName);
+                    await using var fileStream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, BufferSize, true);
+                    for (long j = 0; j < fileSize; j += BufferSize)
+                    {
+                        buffer = new byte[BufferSize];
+                        _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                        await fileStream.WriteAsync(buffer, 0, buffer.Length);
+
+                        // Send Acknowledgement
+                        await SendAcknowledgementAsync(handler);
+                    }
+                    files.Add(new FileObject(path));
+                }
+            }
 
             if (Utilities.UsersList is null)
                 throw new Exception("UsersList is null!");
@@ -66,7 +127,7 @@ internal class NetworkServer : NetworkObject
                           ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
             var eventArgs = new MessageReceivedEventArgs
             {
-                Files = null, TextMessage = response, Received = received, Time = DateTime.Now, Sender = sender
+                Files = files?.ToArray(), TextMessage = textMessage, Time = DateTime.Now, Sender = sender
             };
             MessageReceived?.Invoke(this, eventArgs);
         }

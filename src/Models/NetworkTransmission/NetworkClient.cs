@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -13,7 +14,7 @@ internal class NetworkClient : NetworkObject
 {
     internal NetworkClient(IPAddress? ipAddress = null) : base(ipAddress) { }
 
-    internal async Task InvokeSendingPackageAsync(IEnumerable<FileObject> files, string message)
+    internal async Task InvokeSendingPackageAsync(IList<FileObject> files, string message)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         
@@ -32,21 +33,51 @@ internal class NetworkClient : NetworkObject
         if (Utilities.LocalUser is null)
             throw new UserNotFoundException("LocalUser could not be found.");
         Task<bool> sendTask = SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
-        await InvokeSendingAsync(sendTask, client);
-        
+        await InvokeSendingAsync(sendTask);
+
         // Send length of message
         sendTask = SendSizeAsync(message.Length, client);
-        await InvokeSendingAsync(sendTask, client);
-        
+        await InvokeSendingAsync(sendTask);
+
         // Send text message
         byte[] messageBytes = Encoding.UTF8.GetBytes(message);
         sendTask = SendDataAsync(messageBytes, client);
-        await InvokeSendingAsync(sendTask, client);
-        
-        // TODO: Send how many files
-        // TODO: Send size of files (if no files, send 0)
-        // TODO: Send files (if no files, send "empty" byte array)
-        // TODO: For sending files: Send each file individually in a loop and at the end send "end of message" indicator (find better way than string)
+        await InvokeSendingAsync(sendTask);
+
+        // Send how many files
+        sendTask = SendSizeAsync(files.Count, client);
+        await InvokeSendingAsync(sendTask);
+
+        if (files.Count > 0)
+        {
+            foreach (FileObject file in files)
+            {
+                // Send size of file
+                long fileSize = file.FileInformation.Length;
+                messageBytes = BitConverter.GetBytes(fileSize);
+                sendTask = SendDataAsync(messageBytes, client);
+                await InvokeSendingAsync(sendTask);
+
+                // Send length of file name
+                sendTask = SendSizeAsync(file.FileInformation.Name.Length, client);
+                await InvokeSendingAsync(sendTask);
+
+                // Send file name
+                messageBytes = Encoding.UTF8.GetBytes(file.FileInformation.Name);
+                sendTask = SendDataAsync(messageBytes, client);
+                await InvokeSendingAsync(sendTask);
+
+                // Send file
+                await using var fileStream = new FileStream(file.FileInformation.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, true);
+                for (int i = 0; i < fileSize; i += BufferSize)
+                {
+                    messageBytes = new byte[BufferSize];
+                    int received = await fileStream.ReadAsync(messageBytes, 0, messageBytes.Length);
+                    sendTask = SendDataAsync(messageBytes, client);
+                    await InvokeSendingAsync(sendTask);
+                }
+            }
+        }
         
         // Close connection
         client.Shutdown(SocketShutdown.Both);
@@ -54,7 +85,7 @@ internal class NetworkClient : NetworkObject
         client.Close();
     }
 
-    private static async Task InvokeSendingAsync(Task<bool> task, Socket client)
+    private static async Task InvokeSendingAsync(Task<bool> task)
     {
         while (true)
         {
