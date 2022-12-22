@@ -69,6 +69,38 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             this.RaisePropertyChanged(nameof(SendingEnabled));
         }
     }
+    
+    internal void EvaluateFiles(IEnumerable<string> result)
+    {
+        List<string>? largeFiles = null;
+        foreach (string path in result)
+        {
+            var fileInfo = new FileInfo(path);
+            if (fileInfo.Length > MaxSizePerFile)
+            {
+                largeFiles ??= new List<string>();
+                largeFiles.Add(fileInfo.Name);
+                continue;
+            }
+            Files.Add(new FileObject(path));
+        }
+
+        if (largeFiles is null || largeFiles.Count <= 0)
+            return;
+        LargeFilesNames = largeFiles.ToArray();
+        
+        string dialogTitle = $"The following files cannot be sent, because they are larger than {MaxSizePerFile / 1_000_000_000} GB:";
+        var dialog = new InformationDialogViewModel(this, dialogTitle, new SolidColorBrush[] { Resources.AppPurpleBrush}, 
+            new SolidColorBrush[]{ Resources.WhiteBrush }, new string[] { "Understood!" });
+        dialog.OnViewInitialized += (sender, args) =>
+        {
+            if (sender is not UserControl control) 
+                return;
+            object? resource = Utilities.GetResourceFromStyle<object, UserControl>(control, "FilesTooLargeDialog", 1);
+            dialog.AdditionalContent = resource;
+        };
+        CurrentDialog = dialog;
+    }
 
     private void Send()
     {
@@ -112,34 +144,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         if (result is null)
             return;
         
-        List<string>? largeFiles = null;
-        foreach (string path in result)
-        {
-            var fileInfo = new FileInfo(path);
-            if (fileInfo.Length > MaxSizePerFile)
-            {
-                largeFiles ??= new List<string>();
-                largeFiles.Add(fileInfo.Name);
-                continue;
-            }
-            Files.Add(new FileObject(path));
-        }
-
-        if (largeFiles is null || largeFiles.Count <= 0)
-            return;
-        LargeFilesNames = largeFiles.ToArray();
-        
-        string dialogTitle = $"The following files cannot be sent, because they are larger than {MaxSizePerFile / 1_000_000_000} GB:";
-        var dialog = new InformationDialogViewModel(this, dialogTitle, new SolidColorBrush[] { Resources.AppPurpleBrush}, 
-            new SolidColorBrush[]{ Resources.WhiteBrush }, new string[] { "Understood!" });
-        dialog.OnViewInitialized += (sender, args) =>
-        {
-            if (sender is not UserControl control) 
-                return;
-            object? resource = Utilities.GetResourceFromStyle<object, UserControl>(control, "FilesTooLargeDialog", 1);
-            dialog.AdditionalContent = resource;
-        };
-        CurrentDialog = dialog;
+        EvaluateFiles(result);
     }
 
     private void RemoveFile(FileObject file)

@@ -36,8 +36,7 @@ public class SendView : UserControl
         {
             return;
         }
-
-        foreach(string fileName in fileNames)
-            viewModel.Files.Add(new FileObject(fileName));
+        
+        viewModel.EvaluateFiles(fileNames);
     }
 }
