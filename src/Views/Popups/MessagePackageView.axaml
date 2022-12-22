@@ -87,17 +87,15 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border CornerRadius="7.5" Background="{StaticResource TransparentWhite}" 
-                                        Height="60" Width="236" Margin="5" Padding="0" ToolTip.Tip="File.txt">
-                                    <!-- TODO: Set `ToolTip.Tip` to whole name of file (with extension) -->
+                                        Height="60" Width="236" Margin="5" Padding="0" 
+                                        ToolTip.Tip="{Binding FileInformation.Name}">
                                     <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="36" Height="36"
+                                        <Image Grid.Column="0" Source="{Binding FileIcon}" Width="36" Height="36"
                                                Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
-                                        <!-- TODO: Icon: File icon depending on file type -->
                                         <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                   FontSize="20" FontWeight="Bold" TextWrapping="Wrap"
-                                                   TextTrimming="CharacterEllipsis" Text="File.txt"
+                                                   FontSize="20" FontWeight="Bold" TextWrapping="Wrap" MaxLines="2"
+                                                   TextTrimming="CharacterEllipsis" Text="{Binding FileInformation.Name}"
                                                    Foreground="{StaticResource OppositeAccent}"/> 
-                                        <!-- TODO: Binding to file name -->
                                         <Button Grid.Column="2" Classes="selectable-button-effect highlight-no-change" 
                                                 VerticalAlignment="Center" Margin="7.5,0,7.5,0">
                                             <!-- TODO: Set Command for downloading -->
