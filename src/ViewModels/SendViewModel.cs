@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -17,6 +19,8 @@ namespace FileTransfer.ViewModels;
 
 public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 {
+    private const int MaxSizePerFile = 2_000_000_000; // 2 GB
+    
     private DialogViewModelBase? _currentDialog;
     private string _message = string.Empty;
     private int _receiverIndex = -1;
@@ -38,6 +42,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     }
 
     internal RangeObservableCollection<FileObject> Files { get; } = new();
+    
+    internal string[]? LargeFilesNames { get; private set; }
 
     private bool HasFiles => Files.Count > 0;
     private int FileCount => Files.Count;
@@ -106,8 +112,34 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         if (result is null)
             return;
         
-        foreach(string path in result)
+        List<string>? largeFiles = null;
+        foreach (string path in result)
+        {
+            var fileInfo = new FileInfo(path);
+            if (fileInfo.Length > MaxSizePerFile)
+            {
+                largeFiles ??= new List<string>();
+                largeFiles.Add(fileInfo.Name);
+                continue;
+            }
             Files.Add(new FileObject(path));
+        }
+
+        if (largeFiles is null || largeFiles.Count <= 0)
+            return;
+        LargeFilesNames = largeFiles.ToArray();
+        
+        string dialogTitle = $"The following files cannot be sent, because they are larger than {MaxSizePerFile / 1_000_000_000} GB:";
+        var dialog = new InformationDialogViewModel(this, dialogTitle, new SolidColorBrush[] { Resources.AppPurpleBrush}, 
+            new SolidColorBrush[]{ Resources.WhiteBrush }, new string[] { "Understood!" });
+        dialog.OnViewInitialized += (sender, args) =>
+        {
+            if (sender is not UserControl control) 
+                return;
+            object? resource = Utilities.GetResourceFromStyle<object, UserControl>(control, "FilesTooLargeDialog", 1);
+            dialog.AdditionalContent = resource;
+        };
+        CurrentDialog = dialog;
     }
 
     private void RemoveFile(FileObject file)
