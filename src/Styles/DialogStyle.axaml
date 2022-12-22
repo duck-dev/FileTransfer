@@ -23,13 +23,13 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="30, 30, 30, 0"/>
+        <Setter Property="Margin" Value="30, 20, 30, 0"/>
     </Style>
 
     <Style Selector="Button.dialog-button">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Height" Value="40"/>
-        <Setter Property="Margin" Value="30,7.5"/>
+        <Setter Property="Margin" Value="30,20"/>
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
 
