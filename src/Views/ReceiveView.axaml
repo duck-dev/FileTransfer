@@ -83,12 +83,12 @@
                                                   HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="30"
                                                        Height="30" Margin="0,0,7.5,0"/> <!-- TODO: Icon: File-Light.png -->
-                                                <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold" Foreground="{StaticResource White}"/>
-                                                <!-- TODO: Number of files -->
+                                                <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold" Foreground="{StaticResource White}"
+                                                           Text="{Binding Files.Length}"/>
                                             </Grid>
                                             <TextBlock Grid.Row="1" FontSize="26" FontWeight="Bold"
-                                                       Foreground="{StaticResource White}"/>
-                                            <!-- TODO: Overall size of files (only files, not text message too) -->
+                                                       Foreground="{StaticResource White}"
+                                                       Text="{Binding OverallFilesSize}"/>
                                         </Grid>
                                     </Grid>
                                 </Button>

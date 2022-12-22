@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using FileTransfer.DateFormatterUtility;
 using FileTransfer.Events;
 using FileTransfer.Extensions;
 using FileTransfer.Interfaces;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models;
 
@@ -29,6 +31,12 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         this.TextMessage = textMessage;
         this.Time = time;
         this.Sender = sender;
+
+        if (files != null)
+        {
+            long overallFilesSize = files.Select(x => x.FileInformation.Length).Sum();
+            this.OverallFilesSize = Utilities.DataSizeRepresentation(overallFilesSize);
+        }
 
         this.TimeString = $"{time.ToShortDateString()}    {time.ToLongTimeString()}";
         UpdateTime(WaitTime.OneMinute);
@@ -62,6 +70,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
             NotifyPropertyChanged();
         } 
     }
+
+    internal string OverallFilesSize { get; } = "0 B";
     
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
