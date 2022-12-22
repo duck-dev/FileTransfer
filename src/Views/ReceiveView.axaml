@@ -93,8 +93,7 @@
                                     </Grid>
                                 </Button>
                                 <Button Grid.Column="2" Classes="selectable-button-effect" Margin="35,0,0,0"
-                                        VerticalAlignment="Center">
-                                    <!-- TODO: Open confirmation dialog (confirmation: download ZIP-archive)  -->
+                                        VerticalAlignment="Center" Command="{Binding DownloadZip}">
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Image Source="/Assets/avalonia-logo.ico" Width="70" Height="70"/>

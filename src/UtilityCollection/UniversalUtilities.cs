@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
+using FileTransfer.Models;
 
 namespace FileTransfer.UtilityCollection;
 
@@ -92,5 +95,17 @@ public static partial class Utilities
             < 1000000000 => $"{(bytes / 1000000):F1} MB",
             _ => $"{(bytes / 1000000000):F1} GB"
         };
+    }
+
+    internal static void CreateZip(string folder, string zipName, IEnumerable<FileObject> files)
+    {
+        string zipPath = Path.Combine(folder, $"{zipName}.zip");
+        using var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create);
+        foreach (FileObject file in files)
+        {
+            string filePath = file.FileInformation.FullName;
+            string fileName = file.FileInformation.Name;
+            archive.CreateEntryFromFile(filePath, fileName);
+        }
     }
 }

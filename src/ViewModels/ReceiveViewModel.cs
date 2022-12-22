@@ -42,11 +42,8 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
     
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs args)
     {
-        var message = new MessagePackage(args);
+        var message = new MessagePackage(args, this);
         Messages.Insert(0, message);
-        Utilities.Log("\nRECEIVED MESSAGE:");
-        Utilities.Log($"From: {message.Sender?.Nickname}");
-        Utilities.Log($"Message: {message.TextMessage}\n");
     }
     
     private void SetMessage(MessagePackage? message)

@@ -124,7 +124,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
         string dialogTitle = $"Are you sure you want to transmit the uploaded content to {user?.Nickname}?";
         CurrentDialog = new ConfirmationDialogViewModel(this, dialogTitle,
-            new [] { Resources.MainRed, Resources.MainGrey },
+            new[] { Resources.MainRed, Resources.MainGrey },
             new[] { Colors.White, Colors.White },
             new[] { "Yes, send data!", "Cancel" },
             (Func<Task>) ConfirmAction);

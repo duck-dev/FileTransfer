@@ -2,11 +2,17 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Media;
 using FileTransfer.DateFormatterUtility;
 using FileTransfer.Events;
 using FileTransfer.Extensions;
 using FileTransfer.Interfaces;
+using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
+using FileTransfer.ViewModels;
+using FileTransfer.ViewModels.Dialogs;
+using FileTransfer.Views;
 
 namespace FileTransfer.Models;
 
@@ -24,13 +30,15 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private bool _isRead;
     private string _formattedTimeString = null!;
+    private ReceiveViewModel? _receiveViewModel;
 
-    internal MessagePackage(DateTime time, User? sender, FileObject[]? files = null, string? textMessage = null)
+    internal MessagePackage(DateTime time, User? sender, ReceiveViewModel viewModel, FileObject[]? files = null, string? textMessage = null)
     {
         this.Files = files;
         this.TextMessage = textMessage;
         this.Time = time;
         this.Sender = sender;
+        _receiveViewModel = viewModel;
 
         if (files != null)
         {
@@ -42,7 +50,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         UpdateTime(WaitTime.OneMinute);
     }
 
-    internal MessagePackage(MessageReceivedEventArgs args) : this(args.Time, args.Sender, args.Files, args.TextMessage)
+    internal MessagePackage(MessageReceivedEventArgs args, ReceiveViewModel viewModel) 
+        : this(args.Time, args.Sender, viewModel, args.Files, args.TextMessage)
     { }
     
     internal FileObject[]? Files { get; }
@@ -75,6 +84,39 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private void DownloadZip()
+    {
+        if (Files is null)
+            return;
+
+        async Task ConfirmAction()
+        {
+            if (MainWindow.Instance is not { } mainWindow)
+                return;
+            
+            var fileDialog = new OpenFolderDialog
+            {
+                Title = "Select the destination folder"
+            };
+        
+            string? result = await fileDialog.ShowAsync(mainWindow);
+            if (result is null)
+                return;
+
+            string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
+            Utilities.CreateZip(result, zipName, Files);
+        }
+
+        if (_receiveViewModel is null)
+            return;
+        string dialogTitle = $"Do you really want to download {Files.Length} files in a compressed ZIP-archive?";
+        var dialog = new ConfirmationDialogViewModel(_receiveViewModel, dialogTitle, 
+            new[] {Resources.MainRed, Resources.MainGrey},
+            new[] {Colors.White, Colors.White}, new[] {"Yes, download ZIP!", "Cancel"},
+            (Func<Task>) ConfirmAction);
+        _receiveViewModel.CurrentDialog = dialog;
+    }
 
     private void ToggleReadStatus() => IsRead = !IsRead;
 
