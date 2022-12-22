@@ -1,0 +1,27 @@
+<Style xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style.Resources>
+        <ItemsControl x:Key="FilesTooLargeDialog" Items="{Binding $parent[UserControl;2].DataContext.LargeFilesNames}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource MainGrey}"
+                            Margin="0,2.5">
+                        <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Stretch" Height="30">
+                            <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Height="26" Width="26"
+                                   Margin="5,0,15, 0"/> <!-- TODO: Warning symbol -->
+                            <TextBlock Grid.Column="1" FontSize="24" Foreground="{StaticResource OppositeAccent}"
+                                       Text="{Binding}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Style.Resources>
+        
+</Style>

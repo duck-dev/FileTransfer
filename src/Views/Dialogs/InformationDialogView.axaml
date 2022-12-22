@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.Dialogs.InformationDialogView">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/DialogStyle.axaml"/>
+        <StyleInclude Source="/src/Styles/InformationDialogStyles.axaml"/>
+    </UserControl.Styles>
+    
+    <Panel Classes="background-panel">
+        <Border CornerRadius="20" Classes="border-front-panel">
+            <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Grid.Row="0" Classes="title-text" Text="{Binding Title}"/>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                              HorizontalAlignment="Stretch" Margin="20,10" Content="{Binding AdditionalContent}"/>
+                <Button Grid.Row="2" Classes="dialog-button selectable-button-effect" Command="{Binding CloseDialog}"
+                        Background="{Binding ButtonColors[0]}">
+                    <Button.Styles>
+                        <Style Selector="Button.dialog-button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="{Binding ButtonColorsHover[0]}"/>
+                        </Style>
+                    </Button.Styles>
+                    <Viewbox Height="16" HorizontalAlignment="Stretch" Margin="20,0">
+                        <TextBlock Foreground="{Binding ButtonTextColors[0]}"
+                                   Text="{Binding ButtonTexts[0]}"/>
+                    </Viewbox>
+                </Button>
+            </Grid>
+        </Border>
+    </Panel>
+    
+</UserControl>
