@@ -5,6 +5,23 @@
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <RuntimeIdentifiers>osx-x64;win-x64;win-x86;linux-x64</RuntimeIdentifiers>
+    </PropertyGroup>
+    <PropertyGroup>
+        <UseAppHost>true</UseAppHost>
+    </PropertyGroup>
+    <PropertyGroup>
+        <CFBundleName>FileTransfer</CFBundleName> <!-- Also defines .app file name -->
+        <CFBundleDisplayName>FileTransfer</CFBundleDisplayName>
+        <CFBundleIdentifier>com.duck-dev.file-transfer</CFBundleIdentifier>
+        <CFBundleVersion>0.1.0</CFBundleVersion>
+        <CFBundleShortVersionString>0.1.0</CFBundleShortVersionString>
+        <CFBundlePackageType>APPL</CFBundlePackageType>
+        <CFBundleSignature>????</CFBundleSignature>
+        <CFBundleExecutable>FileTransfer</CFBundleExecutable>
+        <CFBundleIconFile>FileTransferIcon.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
+        <NSPrincipalClass>NSApplication</NSPrincipalClass>
+        <NSHighResolutionCapable>true</NSHighResolutionCapable>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <DebugType>none</DebugType>
@@ -18,6 +35,7 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
+        <PackageReference Include="DotNet.Bundle" Version="0.9.13" />
     </ItemGroup>
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
