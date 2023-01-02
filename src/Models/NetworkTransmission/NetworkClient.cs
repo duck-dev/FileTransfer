@@ -17,14 +17,24 @@ internal class NetworkClient : NetworkObject
     internal async Task InvokeSendingPackageAsync(IList<FileObject> files, string message)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        
-        try
+
+        bool connectionEstablished = false;
+        for (int i = 0; i < 10; i++)
         {
-            await client.ConnectAsync(IpEndPoint);
+            try
+            {
+                await client.ConnectAsync(IpEndPoint);
+                connectionEstablished = true;
+                break;
+            }
+            catch (SocketException e)
+            {
+                Utilities.Log($"SocketException in NetworkClient (try-catch ConnectAsync): {e}");
+            }
         }
-        catch (SocketException e)
+
+        if (!connectionEstablished)
         {
-            Utilities.Log(e.Message);
             // TODO: Handle failure
             return;
         }
@@ -80,8 +90,8 @@ internal class NetworkClient : NetworkObject
         }
         
         // Close connection
-        client.Shutdown(SocketShutdown.Both);
         await client.DisconnectAsync(false);
+        client.Shutdown(SocketShutdown.Both);
         client.Close();
     }
 

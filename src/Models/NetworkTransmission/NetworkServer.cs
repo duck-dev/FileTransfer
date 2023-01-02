@@ -23,13 +23,21 @@ internal class NetworkServer : NetworkObject
 
     private async Task ReceiveDataAsync()
     {
-        while (true)
+        using Socket listener = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        try
         {
-            using Socket listener = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
             listener.Bind(IpEndPoint);
             listener.Listen(100);
-
+        }
+        catch (Exception e)
+        {
+            Utilities.Log($"Exception while binding and listening in NetworkServer.ReceiveDataAsync(): {e}");
+            throw;
+        }
+        
+        while (true)
+        {
             using Socket handler = await listener.AcceptAsync();
             
             // Receive sender
@@ -130,6 +138,12 @@ internal class NetworkServer : NetworkObject
                 Files = files?.ToArray(), TextMessage = textMessage, Time = DateTime.Now, Sender = sender
             };
             MessageReceived?.Invoke(this, eventArgs);
+            
+            // Close connection of the `handler`
+            // DO NOT close or disconnect the `listener`
+            await handler.DisconnectAsync(false);
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
         }
     }
 
