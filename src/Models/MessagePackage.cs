@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -13,6 +14,7 @@ using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels;
 using FileTransfer.ViewModels.Dialogs;
 using FileTransfer.Views;
+using ReactiveUI;
 
 namespace FileTransfer.Models;
 
@@ -30,7 +32,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private bool _isRead;
     private string _formattedTimeString = null!;
-    private ReceiveViewModel? _receiveViewModel;
+    private readonly ReceiveViewModel? _receiveViewModel;
 
     internal MessagePackage(DateTime time, User? sender, ReceiveViewModel viewModel, FileObject[]? files = null, string? textMessage = null)
     {
@@ -48,6 +50,9 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
         this.TimeString = $"{time.ToShortDateString()}    {time.ToLongTimeString()}";
         UpdateTime(WaitTime.OneMinute);
+
+        DownloadZipCommand = ReactiveCommand.Create(DownloadZip);
+        DownloadToFolderCommand = ReactiveCommand.Create(DownloadToFolder);
     }
 
     internal MessagePackage(MessageReceivedEventArgs args, ReceiveViewModel viewModel) 
@@ -82,6 +87,9 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     internal string OverallFilesSize { get; } = "0 B";
     
+    internal ReactiveCommand<Unit,Unit> DownloadZipCommand { get; }
+    internal ReactiveCommand<Unit,Unit> DownloadToFolderCommand { get; }
+
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -116,6 +124,14 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
             new[] {Colors.White, Colors.White}, new[] {"Yes, download ZIP!", "Cancel"},
             (Func<Task>) ConfirmAction);
         _receiveViewModel.CurrentDialog = dialog;
+    }
+
+    private void DownloadToFolder()
+    {
+        if (Files is null)
+            return;
+        
+        // TODO: Yet to be implemented
     }
 
     private void ToggleReadStatus() => IsRead = !IsRead;
