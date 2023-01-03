@@ -43,7 +43,8 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Viewbox Grid.Row="0" HorizontalAlignment="Left" MaxHeight="54">
+                <!-- Margin to create distance from close-button: Right-Margin 10 + Width 40 + Additional Margin 20   =>   70 -->
+                <Viewbox Grid.Row="0" HorizontalAlignment="Left" MaxHeight="54" Margin="0,0,70,0">
                     <TextBlock HorizontalAlignment="Left" FontSize="48" FontWeight="Bold" TextAlignment="Left"
                                Foreground="{StaticResource White}" Margin="0,0,0,5" 
                                Text="{Binding Message.Sender.Nickname}"/>
