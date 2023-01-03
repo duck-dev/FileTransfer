@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:FileTransfer.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.MessagePackageElementView">
+
+    <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,20">
+        <Ellipse Grid.Column="0" Width="40" Height="40" Fill="{StaticResource MattBlue}"
+                 Margin="0,0,40,0" VerticalAlignment="Center"
+                 IsVisible="{Binding !IsRead}"/>
+        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change"
+                Background="{StaticResource AppPurple}" CornerRadius="50"
+                HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="120"
+                Command="{Binding $parent[UserControl;1].DataContext.SetMessage}"
+                CommandParameter="{Binding}">
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open message"
+                              Command="{Binding $parent[UserControl;1].DataContext.SetMessage}"
+                              CommandParameter="{Binding}"/>
+                    <MenuItem Header="Delete message"
+                              Command="{Binding $parent[UserControl;1].DataContext.DeleteMessage}"
+                              CommandParameter="{Binding}">
+                        <MenuItem.Styles>
+                            <Style Selector="MenuItem:pointerover /template/ Border">
+                                <Setter Property="Background"
+                                        Value="{StaticResource LightRedContextMenu}"/>
+                            </Style>
+                            <Style Selector="MenuItem:pressed /template/ Border">
+                                <Setter Property="Background"
+                                        Value="{StaticResource DarkerLightRedContextMenu}"/>
+                            </Style>
+                        </MenuItem.Styles>
+                    </MenuItem>
+                    <MenuItem Header="Mark as unread" IsVisible="{Binding IsRead}"
+                              Command="{Binding ToggleReadStatus}"/>
+                    <MenuItem Header="Mark as read" IsVisible="{Binding !IsRead}"
+                              Command="{Binding ToggleReadStatus}"/>
+                </ContextMenu>
+            </Button.ContextMenu>
+            <Grid ColumnDefinitions="*,Auto" Margin="40,0">
+                <Grid Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="Auto,*"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="28" FontWeight="Bold"
+                               VerticalAlignment="Center" Foreground="{StaticResource White}"
+                               Text="{Binding Sender.Nickname}"
+                               Margin="0,0,15,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" FontWeight="Light"
+                               Foreground="{StaticResource LightGrey}"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{Binding FormattedTimeString}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                               FontSize="14" Foreground="{StaticResource White}"
+                               TextWrapping="Wrap" MaxLines="2" TextAlignment="Left"
+                               TextTrimming="CharacterEllipsis" Text="{Binding TextMessage}"/>
+                </Grid>
+                <Grid Grid.Column="1" RowDefinitions="*,*" VerticalAlignment="Stretch" Margin="30,0,0,0">
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto"
+                          HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="30"
+                               Height="30" Margin="0,0,7.5,0"/> <!-- TODO: Icon: File-Light.png -->
+                        <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold" Foreground="{StaticResource White}"
+                                   Text="{Binding Files.Length}"/>
+                    </Grid>
+                    <TextBlock Grid.Row="1" FontSize="26" FontWeight="Bold"
+                               Foreground="{StaticResource White}"
+                               Text="{Binding OverallFilesSize}"/>
+                </Grid>
+            </Grid>
+        </Button>
+        <Button Grid.Column="2" Classes="selectable-button-effect" Margin="35,0,0,0"
+                Command="{Binding $parent[views:ReceiveView].ToggleContextMenu}"
+                CommandParameter="{Binding $self}" VerticalAlignment="Center"
+                IsVisible="{Binding HasFiles}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="/Assets/avalonia-logo.ico" Width="70" Height="70"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+
+</UserControl>
