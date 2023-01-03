@@ -25,46 +25,45 @@
                 <Grid RowDefinitions="Auto,Auto,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <views:TitledElement Grid.Row="0" Title="Receiver:">
                         <views:TitledElement.InnerContent>
-                            <Grid ColumnDefinitions="*,*" HorizontalAlignment="Stretch">
-                                <ComboBox Grid.Column="0" Classes="highlight-no-change-combo selectable-button"
-                                          MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
-                                          AutoScrollToSelectedItem="True" Items="{Binding UsersList}"
-                                          HorizontalAlignment="Stretch" Height="50" CornerRadius="20"
-                                          Background="{StaticResource FullyTransparent}"
-                                          BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
-                                          PlaceholderText="None (select a receiver)"
-                                          PlaceholderForeground="{StaticResource AppPurple}">
-                                    <ComboBox.Styles>
-                                        <Style Selector="ComboBox[SelectedIndex=-1] /template/ TextBlock#PlaceholderTextBlock">
-                                            <Setter Property="FontSize" Value="24"/>
-                                            <Setter Property="FontWeight" Value="Bold"/>
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
-                                            <Setter Property="Margin" Value="63.5,0,0,0"/>
-                                            <!-- Align with text of selected item -->
-                                        </Style>
-                                    </ComboBox.Styles>
-                                    <ComboBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ComboBox.ItemsPanel>
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
-                                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                <Grid ColumnDefinitions="Auto,Auto">
-                                                    <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
-                                                           Width="34" Height="34" Margin="-7.5,0,15,0"/>
-                                                    <!-- TODO: Image: "Contacts-Purple.png" -->
-                                                    <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
-                                                               Foreground="{StaticResource AppPurple}"
-                                                               VerticalAlignment="Center" Text="{Binding Nickname}"/>
-                                                </Grid>
-                                            </ComboBoxItem>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </Grid>
+                            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Classes="highlight-no-change-combo selectable-button"
+                                      MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
+                                      AutoScrollToSelectedItem="True" Items="{Binding UsersList}"
+                                      Height="50" CornerRadius="20" Background="{StaticResource FullyTransparent}"
+                                      BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
+                                      PlaceholderText="None (select a receiver)"
+                                      PlaceholderForeground="{StaticResource AppPurple}">
+                                <ComboBox.Styles>
+                                    <Style Selector="ComboBox[SelectedIndex=-1] /template/ TextBlock#PlaceholderTextBlock">
+                                        <Setter Property="FontSize" Value="24"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Margin" Value="63.5,0,0,0"/> <!-- Align with text of selected item -->
+                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                    </Style>
+                                </ComboBox.Styles>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Grid ColumnDefinitions="Auto,Auto">
+                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
+                                                       Width="34" Height="34" Margin="-7.5,0,15,0"/>
+                                                <!-- TODO: Image: "Contacts-Purple.png" -->
+                                                <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
+                                                           Foreground="{StaticResource AppPurple}"
+                                                           VerticalAlignment="Center" Text="{Binding Nickname}"
+                                                           TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                            </Grid>
+                                        </ComboBoxItem>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </views:TitledElement.InnerContent>
                     </views:TitledElement>
                     <views:TitledElement Grid.Row="1" Title="Message:" HorizontalAlignment="Stretch">

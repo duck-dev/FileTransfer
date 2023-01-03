@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using FileTransfer.Models;
 using FileTransfer.ViewModels;
 
 namespace FileTransfer.Views;
