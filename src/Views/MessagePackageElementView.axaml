@@ -41,14 +41,14 @@
                 </ContextMenu>
             </Button.ContextMenu>
             <Grid ColumnDefinitions="*,Auto" Margin="40,0">
-                <Grid Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="Auto,*"
+                <!-- ColumnDefinitions get switched (Auto,*) upon initialization in code-behind after calculations -->
+                <Grid Grid.Column="0" x:Name="FixedSizeGrid" RowDefinitions="*,*" ColumnDefinitions="*,Auto"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="28" FontWeight="Bold"
+                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="SenderNickname" FontSize="28" FontWeight="Bold"
                                VerticalAlignment="Center" Foreground="{StaticResource White}"
-                               Text="{Binding Sender.Nickname}"
-                               Margin="0,0,15,0"/>
+                               Text="{Binding Sender.Nickname}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" FontWeight="Light"
-                               Foreground="{StaticResource LightGrey}"
+                               Foreground="{StaticResource LightGrey}" Margin="15,0,0,0"
                                HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="{Binding FormattedTimeString}"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"

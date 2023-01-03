@@ -30,6 +30,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     }
     
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler? TimeChanged;
 
     private bool _isRead;
     private string _formattedTimeString = null!;
@@ -153,6 +154,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     private void UpdateTime(WaitTime waitTimeType)
     {
         this.FormattedTimeString = DateFormatter.FormatDate(Time);
+        TimeChanged?.Invoke(this, EventArgs.Empty);
 
         if (waitTimeType == WaitTime.ConstantDate)
             return;
