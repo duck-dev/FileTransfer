@@ -95,7 +95,8 @@
                                 </Button>
                                 <Button Grid.Column="2" Classes="selectable-button-effect" Margin="35,0,0,0"
                                         Command="{Binding $parent[views:ReceiveView].ToggleContextMenu}"
-                                        CommandParameter="{Binding $self}" VerticalAlignment="Center">
+                                        CommandParameter="{Binding $self}" VerticalAlignment="Center"
+                                        IsVisible="{Binding HasFiles}">
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Image Source="/Assets/avalonia-logo.ico" Width="70" Height="70"/>
