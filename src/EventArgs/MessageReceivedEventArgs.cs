@@ -8,7 +8,7 @@ public class MessageReceivedEventArgs : EventArgs
     /// <summary>
     /// The received files (nullable).
     /// </summary>
-    internal FileObject[]? Files { get; set; }
+    internal FileObject[] Files { get; set; } = Array.Empty<FileObject>();
     
     /// <summary>
     /// Optional text message (string).

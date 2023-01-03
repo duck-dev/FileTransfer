@@ -133,9 +133,10 @@ internal class NetworkServer : NetworkObject
                 throw new Exception("UsersList is null!");
             User sender = Utilities.UsersList.FirstOrDefault(x => x.UniqueGuid == userGuid) 
                           ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
+            FileObject[] filesArray = files == null ? Array.Empty<FileObject>() : files.ToArray();
             var eventArgs = new MessageReceivedEventArgs
             {
-                Files = files?.ToArray(), TextMessage = textMessage, Time = DateTime.Now, Sender = sender
+                Files = filesArray, TextMessage = textMessage, Time = DateTime.Now, Sender = sender
             };
             MessageReceived?.Invoke(this, eventArgs);
             

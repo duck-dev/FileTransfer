@@ -35,7 +35,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     private string _formattedTimeString = null!;
     private readonly ReceiveViewModel? _receiveViewModel;
 
-    internal MessagePackage(DateTime time, User? sender, ReceiveViewModel viewModel, FileObject[]? files = null, string? textMessage = null)
+    internal MessagePackage(DateTime time, User? sender, ReceiveViewModel viewModel, FileObject[] files, string? textMessage = null)
     {
         this.Files = files;
         this.TextMessage = textMessage;
@@ -43,7 +43,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         this.Sender = sender;
         _receiveViewModel = viewModel;
 
-        if (files != null)
+        if (files.Length > 0)
         {
             long overallFilesSize = files.Select(x => x.FileInformation.Length).Sum();
             this.OverallFilesSize = Utilities.DataSizeRepresentation(overallFilesSize);
@@ -60,7 +60,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         : this(args.Time, args.Sender, viewModel, args.Files, args.TextMessage)
     { }
     
-    internal FileObject[]? Files { get; }
+    internal FileObject[] Files { get; }
     internal string? TextMessage { get; }
     internal DateTime Time { get; }
     internal User? Sender { get; }
@@ -96,9 +96,6 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private void DownloadZip()
     {
-        if (Files is null)
-            return;
-
         async Task ConfirmAction()
         {
             string result = await OpenDestinationFolder();
@@ -113,9 +110,6 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private void DownloadToFolder()
     {
-        if (Files is null)
-            return;
-
         async Task ConfirmAction()
         {
             string result = await OpenDestinationFolder();
