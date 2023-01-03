@@ -12,15 +12,15 @@ using FileTransfer.Models;
 
 namespace FileTransfer.UtilityCollection;
 
-public static partial class Utilities
+internal static partial class Utilities
 {
-    public const string AssetsPath = "avares://FileTransfer/Assets/";
+    internal const string AssetsPath = "avares://FileTransfer/Assets/";
     
     /// <summary>
     /// Log a message to the debug output (for debugging purposes).
     /// </summary>
     /// <param name="message">The message to be logged as a string.</param>
-    public static void Log(string? message)
+    internal static void Log(string? message)
     {
         Console.WriteLine(message);
         System.Diagnostics.Trace.WriteLine(message);
@@ -33,7 +33,7 @@ public static partial class Utilities
     /// <param name="resourceName">The name of the resource you want to retrieve (key).</param>
     /// <typeparam name="T">The actual type of the resource you want to retrieve.</typeparam>
     /// <returns>The resource as it's actual type.</returns>
-    public static T? GetResource<T>(IResourceNode element, string resourceName) where T : class
+    internal static T? GetResource<T>(IResourceNode element, string resourceName) where T : class
     {
         element.TryGetResource(resourceName, out object? resource);
         return resource as T;
@@ -51,7 +51,7 @@ public static partial class Utilities
     /// <typeparam name="TElement">The type of the element to retrieve the resource from.
     /// This type must implement <see cref="IResourceNode"/>.</typeparam>
     /// <returns>The resource as it's actual type.</returns>
-    public static TResource? GetResourceFromStyle<TResource, TElement>(TElement? element, string resourceName, int styleIndex)
+    internal static TResource? GetResourceFromStyle<TResource, TElement>(TElement? element, string resourceName, int styleIndex)
         where TResource : class
         where TElement : IStyleHost, IResourceNode
     {
@@ -64,7 +64,7 @@ public static partial class Utilities
     /// </summary>
     /// <param name="path">The path of the image-file.</param>
     /// <returns>The <see cref="Bitmap"/> image or null if the operation was successful due to a wrong path for example.</returns>
-    public static Bitmap? CreateImage(string path)
+    internal static Bitmap? CreateImage(string path)
     {
         var uri = new Uri(path);
         Stream? asset = null;
@@ -86,7 +86,7 @@ public static partial class Utilities
     /// </summary>
     /// <param name="bytes">The data size in bytes.</param>
     /// <returns>The formatted representation of the data size.</returns>
-    public static string DataSizeRepresentation(long bytes)
+    internal static string DataSizeRepresentation(long bytes)
     {
         return bytes switch
         {

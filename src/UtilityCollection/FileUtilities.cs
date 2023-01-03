@@ -4,11 +4,11 @@ using FileTransfer.Models;
 
 namespace FileTransfer.UtilityCollection;
 
-public static partial class Utilities
+internal static partial class Utilities
 {
-    public const string TemporaryFilesPath = "TempFiles";
+    internal const string TemporaryFilesPath = "TempFiles";
     
-    public static void DeleteFilesInDirectory(string directory)
+    internal static void DeleteFilesInDirectory(string directory)
     {
         string[] filePaths = Directory.GetFiles(directory);
         foreach(string path in filePaths)
