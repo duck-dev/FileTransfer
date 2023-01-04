@@ -14,22 +14,27 @@ public class MessagePackageView : UserControl
         InitializeComponent();
         this.Initialized += (sender, args) =>
         {
-            Border copiedTextElement = this.Get<Border>("CopiedTextDisplay");
-            copiedTextElement.IsVisible = false;
-            if (this.DataContext is MessagePackageViewModel viewModel)
-            {
-                viewModel.CopiedText += (o, eventArgs) =>
-                {
-                    copiedTextElement.IsVisible = true;
-                    Task.Delay(2800).ContinueWith(async x => await DisableCopiedTextElement(copiedTextElement));
-                };
-            }
+            SetupCopiedTextElement();
         };
     }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    private void SetupCopiedTextElement()
+    {
+        Border copiedTextElement = this.Get<Border>("CopiedTextDisplay");
+        copiedTextElement.IsVisible = false;
+        if (this.DataContext is MessagePackageViewModel viewModel)
+        {
+            viewModel.CopiedText += (o, eventArgs) =>
+            {
+                copiedTextElement.IsVisible = true;
+                Task.Delay(2800).ContinueWith(async x => await DisableCopiedTextElement(copiedTextElement));
+            };
+        }
     }
     
     private static async Task DisableCopiedTextElement(IVisual visual)
