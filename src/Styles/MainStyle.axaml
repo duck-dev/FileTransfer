@@ -99,4 +99,19 @@
                 <Setter Property="BorderThickness" Value="0"/>
         </Style>
         
+        <!-- Animatable -->
+        
+        <Style Selector=":is(Animatable).rotating">
+                <Style.Animations>
+                        <Animation Duration="0:0:1" IterationCount="INFINITE">
+                                <KeyFrame Cue="0%">
+                                        <Setter Property="RotateTransform.Angle" Value="0"/>
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                        <Setter Property="RotateTransform.Angle" Value="360"/>
+                                </KeyFrame>
+                        </Animation>
+                </Style.Animations>
+        </Style>
+        
 </Styles>
