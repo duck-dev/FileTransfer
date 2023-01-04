@@ -1,19 +1,14 @@
 using System;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
+using FileTransfer.Enums;
 using FileTransfer.Models;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Views;
 
 public class MessagePackageElementView : UserControl
 {
-    private Grid _fixedSizeGrid = null!;
-    private ColumnDefinition _autoColumn = null!;
-    private ColumnDefinition _fixedColumn = null!;
-    private TextBlock _nicknameText = null!;
-    
     public MessagePackageElementView()
     {
         InitializeComponent();
@@ -27,51 +22,23 @@ public class MessagePackageElementView : UserControl
     
     private void OnInitialized(object? sender, EventArgs e)
     {
-        _fixedSizeGrid = this.Get<Grid>("FixedSizeGrid");
-        if (_fixedSizeGrid.IsInitialized)
-        {
-            GridOnInitialized(sender, EventArgs.Empty);
-            return;
-        }
-        
-        _fixedSizeGrid.Initialized += GridOnInitialized;
-    }
+        Grid fixedSizeGrid = this.Get<Grid>("FixedSizeGrid");
+        TextBlock nicknameText = this.Get<TextBlock>("SenderNickname");
 
-    private void GridOnInitialized(object? sender, EventArgs e)
-    {
-        if (this.DataContext is MessagePackage package)
-            package.TimeChanged += async (o, args) => await UpdateColumns(true);
-        
-        _autoColumn = _fixedSizeGrid.ColumnDefinitions[0]; // 1* at the beginning
-        _fixedColumn = _fixedSizeGrid.ColumnDefinitions[1]; // Auto at the beginning
-        _nicknameText = this.Get<TextBlock>("SenderNickname");
-        
-        _fixedSizeGrid.PropertyChanged += async (o, args) =>
+        const int autoIndex = 0;
+        const int fixedIndex = 1;
+        ColumnDefinition autoColumn = fixedSizeGrid.ColumnDefinitions[autoIndex];
+        ColumnDefinition fixedColumn = fixedSizeGrid.ColumnDefinitions[fixedIndex];
+
+        Action additionalAction = () =>
         {
-            if (args.Property == BoundsProperty)
-                await UpdateColumns();
+            if (this.DataContext is MessagePackage package)
+            {
+                package.TimeChanged += async (o, args) => 
+                    await Utilities.UpdateColumns(fixedSizeGrid, nicknameText, autoIndex, fixedIndex, true);
+            }
         };
-    }
-
-    private async Task UpdateColumns(bool callFromUIThread = false)
-    {
-        if (callFromUIThread)
-            await Dispatcher.UIThread.InvokeAsync(ResetColumns);
-        else
-            ResetColumns();
-
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            _nicknameText.MaxWidth = _autoColumn.ActualWidth;
-            // Switch ColumnDefinitions into the correct/desired order
-            _autoColumn.Width = GridLength.Auto;
-            _fixedColumn.Width = new GridLength(1, GridUnitType.Star);
-        });
-    }
-
-    private void ResetColumns()
-    {
-        _fixedColumn.Width = GridLength.Auto;
-        _autoColumn.Width = new GridLength(1, GridUnitType.Star);
+        
+        Utilities.LimitAutoSize(fixedSizeGrid, nicknameText, GridOrientation.Column, autoIndex, fixedIndex, additionalAction);
     }
 }
