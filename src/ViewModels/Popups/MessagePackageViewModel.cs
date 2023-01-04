@@ -14,6 +14,8 @@ internal class MessagePackageViewModel : ViewModelBase
     
     internal MessagePackage Message { get; }
 
+    internal int MinFilesHeight => Message.HasFiles ? 100 : 0;
+
     internal async Task CopyToClipboard()
     {
         if (Message.TextMessage is null || Application.Current is null || Application.Current.Clipboard is null)
