@@ -91,9 +91,9 @@ internal static partial class Utilities
         return bytes switch
         {
             < 1000 => $"{bytes} B",
-            < 1000000 => $"{(bytes / (float)1000):F1} KB",
-            < 1000000000 => $"{(bytes / 1000000):F1} MB",
-            _ => $"{(bytes / 1000000000):F1} GB"
+            < 1000000 => $"{(bytes / 1000f):F1} KB",
+            < 1000000000 => $"{(bytes / 1000000f):F1} MB",
+            _ => $"{(bytes / 1000000000f):F1} GB"
         };
     }
 
