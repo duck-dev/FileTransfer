@@ -19,18 +19,18 @@ public abstract class DialogViewModelBase : ViewModelBase
         this.ButtonTextColors = buttonTextColors.ToArray();
         this.ButtonTexts = buttonTexts.ToArray();
     }
-        
+    
     protected string Title { get; init; }
-        
+    
     protected SolidColorBrush[] ButtonColors { get; }
     protected SolidColorBrush[] ButtonColorsHover
         => ButtonColors.Select(x => new SolidColorBrush(x.Color.DarkenColor(0.1f))).ToArray();
     protected SolidColorBrush[] ButtonTextColors { get; }
-        
+    
     protected string[] ButtonTexts { get; }
-        
+    
     protected bool IgnoreDialog { get; set; }
-        
+    
     protected void CloseDialog()
     {
         _dialogContainer.CurrentDialog = null;

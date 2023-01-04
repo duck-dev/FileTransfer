@@ -51,6 +51,8 @@ public class ConfirmationDialogViewModel : DialogViewModelBase
 
     private async Task Command(ActionType actionType)
     {
+        CloseDialog();
+        
         switch (actionType)
         {
             case ActionType.Confirm:
@@ -65,7 +67,5 @@ public class ConfirmationDialogViewModel : DialogViewModelBase
             default:
                 throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);
         }
-
-        CloseDialog();
     }
 }
