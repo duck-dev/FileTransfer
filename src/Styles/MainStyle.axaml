@@ -101,7 +101,7 @@
         
         <!-- Animatable -->
         
-        <Style Selector=":is(Animatable).rotating">
+        <Style Selector="Image.rotating"> <!-- Should be `:is(Animatable).rotating` actually, but this breaks the DevTools and ScrollViewers -->
                 <Style.Animations>
                         <Animation Duration="0:0:1" IterationCount="INFINITE">
                                 <KeyFrame Cue="0%">
