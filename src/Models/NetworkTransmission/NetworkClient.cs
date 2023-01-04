@@ -49,10 +49,14 @@ internal class NetworkClient : NetworkObject
         sendTask = SendSizeAsync(message.Length, client);
         await InvokeSendingAsync(sendTask);
 
-        // Send text message
-        byte[] messageBytes = Encoding.UTF8.GetBytes(message);
-        sendTask = SendDataAsync(messageBytes, client);
-        await InvokeSendingAsync(sendTask);
+        byte[] messageBytes;
+        if (message.Length > 0)
+        {
+            // Send text message
+            messageBytes = Encoding.UTF8.GetBytes(message);
+            sendTask = SendDataAsync(messageBytes, client);
+            await InvokeSendingAsync(sendTask);
+        }
 
         // Send how many files
         sendTask = SendSizeAsync(files.Count, client);

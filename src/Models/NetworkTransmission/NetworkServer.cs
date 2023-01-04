@@ -57,16 +57,19 @@ internal class NetworkServer : NetworkObject
             int handledBytes = 0;
             string textMessage = string.Empty;
             int received = 0;
-            while (handledBytes < messageLength)
+            if (messageLength > 0)
             {
-                // Receive message
-                buffer = new byte[BufferSize];
-                received = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                textMessage += Encoding.UTF8.GetString(buffer, 0, received);
-                handledBytes += received;
+                while (handledBytes < messageLength)
+                {
+                    // Receive message
+                    buffer = new byte[BufferSize];
+                    received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+                    textMessage += Encoding.UTF8.GetString(buffer, 0, received);
+                    handledBytes += received;
+                }
+                // Send acknowledgement
+                await SendAcknowledgementAsync(handler);
             }
-            // Send acknowledgement
-            await SendAcknowledgementAsync(handler);
 
             // Receive file count
             buffer = new byte[4];
