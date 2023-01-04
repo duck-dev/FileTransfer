@@ -92,6 +92,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     internal ReactiveCommand<Unit,Unit> DownloadZipCommand { get; }
     internal ReactiveCommand<Unit,Unit> DownloadToFolderCommand { get; }
 
+    internal bool HasText => TextMessage is { Length: > 0 }; // TextMessage != null && `TextMessage.Length > 0`
     internal bool HasFiles => Files.Length > 0;
 
     public void NotifyPropertyChanged(string propertyName = "")

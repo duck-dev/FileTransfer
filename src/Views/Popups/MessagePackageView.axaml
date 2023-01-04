@@ -52,7 +52,8 @@
                 <TextBlock Grid.Row="1" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource White}"
                            Text="{Binding Message.TimeString}" FontStyle="Italic" 
                            Margin="0,0,0,20"/>
-                <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right" Margin="0,0,2.5,7.5">
+                <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right" Margin="0,0,2.5,7.5"
+                      IsVisible="{Binding Message.HasText}">
                     <Border Grid.Column="0" x:Name="CopiedTextDisplay" Margin="0,0,20,0" VerticalAlignment="Stretch"
                             Classes.fade-in="{Binding $self.IsVisible}" CornerRadius="10" Width="150" 
                             Background="{StaticResource DarkenedDialogBackground}">
@@ -72,7 +73,8 @@
                     </Grid>
                 </Grid>
                 <ScrollViewer Grid.Row="3" Classes="standard" HorizontalAlignment="Stretch" MaxHeight="87"
-                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,30">
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,30"
+                              IsVisible="{Binding Message.HasText}">
                     <TextBox Classes="text-acting-textbox" HorizontalAlignment="Left" FontSize="24" 
                              Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
                              Text="{Binding Message.TextMessage}"/>
