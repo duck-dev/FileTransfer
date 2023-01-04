@@ -10,19 +10,7 @@ namespace FileTransfer.UtilityCollection;
 
 internal static partial class Utilities
 {
-    internal static void LimitAutoSize(Grid grid, Layoutable elementToResize, GridOrientation orientation, 
-        int autoIndex, int fixedIndex, Action? additionalAction = null)
-    {
-        if (grid.IsInitialized)
-        {
-            GridOnInitialized(grid, elementToResize, orientation, autoIndex, fixedIndex, additionalAction);
-            return;
-        }
-        
-        grid.Initialized += (sender, args) => GridOnInitialized(grid, elementToResize, orientation, autoIndex, fixedIndex, additionalAction);
-    }
-    
-    private static void GridOnInitialized(Grid grid, Layoutable elementToResize, GridOrientation orientation,
+    internal static void LimitAutoSize(Grid grid, Layoutable elementToResize, GridOrientation orientation,
         int autoIndex, int fixedIndex, Action? additionalAction = null)
     {
         additionalAction?.Invoke();
