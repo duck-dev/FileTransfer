@@ -25,6 +25,11 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private string _message = string.Empty;
     private int _receiverIndex = -1;
 
+    private bool _isSending;
+    private string _sendingProgress = "0%";
+    private string _loadingTitle = string.Empty;
+    private string _loadingSubtitle = string.Empty;
+
     public SendViewModel() : base(Utilities.UsersList)
     {
         Files.CollectionChanged += (sender, args) =>
@@ -44,6 +49,30 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     internal RangeObservableCollection<FileObject> Files { get; } = new();
     
     internal string[]? LargeFilesNames { get; private set; }
+
+    internal bool IsSending
+    {
+        get => _isSending;
+        set => this.RaiseAndSetIfChanged(ref _isSending, value);
+    }
+
+    internal string SendingProgress
+    {
+        get => _sendingProgress;
+        set => this.RaiseAndSetIfChanged(ref _sendingProgress, value);
+    }
+
+    internal string LoadingTitle
+    {
+        get => _loadingTitle;
+        set => this.RaiseAndSetIfChanged(ref _loadingTitle, value);
+    }
+    
+    internal string LoadingSubtitle
+    {
+        get => _loadingSubtitle;
+        set => this.RaiseAndSetIfChanged(ref _loadingSubtitle, value);
+    }
 
     private bool HasFiles => Files.Count > 0;
     private int FileCount => Files.Count;
@@ -111,7 +140,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             if (user?.IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
-            await client.InvokeSendingPackageAsync(Files, Message);
+            await client.InvokeSendingPackageAsync(Files, Message, user, this);
             Reset();
         }
 

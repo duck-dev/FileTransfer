@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using FileTransfer.Exceptions;
 using FileTransfer.UtilityCollection;
+using FileTransfer.ViewModels;
 
 namespace FileTransfer.Models.NetworkTransmission;
 
@@ -14,7 +16,7 @@ internal class NetworkClient : NetworkObject
 {
     internal NetworkClient(IPAddress? ipAddress = null) : base(ipAddress) { }
 
-    internal async Task InvokeSendingPackageAsync(IList<FileObject> files, string message)
+    internal async Task InvokeSendingPackageAsync(IList<FileObject> files, string message, User user, SendViewModel viewModel)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
@@ -38,11 +40,23 @@ internal class NetworkClient : NetworkObject
             // TODO: Handle failure
             return;
         }
+        
+        viewModel.LoadingTitle = files.Count > 0 ? $"Sending {files.Count} files to {user.Nickname}" : $"Sending message to {user.Nickname}";
+        long overallBytes = files.Sum(x => x.FileInformation.Length) + message.Length;
+        (float byteDivisor, string unit) = overallBytes switch
+        {
+            < 1000 => (1f, "B"),
+            < 1_000_000 => (1_000f, "KB"),
+            < 1_000_000_000 => (1_000_000f, "MB"),
+            _ => (1_000_000_000f, "GB")
+        };
+        UpdateProgress(0, overallBytes, byteDivisor, unit, viewModel);
+        viewModel.IsSending = true;
 
         // Send own GUID
         if (Utilities.LocalUser is null)
             throw new UserNotFoundException("LocalUser could not be found.");
-        Task<bool> sendTask = SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
+        Task<Tuple<bool, int>> sendTask = SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
         await InvokeSendingAsync(sendTask);
 
         // Send length of message
@@ -50,12 +64,14 @@ internal class NetworkClient : NetworkObject
         await InvokeSendingAsync(sendTask);
 
         byte[] messageBytes;
+        long sentBytes = 0;
         if (message.Length > 0)
         {
             // Send text message
             messageBytes = Encoding.UTF8.GetBytes(message);
             sendTask = SendDataAsync(messageBytes, client);
-            await InvokeSendingAsync(sendTask);
+            sentBytes += await InvokeSendingAsync(sendTask);
+            UpdateProgress(sentBytes, overallBytes, byteDivisor, unit, viewModel);
         }
 
         // Send how many files
@@ -88,7 +104,8 @@ internal class NetworkClient : NetworkObject
                     messageBytes = new byte[BufferSize];
                     int received = await fileStream.ReadAsync(messageBytes, 0, messageBytes.Length);
                     sendTask = SendDataAsync(messageBytes, client);
-                    await InvokeSendingAsync(sendTask);
+                    sentBytes += await InvokeSendingAsync(sendTask);
+                    UpdateProgress(sentBytes, overallBytes, byteDivisor, unit, viewModel);
                 }
             }
         }
@@ -97,28 +114,32 @@ internal class NetworkClient : NetworkObject
         await client.DisconnectAsync(false);
         client.Shutdown(SocketShutdown.Both);
         client.Close();
+
+        await Task.Delay(2000);
+        viewModel.IsSending = false;
     }
 
-    private static async Task InvokeSendingAsync(Task<bool> task)
+    private static async Task<int> InvokeSendingAsync(Task<Tuple<bool, int>> task)
     {
         while (true)
         {
-            bool receivedAcknowledgement = await task;
+            var (receivedAcknowledgement, item2) = await task;
             if (receivedAcknowledgement)
-                break;
+                return item2;
         }
     }
 
-    private static async Task<bool> SendSizeAsync(int messageLength, Socket client)
+    private static async Task<Tuple<bool, int>> SendSizeAsync(int messageLength, Socket client)
     {
         byte[] lengthBytes = BitConverter.GetBytes(messageLength);
         return await SendDataAsync(lengthBytes, client);
     }
 
-    private static async Task<bool> SendDataAsync(byte[] buffer, Socket client)
+    private static async Task<Tuple<bool, int>> SendDataAsync(byte[] buffer, Socket client)
     {
-        _ = await client.SendAsync(buffer, SocketFlags.None);
-        return await ReceivedAcknowledgementAsync(client);
+        int bytesSent = await client.SendAsync(buffer, SocketFlags.None);
+        bool receivedAcknowledgement = await ReceivedAcknowledgementAsync(client);
+        return Tuple.Create(receivedAcknowledgement, bytesSent);
     }
 
     private static async Task<bool> ReceivedAcknowledgementAsync(Socket client)
@@ -127,5 +148,11 @@ internal class NetworkClient : NetworkObject
         int received = await client.ReceiveAsync(buffer, SocketFlags.None);
         string response = Encoding.UTF8.GetString(buffer, 0, received);
         return response == "<|ACK|>";
+    }
+
+    private static void UpdateProgress(long sentBytes, long overallBytes, float byteDivisor, string unit, SendViewModel viewModel)
+    {
+        viewModel.SendingProgress = $"{(int)(sentBytes / (float)overallBytes * 100)}%";
+        viewModel.LoadingSubtitle = $"{(sentBytes/byteDivisor):F1} {unit} of {Utilities.DataSizeRepresentation(overallBytes)} transmitted";
     }
 }
