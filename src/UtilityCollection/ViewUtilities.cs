@@ -72,7 +72,7 @@ internal static partial class Utilities
 
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            elementToResize.MaxWidth = autoRow.ActualHeight;
+            elementToResize.MaxHeight = autoRow.ActualHeight;
             // Switch ColumnDefinitions into the correct/desired order
             autoRow.Height = GridLength.Auto;
             fixedRow.Height = new GridLength(1, GridUnitType.Star);
