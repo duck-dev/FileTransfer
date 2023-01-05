@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using FileTransfer.UtilityCollection;
+using ReactiveUI;
 
 namespace FileTransfer.Models;
 
@@ -52,9 +54,27 @@ internal class FileObject
             FileIcon = Utilities.CreateImage(pair.Value);
             break;
         }
+
+        DownloadCommand = ReactiveCommand.Create<bool, Task>(Download);
     }
     
     internal FileInfo FileInformation { get; }
     internal Bitmap? FileIcon { get; }
     internal string Size { get; }
+    
+    internal ReactiveCommand<bool, Task>  DownloadCommand { get; }
+
+    internal async Task Download(bool showDialog)
+    {
+        string title = $"Save {FileInformation.Name} to a destination";
+        string fileName = FileInformation.Name;
+        string extension = FileInformation.Extension;
+
+        string? location = null; // TODO: Replace `null` with default location set in the settings (default: "Downloads" folder)
+        if(showDialog)
+            location = await Utilities.InvokeSaveFileDialog(title, fileName, extension);
+        
+        if (location != null) 
+            Utilities.SaveFile(this, location, true);
+    }
 }

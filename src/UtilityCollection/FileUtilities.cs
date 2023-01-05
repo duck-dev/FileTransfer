@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FileTransfer.Models;
@@ -15,14 +16,30 @@ internal static partial class Utilities
             File.Delete(path);
     }
 
-    internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string folder)
+    internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string location)
     {
         foreach (FileObject file in files)
-        {
-            string path = Path.Combine(folder, file.FileInformation.Name);
-            if (File.Exists(path))
-                path = Path.Combine(folder, $"{Path.GetFileNameWithoutExtension(path)} - Copy{Path.GetExtension(path)}");
-            file.FileInformation.CopyTo(path, false);
-        }
+            SaveFile(file, location, false);
     }
+
+    internal static void SaveFile(FileObject file, string location, bool pathContainsFile)
+    {
+        string path;
+        string directory;
+        if (pathContainsFile)
+        {
+            path = location;
+            directory = Path.GetDirectoryName(location) ?? throw new ArgumentException($"{nameof(location)} refers to a root directory.");
+        }
+        else
+        {
+            path = Path.Combine(location, file.FileInformation.Name);
+            directory = location;
+        }
+        
+        if (File.Exists(path))
+            path = Path.Combine(directory, $"{Path.GetFileNameWithoutExtension(path)} - Copy{Path.GetExtension(path)}");
+        
+        file.FileInformation.CopyTo(path, false);
+    } 
 }

@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
+             xmlns:views="clr-namespace:FileTransfer.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.MessagePackageView"
              x:DataType="viewModels:MessagePackageViewModel">
@@ -101,8 +102,9 @@
                                                    TextTrimming="CharacterEllipsis" Text="{Binding FileInformation.Name}"
                                                    Foreground="{StaticResource OppositeAccent}"/> 
                                         <Button Grid.Column="2" Classes="selectable-button-effect highlight-no-change" 
-                                                VerticalAlignment="Center" Margin="7.5,0,7.5,0">
-                                            <!-- TODO: Set Command for downloading -->
+                                                VerticalAlignment="Center" Margin="7.5,0,7.5,0" 
+                                                Command="{Binding $parent[views:MessagePackageView].ShowDownloadFlyout}"
+                                                CommandParameter="{Binding $self}">
                                             <Button.Template>
                                                 <ControlTemplate>
                                                     <Image Source="/Assets/avalonia-logo.ico" Width="36" Height="36"/>
