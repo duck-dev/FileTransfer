@@ -12,7 +12,6 @@ using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels.Dialogs;
-using FileTransfer.Views;
 using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
@@ -161,15 +160,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private async Task BrowseFiles()
     {
-        if (MainWindow.Instance is not { } mainWindow)
-            return;
-        
-        var fileDialog = new OpenFileDialog
-        {
-            AllowMultiple = true, Title = "Select one or multiple files"
-        };
-        
-        string[]? result = await fileDialog.ShowAsync(mainWindow);
+        string[]? result = await Utilities.InvokeOpenFileDialog("Select one or multiple files", true);
         if (result is null)
             return;
         

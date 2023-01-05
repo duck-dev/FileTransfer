@@ -102,7 +102,9 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     {
         async Task ConfirmAction()
         {
-            string result = await OpenDestinationFolder();
+            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder");
+            if (result is null)
+                return;
             string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
             Utilities.CreateZip(result, zipName, Files);
         }
@@ -116,28 +118,15 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     {
         async Task ConfirmAction()
         {
-            string result = await OpenDestinationFolder();
+            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder");
+            if (result is null)
+                return;
             Utilities.SaveFilesToFolder(Files, result);
         }
         
         string dialogTitle = $"Do you really want to download {Files.Length} files to a destination folder?";
         string[] buttonTexts = {"Yes, download files!", "Cancel"};
         SetConfirmationDialog(dialogTitle, buttonTexts, ConfirmAction);
-    }
-
-    private static async Task<string> OpenDestinationFolder()
-    {
-        if (MainWindow.Instance is not { } mainWindow) // TODO: Handle failure
-            throw new InvalidOperationException("MainWindow.Instance is null and can't be used as a parent window for the dialog.");
-            
-        var fileDialog = new OpenFolderDialog
-        {
-            Title = "Select the destination folder"
-        };
-        
-        string? result = await fileDialog.ShowAsync(mainWindow);
-        return result ?? throw new InvalidOperationException("The path returned from the dialog is null.");
-        // TODO: Handle failure if `result` is null
     }
 
     private void SetConfirmationDialog(string title, IEnumerable<string> buttonTexts, Func<Task> confirmAction)
