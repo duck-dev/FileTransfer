@@ -72,7 +72,7 @@
             </Grid>
         </Button>
         <Button Grid.Column="2" Classes="selectable-button-effect" Margin="35,0,0,0"
-                Command="{Binding $parent[views:ReceiveView].ToggleContextMenu}"
+                Command="{Binding $parent[views:ReceiveView].ShowDownloadFlyout}"
                 CommandParameter="{Binding $self}" VerticalAlignment="Center"
                 IsVisible="{Binding HasFiles}">
             <Button.Template>

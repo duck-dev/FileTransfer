@@ -1,7 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using FileTransfer.Models;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Views;
 
@@ -17,21 +17,16 @@ public class ReceiveView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    internal void ToggleContextMenu(Control button)
+    internal void ShowDownloadFlyout(Control button)
     {
         if (button.DataContext is not MessagePackage package)
             return;
-        
-        MenuFlyout flyout = new MenuFlyout
+
+        var items = new MenuItem[]
         {
-            Items = new []
-            {
-                new MenuItem { Header = "Download ZIP", Command = package.DownloadZipCommand },
-                new MenuItem { Header = "Download to folder", Command = package.DownloadToFolderCommand }
-            },
-            Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft
+            new() { Header = "Download ZIP", Command = package.DownloadZipCommand },
+            new() { Header = "Download to folder", Command = package.DownloadToFolderCommand }
         };
-        FlyoutBase.SetAttachedFlyout(button, flyout);
-        FlyoutBase.ShowAttachedFlyout(button);
+        Utilities.ShowFlyout(button, items, FlyoutPlacementMode.BottomEdgeAlignedLeft);
     }
 }

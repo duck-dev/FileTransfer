@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -107,5 +108,16 @@ internal static partial class Utilities
             string fileName = file.FileInformation.Name;
             archive.CreateEntryFromFile(filePath, fileName);
         }
+    }
+
+    internal static void ShowFlyout(Control button, IEnumerable<MenuItem> items, FlyoutPlacementMode placement)
+    {
+        MenuFlyout flyout = new MenuFlyout
+        {
+            Items = items,
+            Placement = placement,
+        };
+        FlyoutBase.SetAttachedFlyout(button, flyout);
+        FlyoutBase.ShowAttachedFlyout(button);
     }
 }
