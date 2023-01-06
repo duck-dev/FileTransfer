@@ -19,10 +19,11 @@ internal static partial class Utilities
     internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string location)
     {
         foreach (FileObject file in files)
-            SaveFile(file, location, false);
+            SaveFile(file, location, false, false);
+        SetRecentDirectory(location, false);
     }
 
-    internal static void SaveFile(FileObject file, string location, bool pathContainsFile)
+    internal static void SaveFile(FileObject file, string location, bool pathContainsFile, bool setRecentDirectory = true)
     {
         string path;
         string directory;
@@ -41,5 +42,15 @@ internal static partial class Utilities
             path = Path.Combine(directory, $"{Path.GetFileNameWithoutExtension(path)} - Copy{Path.GetExtension(path)}");
         
         file.FileInformation.CopyTo(path, false);
-    } 
+        if(setRecentDirectory)
+            SetRecentDirectory(location, pathContainsFile);
+    }
+
+    private static void SetRecentDirectory(string location, bool pathContainsFile)
+    {
+        string directory = location;
+        if(pathContainsFile)
+            directory = Path.GetDirectoryName(location) ?? throw new DirectoryNotFoundException($"{nameof(location)} refers to a root directory.");
+        ApplicationVariables.RecentDownloadLocation = directory;
+    }
 }
