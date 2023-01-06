@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -160,10 +161,12 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private async Task BrowseFiles()
     {
-        string[]? result = await Utilities.InvokeOpenFileDialog("Select one or multiple files", true);
-        if (result is null)
+        string? directory = ApplicationVariables.RecentUploadLocation;
+        string[]? result = await Utilities.InvokeOpenFileDialog("Select one or multiple files", true, directory);
+        if (result is null || result.Length <= 0)
             return;
         
+        ApplicationVariables.RecentUploadLocation = result.Last();
         EvaluateFiles(result);
     }
 

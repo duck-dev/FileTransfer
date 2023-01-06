@@ -102,11 +102,13 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     {
         async Task ConfirmAction()
         {
-            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder");
+            string? directory = ApplicationVariables.RecentDownloadLocation;
+            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
             if (result is null)
                 return;
             string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
             Utilities.CreateZip(result, zipName, Files);
+            ApplicationVariables.RecentDownloadLocation = result;
         }
         
         string dialogTitle = $"Do you really want to download {Files.Length} files in a compressed ZIP-archive?";
@@ -118,7 +120,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     {
         async Task ConfirmAction()
         {
-            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder");
+            string? directory = ApplicationVariables.RecentDownloadLocation;
+            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
             if (result is null)
                 return;
             Utilities.SaveFilesToFolder(Files, result);
