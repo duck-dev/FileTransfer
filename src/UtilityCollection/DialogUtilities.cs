@@ -44,10 +44,10 @@ internal static partial class Utilities
     {
         var dialog = new SaveFileDialog
         {
-            Title = title, 
+            Title = title,
             InitialFileName = initialFileName,
             DefaultExtension = extension,
-            Directory = directory, 
+            Directory = directory,
             Filters = filters
         };
 
