@@ -89,8 +89,8 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     internal string OverallFilesSize { get; } = "0 B";
     
-    internal ReactiveCommand<Unit,Unit> DownloadZipCommand { get; }
-    internal ReactiveCommand<Unit,Unit> DownloadToFolderCommand { get; }
+    internal ReactiveCommand<Unit,Task> DownloadZipCommand { get; }
+    internal ReactiveCommand<Unit,Task> DownloadToFolderCommand { get; }
 
     internal bool HasText => TextMessage is { Length: > 0 }; // TextMessage != null && `TextMessage.Length > 0`
     internal bool HasFiles => Files.Length > 0;
@@ -98,48 +98,26 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     public void NotifyPropertyChanged(string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void DownloadZip()
+    private async Task DownloadZip()
     {
-        async Task ConfirmAction()
-        {
-            string? directory = ApplicationVariables.RecentDownloadLocation;
-            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
-            if (result is null)
-                return;
-            string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
-            Utilities.CreateZip(result, zipName, Files);
-            ApplicationVariables.RecentDownloadLocation = result;
-        }
+        string? directory = ApplicationVariables.RecentDownloadLocation;
+        string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
+        if (result is null)
+            return;
         
-        string dialogTitle = $"Do you really want to download {Files.Length} files in a compressed ZIP-archive?";
-        string[] buttonTexts = {"Yes, download ZIP!", "Cancel"};
-        SetConfirmationDialog(dialogTitle, buttonTexts, ConfirmAction);
+        string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
+        Utilities.CreateZip(result, zipName, Files);
+        ApplicationVariables.RecentDownloadLocation = result;
     }
 
-    private void DownloadToFolder()
-    {
-        async Task ConfirmAction()
-        {
-            string? directory = ApplicationVariables.RecentDownloadLocation;
-            string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
-            if (result is null)
-                return;
-            Utilities.SaveFilesToFolder(Files, result);
-        }
+    private async Task DownloadToFolder()
+    { 
+        string? directory = ApplicationVariables.RecentDownloadLocation;
+        string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
+        if (result is null)
+            return;
         
-        string dialogTitle = $"Do you really want to download {Files.Length} files to a destination folder?";
-        string[] buttonTexts = {"Yes, download files!", "Cancel"};
-        SetConfirmationDialog(dialogTitle, buttonTexts, ConfirmAction);
-    }
-
-    private void SetConfirmationDialog(string title, IEnumerable<string> buttonTexts, Func<Task> confirmAction)
-    {
-        if (_receiveViewModel is null)
-            return; // TODO: Handle failure
-        var dialog = new ConfirmationDialogViewModel(_receiveViewModel, title,
-            new[] {Resources.MainRed, Resources.MainGrey},
-            new[] {Colors.White, Colors.White}, buttonTexts, confirmAction);
-        _receiveViewModel.CurrentDialog = dialog;
+        Utilities.SaveFilesToFolder(Files, result);
     }
 
     private void ToggleReadStatus() => IsRead = !IsRead;
