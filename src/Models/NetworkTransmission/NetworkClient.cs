@@ -101,7 +101,10 @@ internal class NetworkClient : NetworkObject
                 await using var fileStream = new FileStream(file.FileInformation.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, true);
                 for (int i = 0; i < fileSize; i += BufferSize)
                 {
-                    messageBytes = new byte[BufferSize];
+                    int tempBufferSize = BufferSize;
+                    if (fileSize - BufferSize < i)
+                        tempBufferSize = (int)fileSize - i;
+                    messageBytes = new byte[tempBufferSize];
                     int received = await fileStream.ReadAsync(messageBytes, 0, messageBytes.Length);
                     sendTask = SendDataAsync(messageBytes, client);
                     sentBytes += await InvokeSendingAsync(sendTask);
