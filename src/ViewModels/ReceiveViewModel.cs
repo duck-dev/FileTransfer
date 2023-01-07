@@ -42,7 +42,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
     
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs args)
     {
-        var message = new MessagePackage(args, this);
+        var message = new MessagePackage(args);
         Messages.Insert(0, message);
     }
     
