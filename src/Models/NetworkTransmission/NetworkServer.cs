@@ -137,6 +137,10 @@ internal class NetworkServer : NetworkObject
                         // Send Acknowledgement
                         await SendAcknowledgementAsync(handler);
                     }
+                    
+                    await fileStream.FlushAsync();
+                    fileStream.Close();
+                    
                     files.Add(new FileObject(path));
                 }
             }
