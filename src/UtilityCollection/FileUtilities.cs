@@ -8,9 +8,12 @@ namespace FileTransfer.UtilityCollection;
 internal static partial class Utilities
 {
     internal const string TemporaryFilesPath = "TempFiles";
-    
-    internal static void DeleteDirectory(string directory) 
-        => Directory.Delete(directory, true);
+
+    internal static void DeleteDirectory(string directory)
+    {
+        if(Directory.Exists(directory))
+            Directory.Delete(directory, true);
+    }
 
     internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string location)
     {
