@@ -9,7 +9,7 @@ internal static partial class Utilities
 {
     internal const string TemporaryFilesPath = "TempFiles";
     
-    internal static void DeleteElementsInDirectory(string directory) 
+    internal static void DeleteDirectory(string directory) 
         => Directory.Delete(directory, true);
 
     internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string location)
