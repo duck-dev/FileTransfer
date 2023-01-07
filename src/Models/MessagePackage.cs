@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Media;
 using FileTransfer.DateFormatterUtility;
 using FileTransfer.Events;
 using FileTransfer.Extensions;
 using FileTransfer.Interfaces;
-using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels;
-using FileTransfer.ViewModels.Dialogs;
-using FileTransfer.Views;
 using ReactiveUI;
 
 namespace FileTransfer.Models;
@@ -95,7 +90,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     internal bool HasText => TextMessage is { Length: > 0 }; // TextMessage != null && `TextMessage.Length > 0`
     internal bool HasFiles => Files.Length > 0;
 
-    public void NotifyPropertyChanged(string propertyName = "")
+    public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private async Task DownloadZip()

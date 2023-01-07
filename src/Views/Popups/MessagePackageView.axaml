@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
              xmlns:views="clr-namespace:FileTransfer.Views"
+             xmlns:selectionTypeControls="clr-namespace:FileTransfer.CustomControls.SelectionTypeControls"
+             xmlns:models="clr-namespace:FileTransfer.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.MessagePackageView"
              x:DataType="viewModels:MessagePackageViewModel">
@@ -29,6 +31,74 @@
             </Style.Animations>
         </Style>
     </UserControl.Styles>
+    
+    <UserControl.Resources>
+        <DataTemplate x:Key="FileTemplate">
+            <Border CornerRadius="7.5" Background="{StaticResource TransparentWhite}" 
+                    Height="60" Width="236" Margin="5" Padding="0"
+                    ToolTip.Tip="{Binding File.FileInformation.Name}">
+                <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Image Grid.Column="0" Source="{Binding File.FileIcon}" Width="36" Height="36"
+                           Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                               FontSize="20" FontWeight="Bold" TextWrapping="Wrap" MaxLines="2"
+                               TextTrimming="CharacterEllipsis" Text="{Binding File.FileInformation.Name}"
+                               Foreground="{StaticResource OppositeAccent}"/>
+                    <ContentControl Grid.Column="2" VerticalAlignment="Center" Margin="7.5,0,7.5,0"
+                                    Content="{Binding SelectionType}">
+                        <ContentControl.DataTemplates>
+                            <DataTemplate>
+                                <DataTemplate.DataType>
+                                    <x:Type TypeName="selectionTypeControls:SelectionTypeOne" x:TypeArguments="models:UIFileObject"/>
+                                </DataTemplate.DataType>
+                                <CheckBox IsThreeState="False" CornerRadius="100" Padding="0"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Background="{StaticResource FullyTransparent}"
+                                          Foreground="{StaticResource White}"
+                                          IsChecked="{Binding Reference.Selected}"
+                                          Command="{Binding $parent[views:MessagePackageView].DataContext.FileSelected}"
+                                          CommandParameter="{Binding Reference}">
+                                    <CheckBox.Styles>
+                                        <Style Selector="CheckBox /template/ Border#NormalRectangle">
+                                            <Setter Property="CornerRadius" Value="100"/>
+                                            <Setter Property="Background" Value="{StaticResource FullyTransparent}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource MainGrey}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Width" Value="28"/>
+                                            <Setter Property="Height" Value="28"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                        <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
+                                            <Setter Property="Background" Value="{StaticResource MattBlue}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource MattBlue}"/>
+                                        </Style>
+                                    </CheckBox.Styles>
+                                </CheckBox>
+                            </DataTemplate>
+                            <DataTemplate>
+                                <DataTemplate.DataType>
+                                    <x:Type TypeName="selectionTypeControls:SelectionTypeTwo" x:TypeArguments="models:UIFileObject"/>
+                                </DataTemplate.DataType>
+                                <Button Classes="selectable-button-effect highlight-no-change" VerticalAlignment="Center" 
+                                        Command="{Binding $parent[views:MessagePackageView].ShowDownloadFlyout}"
+                                        CommandParameter="{Binding $self}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Source="/Assets/avalonia-logo.ico" Width="36" Height="36"/>
+                                            <!-- TODO: Download-Light.png -->
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ContentControl.DataTemplates>
+                    </ContentControl>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="FileParentTemplate">
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
     
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource DarkenedDialogBackground}">
         <Border CornerRadius="30" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
@@ -80,43 +150,38 @@
                              Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
                              Text="{Binding Message.TextMessage}"/>
                 </ScrollViewer>
-                <ScrollViewer Grid.Row="4" Classes="standard" HorizontalAlignment="Stretch" 
+                <!-- TODO: Implement Classes="standard" for ScrollViewer in Template -->
+                <ListBox Grid.Row="4" HorizontalAlignment="Stretch" MinHeight="{Binding MinFilesHeight}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Background="{StaticResource FullyTransparent}" Items="{Binding Files}"
+                         SelectionMode="Multiple,Toggle" SelectionChanged="FileSelected"
+                         ItemsPanel="{StaticResource FileParentTemplate}"
+                         ItemTemplate="{StaticResource FileTemplate}" IsVisible="{Binding SelectionEnabled}">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Focusable" Value="False"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                        </Style>
+                    </ListBox.Styles>
+                </ListBox>
+                <ScrollViewer Grid.Row="4" Classes="standard" HorizontalAlignment="Stretch"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                              MinHeight="{Binding MinFilesHeight}">
-                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Message.Files}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border CornerRadius="7.5" Background="{StaticResource TransparentWhite}" 
-                                        Height="60" Width="236" Margin="5" Padding="0" 
-                                        ToolTip.Tip="{Binding FileInformation.Name}">
-                                    <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Image Grid.Column="0" Source="{Binding FileIcon}" Width="36" Height="36"
-                                               Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
-                                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                   FontSize="20" FontWeight="Bold" TextWrapping="Wrap" MaxLines="2"
-                                                   TextTrimming="CharacterEllipsis" Text="{Binding FileInformation.Name}"
-                                                   Foreground="{StaticResource OppositeAccent}"/> 
-                                        <Button Grid.Column="2" Classes="selectable-button-effect highlight-no-change" 
-                                                VerticalAlignment="Center" Margin="7.5,0,7.5,0" 
-                                                Command="{Binding $parent[views:MessagePackageView].ShowDownloadFlyout}"
-                                                CommandParameter="{Binding $self}">
-                                            <Button.Template>
-                                                <ControlTemplate>
-                                                    <Image Source="/Assets/avalonia-logo.ico" Width="36" Height="36"/>
-                                                    <!-- TODO: Download-Light.png -->
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                              MinHeight="{Binding MinFilesHeight}" IsVisible="{Binding !SelectionEnabled}">
+                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Files}"
+                                  ItemsPanel="{StaticResource FileParentTemplate}" 
+                                  ItemTemplate="{StaticResource FileTemplate}"/>
                 </ScrollViewer>
             </Grid>
         </Border>

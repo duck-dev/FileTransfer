@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using FileTransfer.CustomControls.SelectionTypeControls;
 using FileTransfer.Enums;
 using FileTransfer.Models;
 using FileTransfer.UtilityCollection;
@@ -73,18 +74,24 @@ public class MessagePackageView : UserControl
 
     private void ShowDownloadFlyout(Control button)
     {
-        if (button.DataContext is not FileObject file)
+        if (button.DataContext is not SelectionTypeBase<UIFileObject> file)
             return;
         
         var items = new MenuItem[]
         {
             // TODO: Enable when default path implemented (see: `FileObject.Download(bool)`)
-            new() { Header = "Download to default folder", Command = file.DownloadCommand, CommandParameter = false, IsEnabled = false },
-            new() { Header = "Download to selected location", Command = file.DownloadCommand, CommandParameter = true }
+            new() { Header = "Download to default folder", Command = file.Reference.File.DownloadCommand, CommandParameter = false, IsEnabled = false },
+            new() { Header = "Download to selected location", Command = file.Reference.File.DownloadCommand, CommandParameter = true }
         };
         Utilities.ShowFlyout(button, items, FlyoutPlacementMode.BottomEdgeAlignedLeft);
     }
     
     private static async Task DisableCopiedTextElement(IVisual visual)
         => await Dispatcher.UIThread.InvokeAsync(() => visual.IsVisible = false);
+
+    private void FileSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        if (this.DataContext is MessagePackageViewModel viewModel)
+            viewModel.FileSelected(e.AddedItems, e.RemovedItems);
+    }
 }
