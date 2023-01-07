@@ -81,6 +81,13 @@ internal class NetworkServer : NetworkObject
             List<FileObject>? files = null;
             if (fileCount > 0)
             {
+                DateTime now = DateTime.Now;
+                string nowString = $"{now.Year}-{now.Month}-{now.Day}_{now.Hour}-{now.Minute}-{now.Second}-{now.Millisecond}";
+                string senderGuidString = userGuid.ToString();
+                string directory = Path.Combine(Directory.GetCurrentDirectory(), Utilities.TemporaryFilesPath, senderGuidString, nowString);
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+                
                 files = new List<FileObject>();
                 // Receive files
                 for (int i = 0; i < fileCount; i++)
@@ -114,10 +121,9 @@ internal class NetworkServer : NetworkObject
                     // Send acknowledgement
                     await SendAcknowledgementAsync(handler);
  
-                    string directory = Path.Combine(Directory.GetCurrentDirectory(),Utilities.TemporaryFilesPath);
-                    if (!Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
                     string path = Path.Combine(directory, fileName);
+                    if (File.Exists(path))
+                        path = Path.Combine(directory, $"{Path.GetFileNameWithoutExtension(path)} - Copy{Path.GetExtension(path)}");
                     await using var fileStream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, BufferSize, true);
                     for (long j = 0; j < fileSize; j += BufferSize)
                     {
