@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -74,14 +75,23 @@ public class MessagePackageView : UserControl
 
     private void ShowDownloadFlyout(Control button)
     {
-        if (button.DataContext is not SelectionTypeBase<UIFileObject> file)
-            return;
-        
+        if (button.DataContext is SelectionTypeBase<UIFileObject> file)
+            ShowFlyout(button, file.Reference.File.DownloadCommand);
+    }
+
+    private void ShowMultipleDownloadFlyout(Control button)
+    {
+        if (this.DataContext is MessagePackageViewModel viewModel)
+            ShowFlyout(button, viewModel.DownloadSelectedFilesCommand);
+    }
+
+    private static void ShowFlyout(Control button, ICommand command)
+    {
         var items = new MenuItem[]
         {
             // TODO: Enable when default path implemented (see: `FileObject.Download(bool)`)
-            new() { Header = "Download to default folder", Command = file.Reference.File.DownloadCommand, CommandParameter = false, IsEnabled = false },
-            new() { Header = "Download to selected location", Command = file.Reference.File.DownloadCommand, CommandParameter = true }
+            new() { Header = "Download to default folder", Command = command, CommandParameter = false, IsEnabled = false },
+            new() { Header = "Download to selected location", Command = command, CommandParameter = true }
         };
         Utilities.ShowFlyout(button, items, FlyoutPlacementMode.BottomEdgeAlignedLeft);
     }

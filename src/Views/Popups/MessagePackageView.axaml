@@ -102,7 +102,7 @@
     
     <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource DarkenedDialogBackground}">
         <Border CornerRadius="30" HorizontalAlignment="Stretch" Background="{StaticResource AppPurple}" 
-                Height="420" Margin="40,0">
+                Height="475" Margin="40,0">
             <Grid x:Name="ParentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="Auto,Auto,Auto,Auto,*"
                   Margin="20,10">
                 <Button Grid.Row="0" Grid.RowSpan="5" Classes="selectable-button-effect highlight-no-change"
@@ -144,45 +144,87 @@
                     </Grid>
                 </Grid>
                 <ScrollViewer Grid.Row="3" x:Name="TextSpace" Classes="standard" HorizontalAlignment="Stretch"
-                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,30"
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,20"
                               IsVisible="{Binding Message.HasText}">
                     <TextBox x:Name="TextMessage" Classes="text-acting-textbox" HorizontalAlignment="Left" FontSize="24" 
                              Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
                              Text="{Binding Message.TextMessage}"/>
                 </ScrollViewer>
-                <!-- TODO: Implement Classes="standard" for ScrollViewer in Template -->
-                <ListBox Grid.Row="4" HorizontalAlignment="Stretch" MinHeight="{Binding MinFilesHeight}"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         Background="{StaticResource FullyTransparent}" Items="{Binding Files}"
-                         SelectionMode="Multiple,Toggle" SelectionChanged="FileSelected"
-                         ItemsPanel="{StaticResource FileParentTemplate}"
-                         ItemTemplate="{StaticResource FileTemplate}" IsVisible="{Binding SelectionEnabled}">
-                    <ListBox.Styles>
-                        <Style Selector="ListBoxItem">
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Focusable" Value="False"/>
-                        </Style>
-                        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
-                        </Style>
-                        <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
-                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
-                        </Style>
-                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
-                        </Style>
-                    </ListBox.Styles>
-                </ListBox>
-                <ScrollViewer Grid.Row="4" Classes="standard" HorizontalAlignment="Stretch"
-                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                              MinHeight="{Binding MinFilesHeight}" IsVisible="{Binding !SelectionEnabled}">
-                    <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Files}"
-                                  ItemsPanel="{StaticResource FileParentTemplate}" 
-                                  ItemTemplate="{StaticResource FileTemplate}"/>
-                </ScrollViewer>
+                <Grid Grid.Row="4" RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch">
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right" Margin="0,0,31,10"
+                          IsVisible="{Binding Message.HasFiles}">
+                        <Button Grid.Column="0" Classes="selectable-button-effect" HorizontalAlignment="Center" 
+                                IsVisible="{Binding SelectionEnabled}" Margin="0,0,25,0"
+                                Command="{Binding $parent[views:MessagePackageView].ShowMultipleDownloadFlyout}"
+                                CommandParameter="{Binding $self}" IsEnabled="{Binding AnyFilesSelected}">
+                            <Button.Styles>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Opacity" Value="0.6"/>
+                                </Style>
+                            </Button.Styles>
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Panel>
+                                        <Image Source="/Assets/avalonia-logo.ico" Width="40" Height="40"/> <!-- TODO: Download-Light.png -->
+                                        <Panel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,-3,0"
+                                               IsVisible="{Binding AnyFilesSelected}"> 
+                                            <!-- TODO: Adjust margin when adding real icon (Download-Light.png) if needed -->
+                                            <Ellipse Fill="{StaticResource MattBlue}" Stroke="{StaticResource AppPurple}"
+                                                     StrokeThickness="3" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock FontSize="11" FontWeight="Bold" Foreground="{StaticResource White}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Text="{Binding SelectedFilesCount}"/>
+                                        </Panel>
+                                    </Panel>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Grid.Column="1" Classes="selectable-button-effect" Command="{Binding ToggleFilesSelection}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Panel>
+                                        <TextBlock Text="Select multiple files" Foreground="{StaticResource White}"
+                                                   FontSize="26" FontWeight="Bold" IsVisible="{Binding !SelectionEnabled}"/>
+                                        <TextBlock Text="Cancel" Foreground="{StaticResource MainRed}" FontSize="26"
+                                                   FontWeight="Bold" IsVisible="{Binding SelectionEnabled}"/>
+                                    </Panel>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+                    <ListBox Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="{Binding MinFilesHeight}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             Background="{StaticResource FullyTransparent}" Items="{Binding Files}"
+                             SelectionMode="Multiple,Toggle" SelectionChanged="FileSelected"
+                             ItemsPanel="{StaticResource FileParentTemplate}"
+                             ItemTemplate="{StaticResource FileTemplate}" IsVisible="{Binding SelectionEnabled}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Focusable" Value="False"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                            </Style>
+                        </ListBox.Styles>
+                    </ListBox>
+                    <ScrollViewer Grid.Row="1" Classes="standard" HorizontalAlignment="Stretch"
+                                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                  MinHeight="{Binding MinFilesHeight}" IsVisible="{Binding !SelectionEnabled}">
+                        <ItemsControl HorizontalAlignment="Stretch" Items="{Binding Files}"
+                                      ItemsPanel="{StaticResource FileParentTemplate}" 
+                                      ItemTemplate="{StaticResource FileTemplate}"/>
+                    </ScrollViewer>
+                </Grid>
             </Grid>
         </Border>
     </Panel>

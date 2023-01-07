@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using FileTransfer.Models;
+using FileTransfer.UtilityCollection;
 using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
@@ -21,6 +22,7 @@ internal class MessagePackageViewModel : ViewModelBase
     {
         this.Message = message;
         this.Files = message.Files.Select(x => new UIFileObject(x)).ToArray();
+        this.DownloadSelectedFilesCommand = ReactiveCommand.Create<bool, Task>(DownloadSelectedFiles);
     }
     
     internal MessagePackage Message { get; }
@@ -28,6 +30,11 @@ internal class MessagePackageViewModel : ViewModelBase
     internal UIFileObject[] Files { get; }
 
     internal int MinFilesHeight => Message.HasFiles ? 100 : 0;
+    
+    private int SelectedFilesCount => _selectedFiles.Count;
+    private bool AnyFilesSelected => SelectionEnabled && SelectedFilesCount > 0;
+    
+    internal ReactiveCommand<bool, Task> DownloadSelectedFilesCommand { get; }
 
     private bool SelectionEnabled
     {
@@ -36,8 +43,13 @@ internal class MessagePackageViewModel : ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref _selectionEnabled, value);
             foreach (UIFileObject file in Files)
+            {
+                file.Selected = false;
                 file.UpdateSelectionType(_selectionEnabled);
+            }
             _selectedFiles.Clear();
+            
+            this.RaisePropertyChanged(nameof(AnyFilesSelected));
         }
     }
 
@@ -69,8 +81,27 @@ internal class MessagePackageViewModel : ViewModelBase
         else
             _selectedFiles.Remove(file.File);
         
-        UtilityCollection.Utilities.Log("------------------------------------");
-        foreach(var x in _selectedFiles)
-            UtilityCollection.Utilities.Log(x.FileInformation.Name);
+        this.RaisePropertyChanged(nameof(AnyFilesSelected));
+        this.RaisePropertyChanged(nameof(SelectedFilesCount));
     }
+    
+    private async Task DownloadSelectedFiles(bool showDialog)
+    {
+        if (_selectedFiles.Count <= 0)
+            return;
+        
+        const string title = "Select a destination";
+        string? directory = ApplicationVariables.RecentDownloadLocation;
+
+        string? location = null; // TODO: Replace `null` with default location set in the settings (default: "Downloads" folder)
+        if (showDialog)
+            location = await Utilities.InvokeOpenFolderDialog(title, directory);
+        
+        if (location != null)
+            Utilities.SaveFilesToFolder(_selectedFiles, location);
+
+        SelectionEnabled = false;
+    }
+
+    private void ToggleFilesSelection() => SelectionEnabled = !SelectionEnabled;
 }
