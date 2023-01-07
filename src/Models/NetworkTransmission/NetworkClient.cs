@@ -103,7 +103,7 @@ internal class NetworkClient : NetworkObject
                 {
                     int tempBufferSize = BufferSize;
                     if (fileSize - BufferSize < i)
-                        tempBufferSize = (int)fileSize - i;
+                        tempBufferSize = (int)(fileSize - i);
                     messageBytes = new byte[tempBufferSize];
                     int received = await fileStream.ReadAsync(messageBytes, 0, messageBytes.Length);
                     sendTask = SendDataAsync(messageBytes, client);
