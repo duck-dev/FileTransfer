@@ -127,7 +127,10 @@ internal class NetworkServer : NetworkObject
                     await using var fileStream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Write, BufferSize, true);
                     for (long j = 0; j < fileSize; j += BufferSize)
                     {
-                        buffer = new byte[BufferSize];
+                        int tempBufferSize = BufferSize;
+                        if (fileSize - BufferSize < j)
+                            tempBufferSize = (int)(fileSize - j);
+                        buffer = new byte[tempBufferSize];
                         _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
                         await fileStream.WriteAsync(buffer, 0, buffer.Length);
 
