@@ -103,5 +103,11 @@ internal class MessagePackageViewModel : ViewModelBase
         SelectionEnabled = false;
     }
 
+    private void EnableSelectionAndSelect(UIFileObject file)
+    {
+        SelectionEnabled = true;
+        FileSelected(file);
+    }
+
     private void ToggleFilesSelection() => SelectionEnabled = !SelectionEnabled;
 }

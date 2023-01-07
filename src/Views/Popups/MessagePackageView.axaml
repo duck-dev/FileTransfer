@@ -37,6 +37,19 @@
             <Border CornerRadius="7.5" Background="{StaticResource TransparentWhite}" 
                     Height="60" Width="236" Margin="5" Padding="0"
                     ToolTip.Tip="{Binding File.FileInformation.Name}">
+                <Border.ContextMenu>
+                    <ContextMenu IsVisible="{Binding !$parent[views:MessagePackageView].DataContext.SelectionEnabled}">
+                        <MenuItem Header="Select" Command="{Binding $parent[views:MessagePackageView].DataContext.EnableSelectionAndSelect}"
+                                  CommandParameter="{Binding}"/>
+                        <MenuItem Header="Download">
+                            <!-- TODO: Enable when default location implemented -->
+                            <MenuItem Header="Download to default folder" 
+                                      Command="{Binding File.Download}" CommandParameter="False" IsEnabled="False"/>
+                            <MenuItem Header="Download to selected folder"
+                                      Command="{Binding File.Download}" CommandParameter="True"/>
+                        </MenuItem>
+                    </ContextMenu>
+                </Border.ContextMenu>
                 <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Image Grid.Column="0" Source="{Binding File.FileIcon}" Width="36" Height="36"
                            Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
