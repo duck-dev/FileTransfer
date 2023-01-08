@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:FileTransfer.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FileTransfer.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/App-Icon.png"
         Title="FileTransfer"
         MinWidth="990"
         MinHeight="500">
