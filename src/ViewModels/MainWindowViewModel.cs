@@ -14,12 +14,13 @@ internal sealed class MainWindowViewModel : ViewModelBase
         NotificationManager?.Show(notification);
     }
 
-    internal static void ShowNotification(string title, string message, NotificationType type, TimeSpan expiration, Action onClick, Action onClose)
+    internal static void ShowNotification(string title, string message, NotificationType type, TimeSpan expiration, 
+        Action? onClick = null, Action? onClose = null)
     {
         Dispatcher.UIThread.InvokeAsync(() =>
         {
             var notification = new Notification(title, message, type, expiration, onClick, onClose);
-            NotificationManager?.Show(notification);
+            ShowNotification(notification);
         });
     }
 }
