@@ -114,4 +114,10 @@
                 </Style.Animations>
         </Style>
         
+        <!-- Notifications -->
+        
+        <Style Selector="NotificationCard /template/ Panel#PART_HeaderBar">
+                <Setter Property="Height" Value="6"/>
+        </Style>
+        
 </Styles>
