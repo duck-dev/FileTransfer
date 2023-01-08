@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Avalonia.Controls.Notifications;
 using FileTransfer.Models;
+using FileTransfer.ViewModels;
 
 namespace FileTransfer.UtilityCollection;
 
@@ -15,11 +17,15 @@ internal static partial class Utilities
             Directory.Delete(directory, true);
     }
 
-    internal static void SaveFilesToFolder(IEnumerable<FileObject> files, string location)
+    internal static void SaveFilesToFolder(ICollection<FileObject> files, string location)
     {
         foreach (FileObject file in files)
             SaveFile(file, location, false, false);
         SetRecentDirectory(location, false);
+        
+        string title = $"{files.Count} files downloaded";
+        string message = $"{files.Count} files were downloaded.";
+        MainWindowViewModel.ShowNotification(title, message, NotificationType.Success, TimeSpan.FromSeconds(3));
     }
 
     internal static void SaveFile(FileObject file, string location, bool pathContainsFile, bool setRecentDirectory = true)
@@ -41,8 +47,13 @@ internal static partial class Utilities
             path = Path.Combine(directory, $"{Path.GetFileNameWithoutExtension(path)} - Copy{Path.GetExtension(path)}");
         
         file.FileInformation.CopyTo(path, false);
-        if(setRecentDirectory)
-            SetRecentDirectory(location, pathContainsFile);
+        if (!setRecentDirectory) 
+            return;
+        SetRecentDirectory(location, pathContainsFile);
+            
+        string title = $"{file.FileInformation.Name} downloaded";
+        string message = $"{file.FileInformation.Name} was downloaded.";
+        MainWindowViewModel.ShowNotification(title, message, NotificationType.Success, TimeSpan.FromSeconds(3));
     }
 
     private static void SetRecentDirectory(string location, bool pathContainsFile)

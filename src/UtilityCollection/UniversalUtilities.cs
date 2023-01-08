@@ -4,12 +4,14 @@ using System.IO;
 using System.IO.Compression;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using FileTransfer.Models;
+using FileTransfer.ViewModels;
 
 namespace FileTransfer.UtilityCollection;
 
@@ -98,7 +100,7 @@ internal static partial class Utilities
         };
     }
 
-    internal static void CreateZip(string folder, string zipName, IEnumerable<FileObject> files)
+    internal static void CreateZip(string folder, string zipName, ICollection<FileObject> files)
     {
         string zipPath = Path.Combine(folder, $"{zipName}.zip");
         using var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create);
@@ -108,6 +110,10 @@ internal static partial class Utilities
             string fileName = file.FileInformation.Name;
             archive.CreateEntryFromFile(filePath, fileName);
         }
+
+        const string title = "ZIP downloaded";
+        string message = $"A ZIP file with {files.Count} files was downloaded.";
+        MainWindowViewModel.ShowNotification(title, message, NotificationType.Success, TimeSpan.FromSeconds(3));
     }
 
     internal static void ShowFlyout(Control button, IEnumerable<MenuItem> items, FlyoutPlacementMode placement)
