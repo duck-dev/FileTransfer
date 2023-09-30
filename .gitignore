@@ -11,6 +11,8 @@ project.lock.json
 *.pyc
 nupkg/
 
+global.json
+
 # Rider
 .idea
 
