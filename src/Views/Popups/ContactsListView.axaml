@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.ContactsListView">
+    
+    <Border Width="350" Height="500" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,10,0"
+            Background="{StaticResource MainBackground}" BorderBrush="{StaticResource AppPurple}"
+            BorderThickness="4" CornerRadius="20">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <Grid ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch">
+                <TextBlock Grid.Column="0" FontSize="36" FontWeight="Bold" Foreground="{StaticResource AppPurple}"
+                           Text="Contacts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="36" Height="36"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Grid.Column="2" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="36" Height="36"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Border>
+    
+</UserControl>
