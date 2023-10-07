@@ -10,7 +10,7 @@ namespace FileTransfer.UtilityCollection;
 
 internal static partial class Utilities
 {
-    internal static ObservableCollection<User>? UsersList { get; set; }
+    public static ObservableCollection<User>? UsersList { get; set; }
     
     internal static User? LocalUser { get; set; }
     
