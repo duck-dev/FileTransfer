@@ -2,14 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:utilityCollection="clr-namespace:FileTransfer.UtilityCollection"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.ContactsListView">
     
     <Border Width="350" Height="500" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,10,0"
             Background="{StaticResource MainBackground}" BorderBrush="{StaticResource AppPurple}"
             BorderThickness="4" CornerRadius="20">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-            <Grid ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch">
+        <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch" Margin="0,0,0,15">
                 <TextBlock Grid.Column="0" FontSize="36" FontWeight="Bold" Foreground="{StaticResource AppPurple}"
                            Text="Contacts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0">
@@ -29,7 +30,63 @@
                     </Button.Template>
                 </Button>
             </Grid>
-        </StackPanel>
+            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Classes="standard"
+                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Expander ExpandDirection="Down" Padding="0" HorizontalAlignment="Stretch" Margin="0,10">
+                        <Expander.Styles>
+                            <Style Selector="Expander /template/ Border#ExpanderContent">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </Expander.Styles>
+                        <Expander.Header>
+                            <Grid RowDefinitions="Auto,Auto" HorizontalAlignment="Stretch">
+                                <TextBlock Grid.Row="0" Foreground="{StaticResource MainGrey}" FontSize="24"
+                                           FontWeight="Thin" Text="1 Online"/>
+                                <Separator Grid.Row="1" Foreground="{StaticResource MainGrey}" HorizontalAlignment="Stretch"></Separator>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ItemsControl Items="{x:Static utilityCollection:Utilities.UsersList}" 
+                                          HorizontalAlignment="Stretch">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,7.5,0,7.5">
+                                            <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
+                                                <Ellipse Fill="{Binding Color}" Width="36" Height="36" 
+                                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                         Stretch="Uniform" MaxHeight="28" MaxWidth="34">
+                                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                               Foreground="{StaticResource White}"
+                                                               Text="{Binding Initials}" FontSize="15"/>
+                                                </Viewbox>
+                                            </Panel>
+                                            <TextBlock Grid.Column="1" FontSize="28" Foreground="{StaticResource AppPurple}"
+                                                       TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
+                                                       Text="{Binding Nickname}" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    Margin="10,0,0,0">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Expander.Content>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Border>
     
 </UserControl>
