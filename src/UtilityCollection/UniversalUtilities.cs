@@ -126,4 +126,6 @@ internal static partial class Utilities
         FlyoutBase.SetAttachedFlyout(button, flyout);
         FlyoutBase.ShowAttachedFlyout(button);
     }
+
+    internal static int CompareStringsAlphabetically(string? a, string? b) => string.Compare(a, b, StringComparison.Ordinal);
 }
