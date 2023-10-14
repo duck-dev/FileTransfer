@@ -84,7 +84,7 @@
                                         <DataTemplate>
                                             <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,7.5,0,7.5">
                                                 <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
-                                                    <Ellipse Fill="{Binding Color}" Width="36" Height="36"
+                                                    <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
                                                              VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">
@@ -137,7 +137,7 @@
                                             <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch"
                                                   Margin="0,7.5,0,7.5">
                                                 <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
-                                                    <Ellipse Fill="{Binding Color}" Width="36" Height="36"
+                                                    <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
                                                              VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">
@@ -173,7 +173,7 @@
                     <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,7.5,0,7.5"
                           IsVisible="{Binding IsNewContactVisible}">
                         <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
-                            <Ellipse Fill="{Binding NewContact.Color}" Width="36" Height="36"
+                            <Ellipse Fill="{Binding NewContact.ColorBrush}" Width="36" Height="36"
                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">

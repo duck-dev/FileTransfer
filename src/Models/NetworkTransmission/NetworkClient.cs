@@ -53,10 +53,10 @@ internal class NetworkClient : NetworkObject
         UpdateProgress(0, overallBytes, byteDivisor, unit, viewModel);
         viewModel.IsSending = true;
 
-        // Send own GUID
+        // Send own ID
         if (Utilities.LocalUser is null)
             throw new UserNotFoundException("LocalUser could not be found.");
-        Task<Tuple<bool, int>> sendTask = SendDataAsync(Utilities.LocalUser.UniqueGuid.ToByteArray(), client);
+        Task<Tuple<bool, int>> sendTask = SendDataAsync(Encoding.UTF8.GetBytes(Utilities.LocalUser.ID), client);
         await InvokeSendingAsync(sendTask);
 
         // Send length of message

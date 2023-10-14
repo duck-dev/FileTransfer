@@ -1,36 +1,38 @@
-using System;
 using System.Net;
 using Avalonia.Media;
+using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models;
 
 public class User
 {
-    internal User(byte[] guid, string username, string ipString, Color color)
+    internal User(string id, string nickname, uint colorCode)
     {
-        this.UniqueGuid = new Guid(guid); // TODO: Replace with ID
-        this.UniqueGuidStr = UniqueGuid.ToString(); // TODO: Replace with ID
+        this.ID = id;
+        
+        Utilities.DecryptID(id, out string username, out string ipString);
         this.Username = username;
-        this.Nickname = username; // TODO: Replace by locally saved nickname for User with this GUID
+        this.Nickname = nickname;
         
         string[] wordsInNickname = Nickname.Split(char.Parse(" "), 2);
         this.Initials = wordsInNickname.Length == 1 ? Nickname[0].ToString() : $"{wordsInNickname[0][0]}{wordsInNickname[1][0]}";
         this.Initials = Initials.ToUpperInvariant();
         
-        this.Color = new SolidColorBrush(color);
+        this.ColorCode = colorCode;
+        Color color = Color.FromUInt32(colorCode);
+        this.ColorBrush = new SolidColorBrush(color);
+        
         if (IPAddress.TryParse(ipString, out IPAddress? tempIp))
             this.IP = tempIp;
     }
     
-    internal Guid UniqueGuid { get; } // TODO: Replace with ID
-    internal string UniqueGuidStr { get; } // TODO: Replace with ID
+    public string Nickname { get; set; }
+    public string ID { get; set; }
+    public uint ColorCode { get; set; } // For JSON
     
     internal string Username { get; set; }
-    internal string Nickname { get; set; }
     internal string Initials { get; set; }
-    internal SolidColorBrush Color { get; set; }
-    
+    internal SolidColorBrush ColorBrush { get; set; }
     internal IPAddress? IP { get; set; }
-    
     internal bool IsOnline { get; set; }
 }

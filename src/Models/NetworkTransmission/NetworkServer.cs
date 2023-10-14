@@ -41,9 +41,9 @@ internal class NetworkServer : NetworkObject
             using Socket handler = await listener.AcceptAsync();
             
             // Receive sender
-            var buffer = new byte[16];
-            _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
-            Guid userGuid = new Guid(buffer);
+            var buffer = new byte[BufferSize];
+            int received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            string senderID = Encoding.UTF8.GetString(buffer, 0, received);
             // Send Acknowledgement
             await SendAcknowledgementAsync(handler);
 
@@ -56,7 +56,7 @@ internal class NetworkServer : NetworkObject
 
             int handledBytes = 0;
             string textMessage = string.Empty;
-            int received = 0;
+            received = 0;
             if (messageLength > 0)
             {
                 while (handledBytes < messageLength)
@@ -83,8 +83,7 @@ internal class NetworkServer : NetworkObject
             {
                 DateTime now = DateTime.Now;
                 string nowString = $"{now.Year}-{now.Month}-{now.Day}_{now.Hour}-{now.Minute}-{now.Second}-{now.Millisecond}";
-                string senderGuidString = userGuid.ToString();
-                string directory = Path.Combine(Directory.GetCurrentDirectory(), Utilities.TemporaryFilesPath, senderGuidString, nowString);
+                string directory = Path.Combine(Directory.GetCurrentDirectory(), Utilities.TemporaryFilesPath, senderID, nowString);
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
                 
@@ -144,11 +143,15 @@ internal class NetworkServer : NetworkObject
                     files.Add(new FileObject(path));
                 }
             }
-
+            
             if (Utilities.UsersList is null)
                 throw new Exception("UsersList is null!");
-            User sender = Utilities.UsersList.FirstOrDefault(x => x.UniqueGuid == userGuid) 
-                          ?? throw new UserNotFoundException($"User with GUID {userGuid.ToString()} could not be found.");
+            User? sender = Utilities.UsersList.FirstOrDefault(x => x.ID == senderID);
+            if (sender is null && senderID == Utilities.LocalUser?.ID) // For development and testing
+                sender = Utilities.LocalUser;
+            else
+                throw new UserNotFoundException($"User with ID {senderID} could not be found.");
+            
             FileObject[] filesArray = files == null ? Array.Empty<FileObject>() : files.ToArray();
             var eventArgs = new MessageReceivedEventArgs
             {
@@ -158,7 +161,9 @@ internal class NetworkServer : NetworkObject
             
             // Close connection of the `handler`
             // DO NOT close or disconnect the `listener`
+            Utilities.Log("Closing connection");
             await handler.DisconnectAsync(false);
+            Utilities.Log("Closed connection");
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
         }
