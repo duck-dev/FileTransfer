@@ -20,6 +20,24 @@ internal static partial class Utilities
     internal const string AssetsPath = "avares://FileTransfer/Assets/";
     
     /// <summary>
+    /// The parent path of all settings- and data-files
+    /// </summary>
+    public static string FilesParentPath
+    {
+        get
+        {
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create);
+            string directory = Path.Combine(appData, "FileTransfer");
+#if DEBUG
+            directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? throw new DirectoryNotFoundException("Directory name of the currently executing assembly is null.");
+#endif
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            return directory;
+        }
+    }
+    
+    /// <summary>
     /// Log a message to the debug output (for debugging purposes).
     /// </summary>
     /// <param name="message">The message to be logged as a string.</param>

@@ -83,7 +83,7 @@ internal class NetworkServer : NetworkObject
             {
                 DateTime now = DateTime.Now;
                 string nowString = $"{now.Year}-{now.Month}-{now.Day}_{now.Hour}-{now.Minute}-{now.Second}-{now.Millisecond}";
-                string directory = Path.Combine(Directory.GetCurrentDirectory(), Utilities.TemporaryFilesPath, senderID, nowString);
+                string directory = Path.Combine(Utilities.TemporaryFilesPath, senderID, nowString);
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
                 

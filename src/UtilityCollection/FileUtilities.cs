@@ -9,7 +9,7 @@ namespace FileTransfer.UtilityCollection;
 
 internal static partial class Utilities
 {
-    internal const string TemporaryFilesPath = "TempFiles";
+    internal static string TemporaryFilesPath { get; } = Path.Combine(FilesParentPath, "TempFiles");
 
     internal static void DeleteDirectory(string directory)
     {
