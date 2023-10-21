@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.Popups.WelcomeScreenView">
+    
+    <UserControl.DataContext>
+        <viewModels:WelcomeScreenViewModel/>
+    </UserControl.DataContext>
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/src/Styles/DialogStyle.axaml"/>
+    </UserControl.Styles>
+    
+    <Panel Classes="background-panel">
+        <Border CornerRadius="20" Classes="border-front-panel" Width="500" Height="300">
+            <Grid RowDefinitions="*,*,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Grid.Row="0" Classes="title-text" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="Welcome to FileTransfer!" Margin="30,0"/>
+                <TextBox Grid.Row="1" Watermark="Enter your username..." Text="{Binding Username}"
+                         Margin="30,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" 
+                         AcceptsReturn="False" AcceptsTab="False" MaxLength="30" VerticalContentAlignment="Center"
+                         BorderBrush="{StaticResource AppPurple}"/>
+                <Button Grid.Row="2" Classes="dialog-button selectable-button-effect highlight-no-change" VerticalAlignment="Center"
+                        Background="{StaticResource AppPurple}" Command="{Binding Submit}"
+                        Margin="30,0">
+                    <Viewbox Height="16" HorizontalAlignment="Stretch" Margin="20,0">
+                        <TextBlock Foreground="{StaticResource White}" Text="Submit"/>
+                    </Viewbox>
+                </Button>
+            </Grid>
+        </Border>
+    </Panel>
+    
+</UserControl>
