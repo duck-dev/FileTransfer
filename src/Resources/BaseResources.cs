@@ -29,6 +29,9 @@ public static partial class Resources
     public static readonly SolidColorBrush MainRedBrush = 
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainRed", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#FF0000"));
+    public static readonly SolidColorBrush MainGreenBrush = 
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainGreen", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#009B72"));
 
     public static readonly SolidColorBrush MainGreyBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainGrey", StyleIndex)
@@ -53,6 +56,7 @@ public static partial class Resources
 
     public static readonly Color MattBlue = MattBlueBrush.Color;
     public static readonly Color MainRed = MainRedBrush.Color;
+    public static readonly Color MainGreen = MainGreenBrush.Color;
     
     public static readonly Color MainGrey = MainGreyBrush.Color;
     public static readonly Color LightGrey = LightGreyBrush.Color;
