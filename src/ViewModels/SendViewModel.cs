@@ -30,7 +30,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private string _loadingTitle = string.Empty;
     private string _loadingSubtitle = string.Empty;
 
-    public SendViewModel() : base(Utilities.UsersList)
+    public SendViewModel() : base(ApplicationVariables.MetaData.UsersList)
     {
         Files.CollectionChanged += (sender, args) =>
         {
@@ -161,12 +161,12 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private async Task BrowseFiles()
     {
-        string? directory = ApplicationVariables.RecentUploadLocation;
+        string? directory = ApplicationVariables.MetaData.RecentUploadLocation;
         string[]? result = await Utilities.InvokeOpenFileDialog("Select one or multiple files", true, directory);
         if (result is null || result.Length <= 0)
             return;
         
-        ApplicationVariables.RecentUploadLocation = result.Last();
+        ApplicationVariables.MetaData.RecentUploadLocation = result.Last();
         EvaluateFiles(result);
     }
 

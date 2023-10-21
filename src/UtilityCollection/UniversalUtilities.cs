@@ -22,7 +22,7 @@ internal static partial class Utilities
     /// <summary>
     /// The parent path of all settings- and data-files
     /// </summary>
-    public static string FilesParentPath
+    internal static string FilesParentPath
     {
         get
         {
@@ -36,7 +36,9 @@ internal static partial class Utilities
             return directory;
         }
     }
-    
+
+    internal static string MetaDataPath { get; } = Path.Combine(FilesParentPath, "MetaData.json");
+
     /// <summary>
     /// Log a message to the debug output (for debugging purposes).
     /// </summary>

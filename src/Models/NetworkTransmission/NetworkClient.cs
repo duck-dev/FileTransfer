@@ -54,9 +54,9 @@ internal class NetworkClient : NetworkObject
         viewModel.IsSending = true;
 
         // Send own ID
-        if (Utilities.LocalUser is null)
+        if (MetaDataInstance.LocalUser is null)
             throw new UserNotFoundException("LocalUser could not be found.");
-        Task<Tuple<bool, int>> sendTask = SendDataAsync(Encoding.UTF8.GetBytes(Utilities.LocalUser.ID), client);
+        Task<Tuple<bool, int>> sendTask = SendDataAsync(Encoding.UTF8.GetBytes(MetaDataInstance.LocalUser.ID), client);
         await InvokeSendingAsync(sendTask);
 
         // Send length of message

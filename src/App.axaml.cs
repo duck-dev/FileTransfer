@@ -1,7 +1,10 @@
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using FileTransfer.Models;
+using FileTransfer.Services;
+using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels;
 using FileTransfer.Views;
 
@@ -18,7 +21,16 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            PlaceholderServices.InitUsers(); // TODO: Temporary, load actual data here
+            if (!DataManager.LoadData(Utilities.MetaDataPath, out MetaData? metaData))
+            {
+                metaData = new MetaData(true, null, new ObservableCollection<User>());
+                DataManager.SaveData(metaData, Utilities.MetaDataPath);
+                LoadMetaData(metaData);
+                return;
+            }
+
+            LoadMetaData(metaData!);
+            
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),
@@ -26,5 +38,10 @@ public class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+    
+    private void LoadMetaData(MetaData metaData)
+    {
+        ApplicationVariables.MetaData = metaData;
     }
 }

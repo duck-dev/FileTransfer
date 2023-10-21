@@ -11,7 +11,10 @@ internal abstract class NetworkObject
     {
         ipAddress ??= IPAddress.Any;
         IpEndPoint = new IPEndPoint(ipAddress, Port);
+        MetaDataInstance = ApplicationVariables.MetaData;
     }
     
     protected IPEndPoint IpEndPoint { get; }
+    
+    protected MetaData MetaDataInstance { get; }
 }

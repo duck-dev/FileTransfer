@@ -17,6 +17,7 @@ internal class ContactsListViewModel : ViewModelBase
     private ObservableCollection<User> _exposedOnlineContacts = null!;
     private ObservableCollection<User> _exposedOfflineContacts = null!;
     private User? _newContact = null;
+    private MetaData _metaData = null!;
 
     private bool _isSearchbarVisible;
     private bool _onlineUsersExpanded;
@@ -44,7 +45,7 @@ internal class ContactsListViewModel : ViewModelBase
                 return;
             }
             
-            if (Utilities.UsersList is null)
+            if (_metaData.UsersList is null)
             {
                 ExposedOnlineContacts.Clear();
                 ExposedOfflineContacts.Clear();
@@ -52,7 +53,7 @@ internal class ContactsListViewModel : ViewModelBase
                 return;
             }
             
-            foreach (User user in Utilities.UsersList)
+            foreach (User user in _metaData.UsersList)
             {
                 var contactsList = user.IsOnline ? ExposedOnlineContacts : ExposedOfflineContacts;
                 if (string.IsNullOrEmpty(value) || user.Nickname.Contains(value, StringComparison.OrdinalIgnoreCase) || user.Username.Contains(value, StringComparison.OrdinalIgnoreCase))
@@ -178,11 +179,13 @@ internal class ContactsListViewModel : ViewModelBase
     
     private void Initialize()
     {
-        if (Utilities.UsersList is null)
+        _metaData = ApplicationVariables.MetaData;
+        
+        if (_metaData.UsersList is null)
             return;
-        ExposedOnlineContacts = new ObservableCollection<User>(Utilities.UsersList.Where(x => x.IsOnline));
-        ExposedOfflineContacts = new ObservableCollection<User>(Utilities.UsersList.Where(x => !x.IsOnline));
-        Utilities.UsersList.CollectionChanged += (sender, args) =>
+        ExposedOnlineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => x.IsOnline));
+        ExposedOfflineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => !x.IsOnline));
+        _metaData.UsersList.CollectionChanged += (sender, args) =>
         {
             switch (args.Action)
             {
@@ -214,7 +217,7 @@ internal class ContactsListViewModel : ViewModelBase
     private void ToggleSearchbar(bool newContact)
     {
         IsSearchbarVisible = !IsSearchbarVisible;
-        if (Utilities.UsersList is null)
+        if (_metaData.UsersList is null)
             return;
 
         if (IsSearchbarVisible)
@@ -236,8 +239,8 @@ internal class ContactsListViewModel : ViewModelBase
         }
         else
         {
-            ExposedOnlineContacts = new ObservableCollection<User>(Utilities.UsersList.Where(x => x.IsOnline));
-            ExposedOfflineContacts = new ObservableCollection<User>(Utilities.UsersList.Where(x => !x.IsOnline));
+            ExposedOnlineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => x.IsOnline));
+            ExposedOfflineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => !x.IsOnline));
         }
     }
 

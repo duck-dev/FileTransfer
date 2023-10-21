@@ -69,7 +69,7 @@ internal class FileObject
         string title = $"Save {FileInformation.Name} to a destination";
         string fileName = FileInformation.Name;
         string extension = FileInformation.Extension;
-        string? directory = ApplicationVariables.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
 
         string? location = null; // TODO: Replace `null` with default location set in the settings (default: "Downloads" folder)
         if(showDialog)

@@ -144,11 +144,11 @@ internal class NetworkServer : NetworkObject
                 }
             }
             
-            if (Utilities.UsersList is null)
+            if (MetaDataInstance.UsersList is null)
                 throw new Exception("UsersList is null!");
-            User? sender = Utilities.UsersList.FirstOrDefault(x => x.ID == senderID);
-            if (sender is null && senderID == Utilities.LocalUser?.ID) // For development and testing
-                sender = Utilities.LocalUser;
+            User? sender = MetaDataInstance.UsersList.FirstOrDefault(x => x.ID == senderID);
+            if (sender is null && senderID == MetaDataInstance.LocalUser?.ID) // For development and testing
+                sender = MetaDataInstance.LocalUser;
             else
                 throw new UserNotFoundException($"User with ID {senderID} could not be found.");
             

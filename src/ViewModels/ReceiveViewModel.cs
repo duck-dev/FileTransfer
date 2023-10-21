@@ -5,7 +5,6 @@ using FileTransfer.Interfaces;
 using FileTransfer.Models;
 using FileTransfer.Models.NetworkTransmission;
 using FileTransfer.ResourcesNamespace;
-using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels.Dialogs;
 using ReactiveUI;
 
@@ -33,7 +32,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
         set => this.RaiseAndSetIfChanged(ref _messageViewModel, value);
     }
     
-    public ReceiveViewModel() : base(Utilities.UsersList)
+    public ReceiveViewModel() : base(ApplicationVariables.MetaData.UsersList)
     {
         Server = new NetworkServer();
         Server.MessageReceived += OnMessageReceived;

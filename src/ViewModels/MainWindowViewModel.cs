@@ -2,6 +2,7 @@
 using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using FileTransfer.Enums;
+using FileTransfer.Models;
 using ReactiveUI;
 using Notification = Avalonia.Controls.Notifications.Notification;
 
@@ -12,14 +13,28 @@ internal sealed class MainWindowViewModel : ViewModelBase
     private bool _isNotificationListVisible;
     private bool _isContactsListVisible;
     private bool _isAccountPanelVisible;
+    
+    private bool _isWelcomeScreenVisible;
 
     internal MainWindowViewModel()
     {
         Instance = this;
+        MetaDataInstance = ApplicationVariables.MetaData;
+        
+        if (MetaDataInstance.IsFirstLogin)
+            IsWelcomeScreenVisible = true;
     }
     
     internal static WindowNotificationManager? NotificationManager { get; set; }
     internal static MainWindowViewModel? Instance { get; set; }
+    
+    internal bool IsWelcomeScreenVisible
+    {
+        get => _isWelcomeScreenVisible;
+        set => this.RaiseAndSetIfChanged(ref _isWelcomeScreenVisible, value);
+    }
+
+    private MetaData MetaDataInstance { get; }
 
     private bool IsNotificationListVisible
     {

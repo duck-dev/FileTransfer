@@ -92,19 +92,19 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private async Task DownloadZip()
     {
-        string? directory = ApplicationVariables.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
         string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
         if (result is null)
             return;
         
         string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
         Utilities.CreateZip(result, zipName, Files);
-        ApplicationVariables.RecentDownloadLocation = result;
+        ApplicationVariables.MetaData.RecentDownloadLocation = result;
     }
 
     private async Task DownloadToFolder()
     { 
-        string? directory = ApplicationVariables.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
         string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
         if (result is null)
             return;
