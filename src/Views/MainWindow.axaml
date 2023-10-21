@@ -1,27 +1,27 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:FileTransfer.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:FileTransfer.Views"
+        xmlns:popups="clr-namespace:FileTransfer.Views.Popups"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FileTransfer.Views.MainWindow"
         Icon="/Assets/App-Icon.png"
         Title="FileTransfer"
         MinWidth="990"
         MinHeight="500">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
     
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <views:SidebarView DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="150" Background="{StaticResource AppPurple}"/>
-        <Grid ColumnDefinitions="*,*" DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <views:SendView Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            BorderThickness="0,0,3.5,0" BorderBrush="{StaticResource AppPurple}"/>
-            <views:ReceiveView Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        </Grid>
-    </DockPanel>
+    <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <views:SidebarView DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="150" Background="{StaticResource AppPurple}"/>
+            <Grid ColumnDefinitions="*,*" DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <views:SendView Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                BorderThickness="0,0,3.5,0" BorderBrush="{StaticResource AppPurple}"/>
+                <views:ReceiveView Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+        </DockPanel>
+        <popups:WelcomeScreenView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                  IsVisible="{Binding $parent[views:MainWindow].DataContext.IsWelcomeScreenVisible}"/>
+    </Panel>
 
 </Window>
