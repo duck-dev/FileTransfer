@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using FileTransfer.Models;
 using FileTransfer.UtilityCollection;
 using ReactiveUI;
@@ -26,7 +27,9 @@ internal class ContactsListViewModel : ViewModelBase
     private bool _wasOnlineExpanded;
     private bool _wasOfflineExpanded;
     private bool _isSearchingNewContact;
+    private bool _isConnecting;
     private string? _searchbarWatermark;
+    private string _oldSearchbarText = string.Empty;
 
     public ContactsListViewModel() => Initialize();
     
@@ -38,12 +41,10 @@ internal class ContactsListViewModel : ViewModelBase
             if (_searchbarText.Equals(value))
                 return;
             
+            this.RaiseAndSetIfChanged(ref _searchbarText, value);
+
             if (IsSearchingNewContact)
-            {
-                //NewContact = Utilities.IsIDValid(value, out User newContact) ? newContact : null; // TODO: When ID implemented
-                UpdateNoElementsFoundValue();
                 return;
-            }
             
             if (_metaData.UsersList is null)
             {
@@ -87,7 +88,6 @@ internal class ContactsListViewModel : ViewModelBase
                 }
             }
             
-            this.RaiseAndSetIfChanged(ref _searchbarText, value);
             UpdateNoElementsFoundValue();
         }
     }
@@ -122,9 +122,9 @@ internal class ContactsListViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _newContact, value);
     }
     
-    private bool NoElementsFound => IsSearchingNewContact ? NewContact is null : ExposedOnlineContacts.Count <= 0 && ExposedOfflineContacts.Count <= 0;
+    private bool NoElementsFound => IsSearchingNewContact ? NewContact is null && !IsConnecting : ExposedOnlineContacts.Count <= 0 && ExposedOfflineContacts.Count <= 0;
 
-    private bool IsNewContactVisible => IsSearchingNewContact && !NoElementsFound;
+    private bool IsNewContactVisible => IsSearchingNewContact && !NoElementsFound && !IsConnecting;
 
     private int UsersOnlineCount => ExposedOnlineContacts.Count;
     private int UsersOfflineCount => ExposedOfflineContacts.Count;
@@ -154,6 +154,16 @@ internal class ContactsListViewModel : ViewModelBase
             this.RaiseAndSetIfChanged(ref _isSearchingNewContact, value);
             SearchbarWatermark = value == true ? SearchNewContactWatermark : SearchExistingContactWatermark;
             this.RaisePropertyChanged(nameof(IsNewContactVisible));
+        }
+    }
+
+    private bool IsConnecting
+    {
+        get => _isConnecting;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _isConnecting, value);
+            UpdateNoElementsFoundValue();
         }
     }
 
@@ -249,5 +259,21 @@ internal class ContactsListViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(NoElementsFound));
         if(IsSearchingNewContact)
             this.RaisePropertyChanged(nameof(IsNewContactVisible));
+    }
+
+    private async Task SearchNewContact()
+    {
+        if (!IsSearchingNewContact || _oldSearchbarText.Equals(SearchbarText))
+            return;
+        
+        IsConnecting = true;
+        await Task.Delay(100);
+        Tuple<bool, User?> idTuple = await Utilities.IsIDValid(SearchbarText);
+        
+        IsConnecting = false;
+        NewContact = idTuple.Item1 ? idTuple.Item2 : null;
+        UpdateNoElementsFoundValue();
+        
+        _oldSearchbarText = SearchbarText;
     }
 }

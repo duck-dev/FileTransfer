@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using FileTransfer.Enums;
 using FileTransfer.Events;
 using FileTransfer.Exceptions;
 using FileTransfer.UtilityCollection;
@@ -19,22 +20,13 @@ internal class NetworkServer : NetworkObject
     internal NetworkServer(IPAddress? ipAddress = null) : base(ipAddress)
     {
         Task.Run(ReceiveDataAsync);
+        Task.Run(ContactCommunicationAsync);
     }
 
     private async Task ReceiveDataAsync()
     {
         using Socket listener = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        try
-        {
-            listener.Bind(IpEndPoint);
-            listener.Listen(100);
-        }
-        catch (Exception e)
-        {
-            Utilities.Log($"Exception while binding and listening in NetworkServer.ReceiveDataAsync(): {e}");
-            throw;
-        }
+        Listen(listener, IpEndPoint);
         
         while (true)
         {
@@ -161,18 +153,91 @@ internal class NetworkServer : NetworkObject
             
             // Close connection of the `handler`
             // DO NOT close or disconnect the `listener`
-            Utilities.Log("Closing connection");
             await handler.DisconnectAsync(false);
-            Utilities.Log("Closed connection");
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
         }
     }
 
-    private static async Task SendAcknowledgementAsync(Socket handler)
+    private async Task ContactCommunicationAsync()
+    {
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Utilities.ContactCommunicationPort);
+        using Socket listener = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        Listen(listener, endPoint);
+
+        while (true)
+        {
+            using Socket handler = await listener.AcceptAsync();
+            
+            // Receive sender
+            var buffer = new byte[BufferSize];
+            int received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            string senderID = Encoding.UTF8.GetString(buffer, 0, received);
+            // Send Acknowledgement
+            await SendAcknowledgementAsync(handler);
+            bool decryptedID = Utilities.DecryptID(senderID, out string? decryptedUsername, out string? decryptedIP);
+            
+            // Receive communication code
+            buffer = new byte[1];
+            received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            byte communicationCode = buffer[0];
+            // Send Acknowledgement
+            await SendAcknowledgementAsync(handler);
+
+            switch ((CommunicationCode)communicationCode)
+            {
+                case CommunicationCode.CheckUsername:
+                    Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.Username), handler);
+                    await NetworkClient.InvokeSendingAsync(sendTask);
+                    break;
+                case CommunicationCode.UsernameChanged:
+                    if (!decryptedID || ApplicationVariables.MetaData.UsersList?.FirstOrDefault(x => x.IP is {} ip && ip.ToString().Equals(decryptedIP)) is not { } userUsernameChanged)
+                        break;
+                    userUsernameChanged.Username = decryptedUsername!;
+                    break;
+                case CommunicationCode.IPChanged:
+                    if (!decryptedID || ApplicationVariables.MetaData.UsersList?.FirstOrDefault(x => x.Username is {} username && username.Equals(decryptedUsername)) is not { } userIPChanged)
+                        break;
+                    try
+                    {
+                        userIPChanged.IP = IPAddress.Parse(decryptedIP!);
+                    }
+                    catch (Exception e)
+                    {
+                        Utilities.Log($"Could not parse IP ({decryptedIP}): {e}");
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            // Close connection of the `handler`
+            // DO NOT close or disconnect the `listener`
+            await handler.DisconnectAsync(false);
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
+        }
+    }
+
+    internal static async Task SendAcknowledgementAsync(Socket handler)
     {
         const string acknowledgement = "<|ACK|>";
         byte[] echoBytes = Encoding.UTF8.GetBytes(acknowledgement);
         await handler.SendAsync(echoBytes, 0);
+    }
+
+    private void Listen(Socket listener, EndPoint endPoint)
+    {
+        listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        try
+        {
+            listener.Bind(endPoint);
+            listener.Listen(100);
+        }
+        catch (Exception e)
+        {
+            Utilities.Log($"Exception while binding and listening in NetworkServer.ReceiveDataAsync(): {e}");
+            throw;
+        }
     }
 }

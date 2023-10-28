@@ -19,23 +19,8 @@ internal class NetworkClient : NetworkObject
     internal async Task InvokeSendingPackageAsync(IList<FileObject> files, string message, User user, SendViewModel viewModel)
     {
         using Socket client = new(IpEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-        bool connectionEstablished = false;
-        for (int i = 0; i < 10; i++)
-        {
-            try
-            {
-                await client.ConnectAsync(IpEndPoint);
-                connectionEstablished = true;
-                break;
-            }
-            catch (SocketException e)
-            {
-                Utilities.Log($"SocketException in NetworkClient (try-catch ConnectAsync): {e}");
-            }
-        }
-
-        if (!connectionEstablished)
+        bool establishedConnection = await Utilities.EstablishConnection(IpEndPoint, client);
+        if (!establishedConnection)
         {
             // TODO: Handle failure
             return;
@@ -122,7 +107,7 @@ internal class NetworkClient : NetworkObject
         viewModel.IsSending = false;
     }
 
-    private static async Task<int> InvokeSendingAsync(Task<Tuple<bool, int>> task)
+    internal static async Task<int> InvokeSendingAsync(Task<Tuple<bool, int>> task)
     {
         while (true)
         {
@@ -132,13 +117,13 @@ internal class NetworkClient : NetworkObject
         }
     }
 
-    private static async Task<Tuple<bool, int>> SendSizeAsync(int messageLength, Socket client)
+    internal static async Task<Tuple<bool, int>> SendSizeAsync(int messageLength, Socket client)
     {
         byte[] lengthBytes = BitConverter.GetBytes(messageLength);
         return await SendDataAsync(lengthBytes, client);
     }
 
-    private static async Task<Tuple<bool, int>> SendDataAsync(byte[] buffer, Socket client)
+    internal static async Task<Tuple<bool, int>> SendDataAsync(byte[] buffer, Socket client)
     {
         int bytesSent = await client.SendAsync(buffer, SocketFlags.None);
         bool receivedAcknowledgement = await ReceivedAcknowledgementAsync(client);

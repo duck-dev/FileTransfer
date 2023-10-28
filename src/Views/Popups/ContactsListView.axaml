@@ -37,12 +37,21 @@
                     </Button.Template>
                 </Button>
             </Grid>
-            <Grid Grid.Row="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch" Margin="0,0,0,15"
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch" Margin="0,0,0,15"
                   IsVisible="{Binding IsSearchbarVisible}">
                 <TextBox Grid.Column="0" Watermark="{Binding SearchbarWatermark}" HorizontalAlignment="Stretch" Height="32"
                          BorderBrush="{StaticResource AppPurple}" BorderThickness="1"
                          Background="{StaticResource White}" Text="{Binding SearchbarText}"/>
                 <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0"
+                        Command="{Binding SearchNewContact}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="36" Height="36"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Grid.Column="2" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0"
                         Command="{Binding ToggleSearchbar}" CommandParameter="False">
                     <Button.Template>
                         <ControlTemplate>
@@ -166,11 +175,13 @@
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
-                <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsVisible="{Binding IsSearchbarVisible}">
+                <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Image Source="/Assets/Eclipse-Loading-Spinner.png" Classes="rotating" Width="40" Height="40"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsConnecting}"/>
                     <TextBlock FontSize="32" Text="No user found" Foreground="{StaticResource MainGrey}"
                                TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                IsVisible="{Binding NoElementsFound}"/>
-                    <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,7.5,0,7.5"
+                    <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,7.5"
                           IsVisible="{Binding IsNewContactVisible}">
                         <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
                             <Ellipse Fill="{Binding NewContact.ColorBrush}" Width="36" Height="36"
@@ -178,7 +189,7 @@
                             <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           Foreground="{StaticResource MainGrey}"
+                                           Foreground="{StaticResource White}"
                                            Text="{Binding NewContact.Initials}" FontSize="15"/>
                             </Viewbox>
                         </Panel>
@@ -187,9 +198,9 @@
                                        TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                        Text="{Binding NewContact.Username}" 
                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" FontSize="18" Foreground="{StaticResource MainGrey}"
+                            <TextBlock Grid.Row="1" FontSize="14" Foreground="{StaticResource MainGrey}"
                                        TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
-                                       Text="{Binding NewContact.UniqueGuidStr}"
+                                       Text="{Binding NewContact.ID}" FontWeight="Thin"
                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
                         <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"

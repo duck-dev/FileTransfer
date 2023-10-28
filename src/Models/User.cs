@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
@@ -22,9 +23,10 @@ public class User : INotifyPropertyChangedHelper
     public User(string id, string nickname, uint colorCode)
     {
         this.ID = id;
-        
-        Utilities.DecryptID(id, out string username, out string ipString);
-        this.Username = username;
+
+        if (!Utilities.DecryptID(id, out string? username, out string? ipString))
+            throw new InvalidDataException("Could not Decrypt ID (invalid User ID): `User` ctor.");
+        this.Username = username!;
         this.Nickname = nickname;
         
         string[] wordsInNickname = Nickname.Split(char.Parse(" "), 2);

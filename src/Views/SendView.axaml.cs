@@ -21,7 +21,6 @@ public class SendView : UserControl
 
     private void DragOver(object? sender, DragEventArgs args)
     {
-        UtilityCollection.Utilities.Log("DragOver");
         args.DragEffects &= DragDropEffects.Copy | DragDropEffects.Link;
         if (!args.Data.Contains(DataFormats.FileNames))
             args.DragEffects = DragDropEffects.None;
@@ -29,7 +28,6 @@ public class SendView : UserControl
 
     private void Drop(object? sender, DragEventArgs args)
     {
-        UtilityCollection.Utilities.Log("Drop");
         if (!args.Data.Contains(DataFormats.FileNames) || this.DataContext is not SendViewModel viewModel ||
             args.Data.GetFileNames() is not { } fileNames)
         {
