@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using FileTransfer.Models;
+using FileTransfer.Services;
 using FileTransfer.UtilityCollection;
 using ReactiveUI;
 
@@ -277,5 +278,15 @@ internal class ContactsListViewModel : ViewModelBase
         UpdateNoElementsFoundValue();
         
         _oldSearchbarText = SearchbarText;
+    }
+
+    private void AddNewContact()
+    {
+        if (NewContact is null || ApplicationVariables.MetaData.UsersList is not { } usersList || usersList.Contains(NewContact))
+            return;
+        
+        usersList.Add(NewContact);
+        DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+        // Change icon to checkmark
     }
 }
