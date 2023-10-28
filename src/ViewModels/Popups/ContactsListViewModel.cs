@@ -240,18 +240,20 @@ internal class ContactsListViewModel : ViewModelBase
         OfflineUsersExpanded = IsSearchbarVisible || _wasOfflineExpanded;
         IsSearchingNewContact = newContact;
         SearchbarText = string.Empty;
-        UpdateNoElementsFoundValue();
 
         if (newContact)
         {
             ExposedOnlineContacts.Clear();
             ExposedOfflineContacts.Clear();
+            NewContact = null;
         }
         else
         {
             ExposedOnlineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => x.IsOnline));
             ExposedOfflineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => !x.IsOnline));
         }
+        
+        UpdateNoElementsFoundValue();
     }
 
     private void UpdateNoElementsFoundValue()
