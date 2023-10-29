@@ -27,10 +27,10 @@
                         <views:TitledElement.InnerContent>
                             <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Classes="highlight-no-change-combo selectable-button"
                                       MaxDropDownHeight="150" SelectedIndex="{Binding ReceiverIndex}"
-                                      AutoScrollToSelectedItem="True" Items="{Binding UsersList}"
+                                      AutoScrollToSelectedItem="True" Items="{Binding UsersOnlineCollection}"
                                       Height="50" CornerRadius="20" Background="{StaticResource FullyTransparent}"
                                       BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
-                                      PlaceholderText="None (select a receiver)"
+                                      PlaceholderText="None (select a receiver)" IsTextSearchEnabled="True"
                                       PlaceholderForeground="{StaticResource AppPurple}">
                                 <ComboBox.Styles>
                                     <Style Selector="ComboBox[SelectedIndex=-1] /template/ TextBlock#PlaceholderTextBlock">
@@ -44,7 +44,11 @@
                                 </ComboBox.Styles>
                                 <ComboBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Vertical"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock FontSize="22" Foreground="{StaticResource MainGrey}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Text="No users available" IsVisible="{Binding !UsersAvailable}"/>
+                                        </StackPanel>
                                     </ItemsPanelTemplate>
                                 </ComboBox.ItemsPanel>
                                 <ComboBox.ItemTemplate>
