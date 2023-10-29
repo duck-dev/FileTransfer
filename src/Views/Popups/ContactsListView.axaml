@@ -151,7 +151,7 @@
                                                     <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
                                                              VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">
                                                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                                   Foreground="{StaticResource MainGrey}"
+                                                                   Foreground="{StaticResource White}"
                                                                    Text="{Binding Initials}" FontSize="15"/>
                                                     </Viewbox>
                                                 </Panel>
