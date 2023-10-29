@@ -109,10 +109,11 @@ public class User : INotifyPropertyChangedHelper
         get => _isOnline; 
         set
         {
-            if (!IsLocalUser)
-                Utilities.RaiseUpdateOnlineStatusEvent(this);
             _isOnline = value;
             NotifyPropertyChanged();
+            
+            if (!IsLocalUser)
+                Utilities.RaiseUpdateOnlineStatusEvent(this);
         }
     }
     
