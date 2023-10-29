@@ -62,7 +62,7 @@
                 </Button>
             </Grid>
             <Panel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Classes="standard"
+                <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                               IsVisible="{Binding !IsSearchingNewContact}">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -91,8 +91,9 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Margin="0,7.5,0,7.5">
-                                                <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" HorizontalAlignment="Stretch" 
+                                                  Margin="0,7.5,0,7.5">
+                                                <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
                                                     <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
@@ -102,11 +103,27 @@
                                                                    Text="{Binding Initials}" FontSize="15"/>
                                                     </Viewbox>
                                                 </Panel>
-                                                <TextBlock Grid.Column="1" FontSize="28" Foreground="{StaticResource AppPurple}"
+                                                <TextBlock Grid.Column="1" FontSize="24" Foreground="{StaticResource AppPurple}"
                                                            TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                                            Text="{Binding Nickname}" VerticalAlignment="Center"/>
                                                 <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="10,0,0,0">
+                                                        Margin="10,0,4,0">
+                                                    <Button.Template>
+                                                        <ControlTemplate>
+                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                                <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                        Margin="4,0">
+                                                    <Button.Template>
+                                                        <ControlTemplate>
+                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                                <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                        Margin="4,0,0,0">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
@@ -143,9 +160,9 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch"
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" HorizontalAlignment="Stretch"
                                                   Margin="0,7.5,0,7.5">
-                                                <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
+                                                <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
                                                     <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
@@ -155,12 +172,28 @@
                                                                    Text="{Binding Initials}" FontSize="15"/>
                                                     </Viewbox>
                                                 </Panel>
-                                                <TextBlock Grid.Column="1" FontSize="28" Foreground="{StaticResource AppPurple}"
+                                                <TextBlock Grid.Column="1" FontSize="24" Foreground="{StaticResource AppPurple}"
                                                            TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                                            HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                                            Text="{Binding Nickname}"/>
                                                 <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                        Margin="10,0,0,0">
+                                                        Margin="10,0,4,0">
+                                                    <Button.Template>
+                                                        <ControlTemplate>
+                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                                <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                        Margin="4,0">
+                                                    <Button.Template>
+                                                        <ControlTemplate>
+                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                                <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                        Margin="4,0,0,0">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
