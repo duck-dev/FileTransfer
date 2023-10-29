@@ -21,6 +21,7 @@ internal class NetworkServer : NetworkObject
     {
         Task.Run(ReceiveDataAsync);
         Task.Run(ContactCommunicationAsync);
+        Task.Run(OnlineStatusAsync);
     }
 
     private async Task ReceiveDataAsync()
@@ -150,12 +151,8 @@ internal class NetworkServer : NetworkObject
                 Files = filesArray, TextMessage = textMessage, Time = DateTime.Now, Sender = sender
             };
             MessageReceived?.Invoke(this, eventArgs);
-            
-            // Close connection of the `handler`
-            // DO NOT close or disconnect the `listener`
-            await handler.DisconnectAsync(false);
-            handler.Shutdown(SocketShutdown.Both);
-            handler.Close();
+
+            await Utilities.CloseConnection(handler);
         }
     }
 
@@ -211,11 +208,27 @@ internal class NetworkServer : NetworkObject
                     throw new ArgumentOutOfRangeException();
             }
             
-            // Close connection of the `handler`
-            // DO NOT close or disconnect the `listener`
-            await handler.DisconnectAsync(false);
-            handler.Shutdown(SocketShutdown.Both);
-            handler.Close();
+            await Utilities.CloseConnection(handler);
+        }
+    }
+
+    private async Task OnlineStatusAsync()
+    {
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Utilities.CheckOnlineStatusPort);
+        using Socket listener = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        Listen(listener, endPoint);
+
+        while (true)
+        {
+            using Socket handler = await listener.AcceptAsync();
+            
+            // Receive ping
+            var buffer = new byte[1];
+            int received = await handler.ReceiveAsync(buffer, SocketFlags.None);
+            // Send acknowledgment
+            await SendAcknowledgementAsync(handler);
+            
+            await Utilities.CloseConnection(handler);
         }
     }
 

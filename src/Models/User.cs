@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using System.Timers;
 using Avalonia.Media;
 using FileTransfer.Interfaces;
 using FileTransfer.UtilityCollection;
@@ -18,9 +20,11 @@ public class User : INotifyPropertyChangedHelper
     private string _username = string.Empty;
     private string _initials = string.Empty;
     private bool _isOnline = false;
+
+    private readonly Timer _onlineStatusTimer = new(10_000);
     
     [JsonConstructor]
-    public User(string id, string nickname, uint colorCode)
+    public User(string id, string nickname, uint colorCode, bool isLocalUser = false)
     {
         this.ID = id;
 
@@ -39,6 +43,20 @@ public class User : INotifyPropertyChangedHelper
         
         if (IPAddress.TryParse(ipString, out IPAddress? tempIp))
             this.IP = tempIp;
+
+        this.IsLocalUser = isLocalUser;
+
+        if (isLocalUser)
+        {
+            this.IsOnline = true;
+            return;
+        }
+        
+        _onlineStatusTimer.Elapsed += async (_, _) => await CheckUserOnline();
+        _onlineStatusTimer.AutoReset = true;
+        _onlineStatusTimer.Start();
+
+        Task.Run(async () => await CheckUserOnline());
     }
     
     public string Nickname
@@ -61,6 +79,8 @@ public class User : INotifyPropertyChangedHelper
         }
     }
     public uint ColorCode { get; set; } // For JSON
+    
+    public bool IsLocalUser { get; }
 
     internal string Username
     {
@@ -89,6 +109,8 @@ public class User : INotifyPropertyChangedHelper
         get => _isOnline; 
         set
         {
+            if (!IsLocalUser)
+                Utilities.RaiseUpdateOnlineStatusEvent(this);
             _isOnline = value;
             NotifyPropertyChanged();
         }
@@ -96,4 +118,10 @@ public class User : INotifyPropertyChangedHelper
     
     public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    internal async Task CheckUserOnline()
+    {
+        bool userOnline = await Utilities.CheckUserOnline(this);
+        IsOnline = userOnline;
+    }
 }

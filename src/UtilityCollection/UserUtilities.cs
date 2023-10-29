@@ -14,6 +14,8 @@ namespace FileTransfer.UtilityCollection;
 
 internal static partial class Utilities
 {
+    internal static event EventHandler<User>? OnUserOnlineStatusChanged; 
+    
     private const string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static readonly Random _random = new();
     
@@ -100,20 +102,10 @@ internal static partial class Utilities
         User? user = null;
         if (!DecryptID(id, out string? username, out string? ipString) || !IPAddress.TryParse(ipString, out IPAddress? ip)) 
             return new Tuple<bool, User?>(false, user);
-        
-        IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
-        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        bool establishedConnection = await EstablishConnection(endPoint, client);
-        if (!establishedConnection)
+
+        Tuple<bool, Socket?> tuple = await SendCommunicationCode(ip, CommunicationCode.CheckUsername);
+        if (tuple.Item1 == false || tuple.Item2 is not {} client)
             return new Tuple<bool, User?>(false, user);
-        
-        // Send own ID
-        Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.ID), client);
-        await NetworkClient.InvokeSendingAsync(sendTask);
-                
-        // Send communication code
-        sendTask = NetworkClient.SendDataAsync(new byte[1] {(byte)CommunicationCode.CheckUsername}, client);
-        await NetworkClient.InvokeSendingAsync(sendTask);
                 
         // Receive correct username
         byte[] buffer = new byte[30];
@@ -142,6 +134,51 @@ internal static partial class Utilities
         await CloseConnection(client);
         
         return new Tuple<bool, User?>(user is not null, user);
+    }
 
+    internal static async Task<bool> CheckUserOnline(User user)
+    {
+        if (user.IP is not { } ip)
+            return false;
+        
+        IPEndPoint endPoint = new IPEndPoint(ip, CheckOnlineStatusPort);
+        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        bool establishedConnection = await EstablishConnection(endPoint, client);
+        if (!establishedConnection)
+            return false;
+
+        Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(new byte[1] { (byte)CommunicationCode.UpdateOnlineStatus }, client);
+        await NetworkClient.InvokeSendingAsync(sendTask);
+        
+        await CloseConnection(client);
+        return true;
+    }
+    
+    internal static void RaiseUpdateOnlineStatusEvent(User user) => OnUserOnlineStatusChanged?.Invoke(null, user);
+
+    private static async Task<Tuple<bool, Socket?>> SendCommunicationCode(User user, CommunicationCode code)
+    {
+        if (user.IP is null)
+            return new Tuple<bool, Socket?>(false, null);
+        return await SendCommunicationCode(user.IP, code);
+    }
+
+    private static async Task<Tuple<bool, Socket?>> SendCommunicationCode(IPAddress ip, CommunicationCode code)
+    {
+        IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
+        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        bool establishedConnection = await EstablishConnection(endPoint, client);
+        if (!establishedConnection)
+            return new Tuple<bool, Socket?>(false, null);
+        
+        // Send own ID
+        Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.ID), client);
+        await NetworkClient.InvokeSendingAsync(sendTask);
+        
+        // Send communication code
+        sendTask = NetworkClient.SendDataAsync(new byte[1] {(byte)code}, client);
+        await NetworkClient.InvokeSendingAsync(sendTask);
+
+        return new Tuple<bool, Socket?>(true, client);
     }
 }

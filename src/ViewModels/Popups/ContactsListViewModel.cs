@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -174,17 +175,21 @@ internal class ContactsListViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _searchbarWatermark, value);
     }
 
-    internal void UserOnlineStatusChange(User user)
+    internal void UserOnlineStatusChange(object? sender, User user)
     {
         if (user.IsOnline)
         {
-            ExposedOfflineContacts.Remove(user);
-            ExposedOnlineContacts.Add(user);
+            if(ExposedOfflineContacts.Contains(user))
+                ExposedOfflineContacts.Remove(user);
+            if(!ExposedOnlineContacts.Contains(user))
+                ExposedOnlineContacts.Add(user);
         }
         else
         {
-            ExposedOnlineContacts.Remove(user);
-            ExposedOfflineContacts.Add(user);
+            if(ExposedOnlineContacts.Contains(user))
+                ExposedOnlineContacts.Remove(user);
+            if(!ExposedOfflineContacts.Contains(user))
+                ExposedOfflineContacts.Add(user);
         }
     }
     
@@ -194,6 +199,12 @@ internal class ContactsListViewModel : ViewModelBase
         
         if (_metaData.UsersList is null)
             return;
+
+        List<Task> tasks = new List<Task>();
+        foreach (User user in _metaData.UsersList)
+            tasks.Add(Task.Run(async () => await user.CheckUserOnline()));
+        Task.Run(async () => await Task.WhenAll(tasks)).Wait();
+        
         ExposedOnlineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => x.IsOnline));
         ExposedOfflineContacts = new ObservableCollection<User>(_metaData.UsersList.Where(x => !x.IsOnline));
         _metaData.UsersList.CollectionChanged += (sender, args) =>
@@ -223,6 +234,8 @@ internal class ContactsListViewModel : ViewModelBase
 
             UpdateNoElementsFoundValue();
         };
+
+        Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
     }
 
     private void ToggleSearchbar(bool newContact)

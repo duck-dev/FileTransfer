@@ -11,6 +11,7 @@ internal static partial class Utilities
 {
     internal const int NormalPort = 31415;
     internal const int ContactCommunicationPort = 31416;
+    internal const int CheckOnlineStatusPort = 31417;
     
     internal static async Task<IPAddress> GetIpAddressAsync()
     {
@@ -48,8 +49,11 @@ internal static partial class Utilities
         return false;
     }
 
-    internal static async Task CloseConnection(Socket client)
+    internal static async Task CloseConnection(Socket? client)
     {
+        if (client is null)
+            return;
+        
         await client.DisconnectAsync(false);
         client.Shutdown(SocketShutdown.Both);
         client.Close();

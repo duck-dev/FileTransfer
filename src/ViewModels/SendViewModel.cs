@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,6 +39,10 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             this.RaisePropertyChanged(nameof(FileCount));
             this.RaisePropertyChanged(nameof(SendingEnabled));
         };
+
+        UsersOnlineCollection = UsersList is null ? new ObservableCollection<User>() : new ObservableCollection<User>(UsersList.Where(x => x.IsOnline));
+        UsersOnlineCollection.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(UsersAvailable));
+        Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
     }
     
     public DialogViewModelBase? CurrentDialog
@@ -73,6 +78,10 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         get => _loadingSubtitle;
         set => this.RaiseAndSetIfChanged(ref _loadingSubtitle, value);
     }
+
+    private ObservableCollection<User> UsersOnlineCollection { get; }
+
+    private bool UsersAvailable => UsersOnlineCollection.Count > 0;
 
     private bool HasFiles => Files.Count > 0;
     private int FileCount => Files.Count;
@@ -133,7 +142,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void Send()
     {
-        User? user = UsersList?[ReceiverIndex];
+        User? user = UsersOnlineCollection[ReceiverIndex];
         
         async Task ConfirmAction()
         {
@@ -180,5 +189,19 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         ReceiverIndex = -1;
         Message = string.Empty;
         Files.Clear();
+    }
+
+    private void UserOnlineStatusChange(object? sender, User user)
+    {
+        if (user.IsOnline)
+        {
+            if(!UsersOnlineCollection.Contains(user))
+                UsersOnlineCollection.Add(user);
+        }
+        else
+        {
+            if(UsersOnlineCollection.Contains(user))
+                UsersOnlineCollection.Remove(user);
+        }
     }
 }
