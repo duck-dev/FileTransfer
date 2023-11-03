@@ -140,10 +140,13 @@ internal class NetworkServer : NetworkObject
             if (MetaDataInstance.UsersList is null)
                 throw new Exception("UsersList is null!");
             User? sender = MetaDataInstance.UsersList.FirstOrDefault(x => x.ID == senderID);
-            if (sender is null && senderID == MetaDataInstance.LocalUser?.ID) // For development and testing
-                sender = MetaDataInstance.LocalUser;
-            else
-                throw new UserNotFoundException($"User with ID {senderID} could not be found.");
+            if (sender is null)
+            {
+                if(senderID == MetaDataInstance.LocalUser?.ID)
+                    sender = MetaDataInstance.LocalUser;
+                else
+                    throw new UserNotFoundException($"User with ID {senderID} could not be found.");
+            }
             
             FileObject[] filesArray = files == null ? Array.Empty<FileObject>() : files.ToArray();
             var eventArgs = new MessageReceivedEventArgs

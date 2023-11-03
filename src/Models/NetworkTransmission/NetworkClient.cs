@@ -23,6 +23,7 @@ internal class NetworkClient : NetworkObject
         if (!establishedConnection)
         {
             // TODO: Handle failure
+            Utilities.Log(":( NetworkClient: FAILED TO ESTABLISH CONNECTION... :(");
             return;
         }
         
