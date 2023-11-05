@@ -17,7 +17,7 @@ internal static partial class Utilities
     {
         IPAddress[] ipAddresses = await Dns.GetHostAddressesAsync(Dns.GetHostName());
         IPAddress? finalIp;
-        if ((finalIp = ipAddresses.FirstOrDefault(ip => ip.AddressFamily is AddressFamily.InterNetworkV6 or AddressFamily.InterNetwork)) != null)
+        if ((finalIp = ipAddresses.FirstOrDefault(ip => ip.AddressFamily is AddressFamily.InterNetworkV6)) != null)
             return finalIp;
 
         throw new InvalidIpException("No inter network IP address found.");
