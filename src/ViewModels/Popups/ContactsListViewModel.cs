@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using FileTransfer.Models;
+using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
 using FileTransfer.UtilityCollection;
+using FileTransfer.ViewModels.Dialogs;
 using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
@@ -35,6 +39,10 @@ internal class ContactsListViewModel : ViewModelBase
 
     public ContactsListViewModel() => Initialize();
     
+    internal ReactiveCommand<User, Unit> WriteMessageCommand { get; private set; } = null!;
+    internal ReactiveCommand<User, Unit> EditContactCommand { get; private set; } = null!;
+    internal ReactiveCommand<User, Unit> RemoveContactCommand { get; private set; } = null!;
+
     private string SearchbarText
     {
         get => _searchbarText;
@@ -236,6 +244,25 @@ internal class ContactsListViewModel : ViewModelBase
         };
 
         Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
+
+        WriteMessageCommand = ReactiveCommand.Create<User>(WriteMessage);
+        EditContactCommand = ReactiveCommand.Create<User>(EditContact);
+        RemoveContactCommand = ReactiveCommand.Create<User>(RemoveContact);
+    }
+
+    private void WriteMessage(User user)
+    {
+        
+    }
+
+    private void EditContact(User user)
+    {
+        
+    }
+
+    private void RemoveContact(User user)
+    {
+        
     }
 
     private void ToggleSearchbar(bool newContact)

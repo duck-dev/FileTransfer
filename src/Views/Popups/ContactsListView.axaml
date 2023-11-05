@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
+             xmlns:views="clr-namespace:FileTransfer.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FileTransfer.Views.ContactsListView">
     
@@ -91,7 +92,7 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" HorizontalAlignment="Stretch" 
+                                            <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" 
                                                   Margin="0,7.5,0,7.5">
                                                 <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
                                                     <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
@@ -107,23 +108,8 @@
                                                            TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                                            Text="{Binding Nickname}" VerticalAlignment="Center"/>
                                                 <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="10,0,4,0">
-                                                    <Button.Template>
-                                                        <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
-                                                <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="4,0">
-                                                    <Button.Template>
-                                                        <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
-                                                <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="4,0,0,0">
+                                                        Command="{Binding $parent[views:ContactsListView].ShowContactFlyout}"
+                                                        CommandParameter="{Binding $self}" Margin="10,0,0,0">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
@@ -160,7 +146,7 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" HorizontalAlignment="Stretch"
+                                            <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch"
                                                   Margin="0,7.5,0,7.5">
                                                 <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
                                                     <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
@@ -177,23 +163,8 @@
                                                            HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                                            Text="{Binding Nickname}"/>
                                                 <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                        Margin="10,0,4,0">
-                                                    <Button.Template>
-                                                        <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
-                                                <Button Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="4,0">
-                                                    <Button.Template>
-                                                        <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
-                                                <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="4,0,0,0">
+                                                        Command="{Binding $parent[views:ContactsListView].ShowContactFlyout}"
+                                                        CommandParameter="{Binding $self}" Margin="10,0,0,0">
                                                     <Button.Template>
                                                         <ControlTemplate>
                                                             <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
