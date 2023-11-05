@@ -92,7 +92,7 @@ internal static partial class Utilities
             if (char.IsNumber(c))
                 ipString += Cipher(c);
             else
-                ipString += ".";
+                ipString += ":";
         }
         return true;
     }
