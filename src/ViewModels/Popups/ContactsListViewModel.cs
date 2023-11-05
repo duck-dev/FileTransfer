@@ -252,7 +252,8 @@ internal class ContactsListViewModel : ViewModelBase
 
     private void WriteMessage(User user)
     {
-        
+        if (SendViewModel.Instance is { } sendViewModel)
+            sendViewModel.SetReceiver(user);
     }
 
     private void EditContact(User user)

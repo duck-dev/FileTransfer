@@ -33,6 +33,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     public SendViewModel() : base(ApplicationVariables.MetaData.UsersList)
     {
+        Instance = this;
+        
         Files.CollectionChanged += (sender, args) =>
         {
             this.RaisePropertyChanged(nameof(HasFiles));
@@ -44,6 +46,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         UsersOnlineCollection.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(UsersAvailable));
         Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
     }
+    
+    internal static SendViewModel? Instance { get; private set; }
     
     public DialogViewModelBase? CurrentDialog
     {
@@ -138,6 +142,13 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             dialog.AdditionalContent = resource;
         };
         CurrentDialog = dialog;
+    }
+
+    internal void SetReceiver(User user)
+    {
+        int receiverIndex = UsersOnlineCollection.IndexOf(user);
+        if (receiverIndex >= 0)
+            ReceiverIndex = receiverIndex;
     }
 
     private void Send()
