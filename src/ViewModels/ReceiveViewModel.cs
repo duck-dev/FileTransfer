@@ -15,6 +15,17 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
     private MessagePackageViewModel? _messageViewModel;
     private DialogViewModelBase? _currentDialog;
     
+    public ReceiveViewModel() : base(ApplicationVariables.MetaData.UsersList)
+    {
+        Instance = this;
+        
+        Server = new NetworkServer();
+        Server.MessageReceived += OnMessageReceived;
+        Messages.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(MessagesAvailable));
+    }
+    
+    internal static ReceiveViewModel? Instance { get; private set; }
+    
     public DialogViewModelBase? CurrentDialog
     {
         get => _currentDialog;
@@ -30,13 +41,6 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
     {
         get => _messageViewModel; 
         set => this.RaiseAndSetIfChanged(ref _messageViewModel, value);
-    }
-    
-    public ReceiveViewModel() : base(ApplicationVariables.MetaData.UsersList)
-    {
-        Server = new NetworkServer();
-        Server.MessageReceived += OnMessageReceived;
-        Messages.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(MessagesAvailable));
     }
     
     private void OnMessageReceived(object? sender, MessageReceivedEventArgs args)

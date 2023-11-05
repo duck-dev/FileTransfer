@@ -142,7 +142,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void Send()
     {
-        User? user = UsersOnlineCollection[ReceiverIndex];
+        User user = UsersOnlineCollection[ReceiverIndex];
         
         async Task ConfirmAction()
         {
@@ -160,7 +160,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         //     return;
         // }
 
-        string dialogTitle = $"Are you sure you want to transmit the uploaded content to {user?.Nickname}?";
+        string dialogTitle = $"Are you sure you want to transmit the uploaded content to '{user.Nickname}'?";
         CurrentDialog = new ConfirmationDialogViewModel(this, dialogTitle,
             new[] { Resources.MainRed, Resources.MainGrey },
             new[] { Colors.White, Colors.White },

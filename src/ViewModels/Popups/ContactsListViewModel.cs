@@ -262,7 +262,20 @@ internal class ContactsListViewModel : ViewModelBase
 
     private void RemoveContact(User user)
     {
+        if (_metaData.UsersList is null || !_metaData.UsersList.Contains(user) || ReceiveViewModel.Instance is not {} receiveViewModel)
+            return;
         
+        string dialogTitle = $"Are you sure you want to remove '{user.Nickname}' from your contact list?";
+        Action action = () =>
+        {
+            _metaData.UsersList.Remove(user);
+            DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+        };
+        receiveViewModel.CurrentDialog = new ConfirmationDialogViewModel(receiveViewModel, dialogTitle,
+            new[] { Resources.MainRed, Resources.MainGrey },
+            new[] { Colors.White, Colors.White },
+            new[] { $"Yes, remove '{user.Nickname}'!", "Cancel" },
+            action);
     }
 
     private void ToggleSearchbar(bool newContact)
