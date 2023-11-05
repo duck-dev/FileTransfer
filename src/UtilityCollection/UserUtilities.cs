@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Threading;
+using Avalonia.Media;
 using FileTransfer.Enums;
 using FileTransfer.Exceptions;
 using FileTransfer.Models;
@@ -16,7 +16,7 @@ internal static partial class Utilities
 {
     internal static event EventHandler<User>? OnUserOnlineStatusChanged; 
     
-    private const string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private const string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly Random _random = new();
     
     internal static char Cipher(char input)
@@ -42,10 +42,13 @@ internal static partial class Utilities
             {
                 result += Cipher(c);
             }
-            else
+            else if(c == ':')
             {
                 int rnd = _random.Next(0, Letters.Length);
                 result += Letters[rnd];
+            } else if (char.IsLetter(c))
+            {
+                result += c;
             }
         }
         return result;
@@ -91,8 +94,10 @@ internal static partial class Utilities
         {
             if (char.IsNumber(c))
                 ipString += Cipher(c);
-            else
+            else if (char.IsUpper(c))
                 ipString += ":";
+            else
+                ipString += c;
         }
         return true;
     }
