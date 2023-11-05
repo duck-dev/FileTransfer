@@ -18,6 +18,8 @@ internal static partial class Utilities
     
     private const string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly Random _random = new();
+
+    private static readonly Color[] _userColors = { Resources.Black, Resources.MainGrey, Resources.MainGreen }; // TODO: To be completed
     
     internal static char Cipher(char input)
     {
@@ -133,12 +135,12 @@ internal static partial class Utilities
             username = correctUsername;
         }
 
-        await Dispatcher.UIThread.InvokeAsync(() => user = new User(id, username, Resources.MainRed.ToUint32())); // TODO: Random color
+        user = new User(id, username, GetRandomUserColor().ToUint32());
         
         // Close connection
         await CloseConnection(client);
         
-        return new Tuple<bool, User?>(user is not null, user);
+        return new Tuple<bool, User?>(true, user);
     }
 
     internal static async Task<bool> CheckUserOnline(User user)
@@ -185,5 +187,11 @@ internal static partial class Utilities
         await NetworkClient.InvokeSendingAsync(sendTask);
 
         return new Tuple<bool, Socket?>(true, client);
+    }
+    
+    internal static Color GetRandomUserColor()
+    {
+        int index = _random.Next(0, _userColors.Length);
+        return _userColors[index];
     }
 }
