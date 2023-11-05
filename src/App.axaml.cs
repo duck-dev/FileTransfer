@@ -25,8 +25,6 @@ public class App : Application
             {
                 metaData = new MetaData(true, null, new ObservableCollection<User>());
                 DataManager.SaveData(metaData, Utilities.MetaDataPath);
-                LoadMetaData(metaData);
-                return;
             }
 
             LoadMetaData(metaData!);
