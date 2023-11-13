@@ -110,10 +110,17 @@ internal static partial class Utilities
         if (!DecryptID(id, out string? username, out string? ipString) || !IPAddress.TryParse(ipString, out IPAddress? ip)) 
             return new Tuple<bool, User?>(false, user);
 
-        Tuple<bool, Socket?> tuple = await SendCommunicationCode(ip, CommunicationCode.CheckUsername);
-        if (tuple.Item1 == false || tuple.Item2 is not {} client)
+        IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
+        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        bool establishedConnection = await EstablishConnection(endPoint, client);
+        if (!establishedConnection)
+        {
+            await CloseConnection(client);
             return new Tuple<bool, User?>(false, user);
-                
+        }
+        
+        await SendCommunicationCode(CommunicationCode.CheckUsername, client);
+        
         // Receive correct username
         byte[] buffer = new byte[30];
         int received = await client.ReceiveAsync(buffer, SocketFlags.None);
@@ -163,21 +170,8 @@ internal static partial class Utilities
     
     internal static void RaiseUpdateOnlineStatusEvent(User user) => OnUserOnlineStatusChanged?.Invoke(null, user);
 
-    private static async Task<Tuple<bool, Socket?>> SendCommunicationCode(User user, CommunicationCode code)
+    private static async Task SendCommunicationCode(CommunicationCode code, Socket client)
     {
-        if (user.IP is null)
-            return new Tuple<bool, Socket?>(false, null);
-        return await SendCommunicationCode(user.IP, code);
-    }
-
-    private static async Task<Tuple<bool, Socket?>> SendCommunicationCode(IPAddress ip, CommunicationCode code)
-    {
-        IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
-        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        bool establishedConnection = await EstablishConnection(endPoint, client);
-        if (!establishedConnection)
-            return new Tuple<bool, Socket?>(false, null);
-        
         // Send own ID
         Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.ID), client);
         await NetworkClient.InvokeSendingAsync(sendTask);
@@ -185,8 +179,6 @@ internal static partial class Utilities
         // Send communication code
         sendTask = NetworkClient.SendDataAsync(new byte[1] {(byte)code}, client);
         await NetworkClient.InvokeSendingAsync(sendTask);
-
-        return new Tuple<bool, Socket?>(true, client);
     }
     
     internal static Color GetRandomUserColor()
