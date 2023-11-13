@@ -99,7 +99,7 @@ internal static partial class Utilities
             if (char.IsNumber(c))
                 ipString += Cipher(c);
             else if (char.IsUpper(c))
-                ipString += ":";
+                ipString += delimiter;
             else
                 ipString += c;
         }
