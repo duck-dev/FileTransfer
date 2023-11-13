@@ -19,7 +19,15 @@ internal static partial class Utilities
     private const string Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly Random _random = new();
 
-    private static readonly Color[] _userColors = { Resources.Black, Resources.MainGrey, Resources.MainGreen }; // TODO: To be completed
+    private static readonly Color[] _userColors =
+    {
+        Color.Parse("#FFAE00"), Color.Parse("#FF8800"), Color.Parse("#C92E0C"), Color.Parse("#FF0000"), Color.Parse("#AF0000"),
+        Color.Parse("#680000"), Color.Parse("#680040"), Color.Parse("#300061"), Color.Parse("#5200A3"), Color.Parse("#9933FF"), 
+        Color.Parse("#B82EB3"), Color.Parse("#D92B6E"), Color.Parse("#3396FF"), Color.Parse("#0071EB"), Color.Parse("#0059B8"),
+        Color.Parse("#00356E"), Color.Parse("#1447FF"), Color.Parse("#002FD9"), Color.Parse("#001052"), Color.Parse("#124727"),
+        Color.Parse("#426B2B"), Color.Parse("#2CB05F"), Color.Parse("#146359"), Color.Parse("#1E9482"), Color.Parse("#B7612F"),
+        Color.Parse("#6B4016"), Color.Parse("#522300"), Color.Parse("#4D4D4D"), Color.Parse("#000000")
+    };
     
     internal static char Cipher(char input)
     {
