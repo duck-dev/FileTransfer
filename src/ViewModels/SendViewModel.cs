@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +46,39 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         UsersOnlineCollection = UsersList is null ? new ObservableCollection<User>() : new ObservableCollection<User>(UsersList.Where(x => x.IsOnline));
         UsersOnlineCollection.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(UsersAvailable));
         Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
+
+        if (ApplicationVariables.MetaData.UsersList is { } usersList)
+        {
+            usersList.CollectionChanged += (sender, args) =>
+            {
+                switch (args.Action)
+                {
+                    case NotifyCollectionChangedAction.Add when args.NewItems != null:
+                    {
+                        foreach (User user in args.NewItems)
+                        {
+                            if(!UsersOnlineCollection.Contains(user))
+                                UsersOnlineCollection.Add(user);
+                        }
+                        break; 
+                    }
+                    case NotifyCollectionChangedAction.Remove when args.OldItems != null:
+                    {
+                        foreach (User user in args.OldItems)
+                        {
+                            if(UsersOnlineCollection.Contains(user))
+                                UsersOnlineCollection.Remove(user);
+                        }
+                        break;
+                    }
+                    case NotifyCollectionChangedAction.Replace:
+                    case NotifyCollectionChangedAction.Move:
+                    case NotifyCollectionChangedAction.Reset:
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            };
+        }
     }
     
     internal static SendViewModel? Instance { get; private set; }
@@ -204,6 +238,9 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void UserOnlineStatusChange(object? sender, User user)
     {
+        if (ApplicationVariables.MetaData.UsersList is not { } usersList || !usersList.Contains(user))
+            return;
+        
         if (user.IsOnline)
         {
             if(!UsersOnlineCollection.Contains(user))
