@@ -25,25 +25,22 @@ internal static partial class Utilities
 
     internal static async Task<bool> EstablishConnection(IPEndPoint endPoint, Socket client)
     {
-        for (int i = 0; i < 3; i++)
+        try
         {
-            try
+            IAsyncResult? result = default;
+            await Task.Run(() =>
             {
-                IAsyncResult? result = default;
-                await Task.Run(() =>
-                {
-                    result = client.BeginConnect(endPoint, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(5000, true);
-                }).WaitAsync(new TimeSpan(0,0,0,0,5000));
-                if (!client.Connected || result is null) 
-                    return false;
-                client.EndConnect(result);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log($"Exception in NetworkClient (try-catch Connect): {e}");
-            }
+                result = client.BeginConnect(endPoint, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(5000, true);
+            }).WaitAsync(new TimeSpan(0,0,0,0,5000));
+            if (!client.Connected || result is null) 
+                return false;
+            client.EndConnect(result);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log($"Exception in NetworkClient (try-catch Connect): {e}");
         }
 
         return false;

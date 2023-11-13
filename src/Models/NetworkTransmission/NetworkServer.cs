@@ -161,7 +161,7 @@ internal class NetworkServer : NetworkObject
 
     private async Task ContactCommunicationAsync()
     {
-        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Utilities.ContactCommunicationPort);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.IPv6Any, Utilities.ContactCommunicationPort);
         using Socket listener = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         Listen(listener, endPoint);
 
@@ -217,7 +217,7 @@ internal class NetworkServer : NetworkObject
 
     private async Task OnlineStatusAsync()
     {
-        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, Utilities.CheckOnlineStatusPort);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.IPv6Any, Utilities.CheckOnlineStatusPort);
         using Socket listener = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         Listen(listener, endPoint);
 

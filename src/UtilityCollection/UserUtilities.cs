@@ -82,7 +82,7 @@ internal static partial class Utilities
             return false;
         }
 
-        if (family is not AddressFamily.InterNetwork && family is not AddressFamily.InterNetworkV6)
+        if (family is not AddressFamily.InterNetworkV6)
         {
             Log("The provided IP address does not match one of the InterNetwork family types.");
             return false;
