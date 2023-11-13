@@ -38,13 +38,14 @@ internal static partial class Utilities
         string result = $"{username}_{addressFamily:D2}";
 
         string ipAddressString = ipAddress.ToString();
+        char delimiter = DetermineIPDelimiter(ipAddress.AddressFamily);
         foreach (char c in ipAddressString)
         {
             if (char.IsNumber(c))
             {
                 result += Cipher(c);
             }
-            else if(c == ':')
+            else if(c == delimiter)
             {
                 int rnd = _random.Next(0, Letters.Length);
                 result += Letters[rnd];
@@ -82,7 +83,7 @@ internal static partial class Utilities
             return false;
         }
 
-        if (family is not AddressFamily.InterNetworkV6)
+        if (family is not AddressFamily.InterNetwork && family is not AddressFamily.InterNetworkV6)
         {
             Log("The provided IP address does not match one of the InterNetwork family types.");
             return false;
@@ -92,6 +93,7 @@ internal static partial class Utilities
         int startIndex = separatorIndex + 3;
         int length = id.Length - startIndex;
         ipString = string.Empty;
+        char delimiter = DetermineIPDelimiter(family);
         foreach (char c in id.Substring(startIndex, length))
         {
             if (char.IsNumber(c))
@@ -104,17 +106,30 @@ internal static partial class Utilities
         return true;
     }
 
+    private static char DetermineIPDelimiter(AddressFamily addressFamily)
+    {
+        if (addressFamily is AddressFamily.InterNetwork)
+            return '.';
+        else if (addressFamily is AddressFamily.InterNetworkV6)
+            return ':';
+        else
+            throw new InvalidIpException("Invalid IP-address family.");
+    }
+
     internal static async Task<Tuple<bool, User?>> IsIDValid(string id)
     {
         User? user = null;
         if (!DecryptID(id, out string? username, out string? ipString) || !IPAddress.TryParse(ipString, out IPAddress? ip)) 
             return new Tuple<bool, User?>(false, user);
+        Utilities.Log($"ID is valid: {username}    |    {ipString}");
+        Utilities.Log($"IP is valid: {ip.ToString()}");
 
         IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
         using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         bool establishedConnection = await EstablishConnection(endPoint, client);
         if (!establishedConnection)
         {
+            Utilities.Log("Could not establish connection, closing connection!");
             await CloseConnection(client);
             return new Tuple<bool, User?>(false, user);
         }
