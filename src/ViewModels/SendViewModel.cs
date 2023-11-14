@@ -235,7 +235,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void UserOnlineStatusChange(object? sender, User user)
     {
-        if (ApplicationVariables.MetaData.UsersList.Contains(user))
+        if (!ApplicationVariables.MetaData.UsersList.Contains(user))
             return;
         
         if (user.IsOnline)
