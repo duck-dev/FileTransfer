@@ -9,7 +9,7 @@ internal abstract class NetworkObject
     
     protected NetworkObject(IPAddress? ipAddress = null)
     {
-        ipAddress ??= IPAddress.IPv6Any;
+        ipAddress ??= IPAddress.Any;
         IpEndPoint = new IPEndPoint(ipAddress, Utilities.NormalPort);
         MetaDataInstance = ApplicationVariables.MetaData;
     }
