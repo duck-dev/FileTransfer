@@ -107,7 +107,8 @@
                                                 <TextBlock Grid.Column="1" FontSize="24" Foreground="{StaticResource AppPurple}"
                                                            TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                                            Text="{Binding Nickname}" VerticalAlignment="Center"/>
-                                                <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                <Button Grid.Column="2" Classes="selectable-button-effect"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Center" 
                                                         Command="{Binding $parent[views:ContactsListView].ShowContactFlyout}"
                                                         CommandParameter="{Binding $self}" Margin="10,0,0,0">
                                                     <Button.Template>
@@ -162,7 +163,8 @@
                                                            TextTrimming="CharacterEllipsis" MaxLines="1" TextWrapping="NoWrap"
                                                            HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                                            Text="{Binding Nickname}"/>
-                                                <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                <Button Grid.Column="2" Classes="selectable-button-effect"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Center"
                                                         Command="{Binding $parent[views:ContactsListView].ShowContactFlyout}"
                                                         CommandParameter="{Binding $self}" Margin="10,0,0,0">
                                                     <Button.Template>
@@ -207,8 +209,8 @@
                                        Text="{Binding NewContact.ID}" FontWeight="Thin"
                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
-                        <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0"
-                                Command="{Binding AddNewContact}">
+                        <Button Grid.Column="2" Classes="selectable-button-effect" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                Margin="10,0,0,0" Command="{Binding AddNewContact}">
                             <Button.Template>
                                 <ControlTemplate>
                                     <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
