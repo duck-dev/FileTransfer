@@ -47,38 +47,35 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         UsersOnlineCollection.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(UsersAvailable));
         Utilities.OnUserOnlineStatusChanged += UserOnlineStatusChange;
 
-        if (ApplicationVariables.MetaData.UsersList is { } usersList)
+        ApplicationVariables.MetaData.UsersList.CollectionChanged += (sender, args) =>
         {
-            usersList.CollectionChanged += (sender, args) =>
+            switch (args.Action)
             {
-                switch (args.Action)
+                case NotifyCollectionChangedAction.Add when args.NewItems != null:
                 {
-                    case NotifyCollectionChangedAction.Add when args.NewItems != null:
+                    foreach (User user in args.NewItems)
                     {
-                        foreach (User user in args.NewItems)
-                        {
-                            if(!UsersOnlineCollection.Contains(user))
-                                UsersOnlineCollection.Add(user);
-                        }
-                        break; 
+                        if(!UsersOnlineCollection.Contains(user))
+                            UsersOnlineCollection.Add(user);
                     }
-                    case NotifyCollectionChangedAction.Remove when args.OldItems != null:
-                    {
-                        foreach (User user in args.OldItems)
-                        {
-                            if(UsersOnlineCollection.Contains(user))
-                                UsersOnlineCollection.Remove(user);
-                        }
-                        break;
-                    }
-                    case NotifyCollectionChangedAction.Replace:
-                    case NotifyCollectionChangedAction.Move:
-                    case NotifyCollectionChangedAction.Reset:
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    break; 
                 }
-            };
-        }
+                case NotifyCollectionChangedAction.Remove when args.OldItems != null:
+                {
+                    foreach (User user in args.OldItems)
+                    {
+                        if(UsersOnlineCollection.Contains(user))
+                            UsersOnlineCollection.Remove(user);
+                    }
+                    break;
+                }
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Reset:
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        };
     }
     
     internal static SendViewModel? Instance { get; private set; }
@@ -238,7 +235,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void UserOnlineStatusChange(object? sender, User user)
     {
-        if (ApplicationVariables.MetaData.UsersList is not { } usersList || !usersList.Contains(user))
+        if (ApplicationVariables.MetaData.UsersList.Contains(user))
             return;
         
         if (user.IsOnline)

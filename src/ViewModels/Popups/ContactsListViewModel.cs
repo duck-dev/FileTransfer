@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using FileTransfer.Models;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
@@ -19,6 +20,8 @@ internal class ContactsListViewModel : ViewModelBase
 {
     private const string SearchNewContactWatermark = "Enter an ID to find a new contact...";
     private const string SearchExistingContactWatermark = "Find a contact...";
+    private const string AddContactIconPath = $"{Utilities.AssetsPath}avalonia-logo.ico"; // TODO: Change to actual icon
+    private const string CheckmarkIconPath = $"{Utilities.AssetsPath}App-Icon.png"; // TODO: Change to actual icon
     
     private string _searchbarText = string.Empty;
     private ObservableCollection<User> _exposedOnlineContacts = null!;
@@ -29,13 +32,17 @@ internal class ContactsListViewModel : ViewModelBase
     private bool _isSearchbarVisible;
     private bool _onlineUsersExpanded;
     private bool _offlineUsersExpanded;
-
     private bool _wasOnlineExpanded;
     private bool _wasOfflineExpanded;
     private bool _isSearchingNewContact;
     private bool _isConnecting;
+    private bool _addContactButtonEnabled;
     private string? _searchbarWatermark;
     private string _oldSearchbarText = string.Empty;
+
+    private Bitmap? _addContactButtonIcon = null!;
+    private Bitmap? _addContactIcon;
+    private Bitmap? _checkmarkIcon;
 
     public ContactsListViewModel() => Initialize();
     
@@ -56,7 +63,7 @@ internal class ContactsListViewModel : ViewModelBase
             if (IsSearchingNewContact)
                 return;
             
-            if (_metaData.UsersList is null)
+            if (_metaData.UsersList.Count <= 0)
             {
                 ExposedOnlineContacts.Clear();
                 ExposedOfflineContacts.Clear();
@@ -183,6 +190,18 @@ internal class ContactsListViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _searchbarWatermark, value);
     }
 
+    private bool IsAddContactButtonEnabled
+    {
+        get => _addContactButtonEnabled;
+        set => this.RaiseAndSetIfChanged(ref _addContactButtonEnabled, value);
+    }
+
+    private Bitmap? AddContactButtonIcon
+    {
+        get => _addContactButtonIcon;
+        set => this.RaiseAndSetIfChanged(ref _addContactButtonIcon, value);
+    }
+
     internal void UserOnlineStatusChange(object? sender, User user)
     {
         if (user.IsOnline)
@@ -200,13 +219,22 @@ internal class ContactsListViewModel : ViewModelBase
                 ExposedOfflineContacts.Add(user);
         }
     }
+
+    internal void ClearData()
+    {
+        if (!IsSearchingNewContact)
+            return;
+
+        ToggleSearchbar(false);
+    }
     
     private void Initialize()
     {
         _metaData = ApplicationVariables.MetaData;
         
-        if (_metaData.UsersList is null)
-            return;
+        _addContactIcon = Utilities.CreateImage(AddContactIconPath);
+        _checkmarkIcon = Utilities.CreateImage(CheckmarkIconPath);
+        AddContactButtonIcon = _addContactIcon;
 
         List<Task> tasks = new List<Task>();
         foreach (User user in _metaData.UsersList)
@@ -263,7 +291,7 @@ internal class ContactsListViewModel : ViewModelBase
 
     private void RemoveContact(User user)
     {
-        if (_metaData.UsersList is null || !_metaData.UsersList.Contains(user) || ReceiveViewModel.Instance is not {} receiveViewModel)
+        if (!_metaData.UsersList.Contains(user) || ReceiveViewModel.Instance is not {} receiveViewModel)
             return;
         
         string dialogTitle = $"Are you sure you want to remove '{user.Nickname}' from your contact list?";
@@ -282,8 +310,6 @@ internal class ContactsListViewModel : ViewModelBase
     private void ToggleSearchbar(bool newContact)
     {
         IsSearchbarVisible = !IsSearchbarVisible;
-        if (_metaData.UsersList is null)
-            return;
 
         if (IsSearchbarVisible)
         {
@@ -295,6 +321,9 @@ internal class ContactsListViewModel : ViewModelBase
         OfflineUsersExpanded = IsSearchbarVisible || _wasOfflineExpanded;
         IsSearchingNewContact = newContact;
         SearchbarText = string.Empty;
+        _oldSearchbarText = SearchbarText;
+        NewContact = null;
+        AddContactButtonIcon = _addContactIcon!;
 
         if (newContact)
         {
@@ -326,21 +355,40 @@ internal class ContactsListViewModel : ViewModelBase
         IsConnecting = true;
         await Task.Delay(100);
         Tuple<bool, User?> idTuple = await Utilities.IsIDValid(SearchbarText);
-        
         IsConnecting = false;
-        NewContact = idTuple.Item1 ? idTuple.Item2 : null;
+        
+        User? newContact = idTuple.Item1 ? idTuple.Item2 : null;
+        if (newContact is not null && _metaData.UsersList.Contains(newContact))
+        {
+            uint colorCode = _metaData.UsersList.First(x => newContact.Equals(x)).ColorCode;
+            Color color = Color.FromUInt32(colorCode);
+            newContact.ColorBrush = new SolidColorBrush(color);
+        }
+        NewContact = newContact;
+        
         UpdateNoElementsFoundValue();
+        CheckAddingContact();
         
         _oldSearchbarText = SearchbarText;
     }
 
     private void AddNewContact()
     {
-        if (NewContact is null || ApplicationVariables.MetaData.UsersList is not { } usersList || usersList.Contains(NewContact))
+        if (NewContact is null || _metaData.UsersList.Contains(NewContact))
             return;
         
-        usersList.Add(NewContact);
+        _metaData.UsersList.Add(NewContact);
         DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
-        // Change icon to checkmark
+        CheckAddingContact();
+    }
+
+    private void CheckAddingContact()
+    {
+        if (NewContact is null)
+            return;
+        
+        bool canAddContact = !_metaData.UsersList.Contains(NewContact);
+        IsAddContactButtonEnabled = canAddContact;
+        AddContactButtonIcon = canAddContact ? _addContactIcon : _checkmarkIcon;
     }
 }

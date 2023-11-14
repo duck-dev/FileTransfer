@@ -13,6 +13,11 @@ public class ContactsListView : UserControl
     public ContactsListView()
     {
         InitializeComponent();
+        this.PropertyChanged += (sender, args) =>
+        {
+            if (args.Property == IsVisibleProperty && this.DataContext is ContactsListViewModel viewModel)
+                viewModel.ClearData();
+        };
     }
     
     private void InitializeComponent()

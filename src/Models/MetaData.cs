@@ -17,7 +17,7 @@ public class MetaData : INotifyPropertyChangedHelper
     {
         this.IsFirstLogin = isFirstLogin;
         this.LocalUser = localUser;
-        this.UsersList = usersList;
+        this.UsersList = usersList ?? new ObservableCollection<User>();
     }
     
     public bool IsFirstLogin { get; set; }
@@ -32,7 +32,7 @@ public class MetaData : INotifyPropertyChangedHelper
         }
     }
 
-    public ObservableCollection<User>? UsersList { get; set; }
+    public ObservableCollection<User> UsersList { get; set; }
     
     // TODO: Set to default download location set in the settings (default: "Downloads" folder) by default
     internal string? RecentDownloadLocation { get; set; } // = DEFAULT_LOCATION

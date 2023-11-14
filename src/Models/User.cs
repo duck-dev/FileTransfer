@@ -8,6 +8,7 @@ using System.Timers;
 using Avalonia.Media;
 using FileTransfer.Interfaces;
 using FileTransfer.UtilityCollection;
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 
 namespace FileTransfer.Models;
 
@@ -124,5 +125,14 @@ public class User : INotifyPropertyChangedHelper
     {
         bool userOnline = await Utilities.CheckUserOnline(this);
         IsOnline = userOnline;
+    }
+    
+    public override bool Equals(object? obj)
+    {
+        if (obj is not User otherUser)
+            return false;
+
+        bool ipEquality = this.IP?.Equals(otherUser.IP) ?? this.IP == otherUser.IP;
+        return otherUser.Username.Equals(this.Username) && ipEquality;
     }
 }

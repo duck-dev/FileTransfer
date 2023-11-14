@@ -210,10 +210,20 @@
                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
                         <Button Grid.Column="2" Classes="selectable-button-effect" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                Margin="10,0,0,0" Command="{Binding AddNewContact}">
+                                Margin="10,0,0,0" Command="{Binding AddNewContact}"
+                                IsEnabled="{Binding IsAddContactButtonEnabled}">
+                            <Button.Styles>
+                                <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                                    <Setter Property="Background" Value="{TemplateBinding Background}"/>
+                                    <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/>
+                                </Style>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Foreground" Value="{TemplateBinding Foreground}"/>
+                                </Style>
+                            </Button.Styles>
                             <Button.Template>
                                 <ControlTemplate>
-                                    <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                    <Image Source="{Binding AddContactButtonIcon}" Width="30" Height="30"/>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>

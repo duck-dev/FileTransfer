@@ -137,8 +137,6 @@ internal class NetworkServer : NetworkObject
                 }
             }
             
-            if (MetaDataInstance.UsersList is null)
-                throw new Exception("UsersList is null!");
             User? sender = MetaDataInstance.UsersList.FirstOrDefault(x => x.ID == senderID);
             if (sender is null)
             {
@@ -191,12 +189,12 @@ internal class NetworkServer : NetworkObject
                     await NetworkClient.InvokeSendingAsync(sendTask);
                     break;
                 case CommunicationCode.UsernameChanged:
-                    if (!decryptedID || ApplicationVariables.MetaData.UsersList?.FirstOrDefault(x => x.IP is {} ip && ip.ToString().Equals(decryptedIP)) is not { } userUsernameChanged)
+                    if (!decryptedID || MetaDataInstance.UsersList.FirstOrDefault(x => x.IP is {} ip && ip.ToString().Equals(decryptedIP)) is not { } userUsernameChanged)
                         break;
                     userUsernameChanged.Username = decryptedUsername!;
                     break;
                 case CommunicationCode.IPChanged:
-                    if (!decryptedID || ApplicationVariables.MetaData.UsersList?.FirstOrDefault(x => x.Username is {} username && username.Equals(decryptedUsername)) is not { } userIPChanged)
+                    if (!decryptedID || MetaDataInstance.UsersList.FirstOrDefault(x => x.Username is {} username && username.Equals(decryptedUsername)) is not { } userIPChanged)
                         break;
                     try
                     {
