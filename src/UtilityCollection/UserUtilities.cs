@@ -8,7 +8,6 @@ using FileTransfer.Enums;
 using FileTransfer.Exceptions;
 using FileTransfer.Models;
 using FileTransfer.Models.NetworkTransmission;
-using FileTransfer.ResourcesNamespace;
 
 namespace FileTransfer.UtilityCollection;
 
@@ -87,7 +86,7 @@ internal static partial class Utilities
         }
         else
         {
-            Log("Invalid AddressFamily code.");
+            Log($"DecryptID: Invalid AddressFamily code ({(AddressFamily)familyCode}[{familyCode}]).");
             return false;
         }
 
@@ -129,8 +128,6 @@ internal static partial class Utilities
         User? user = null;
         if (!DecryptID(id, out string? username, out string? ipString) || !IPAddress.TryParse(ipString, out IPAddress? ip)) 
             return new Tuple<bool, User?>(false, user);
-        Utilities.Log($"ID is valid: {username}    |    {ipString}");
-        Utilities.Log($"IP is valid: {ip.ToString()}");
 
         IPEndPoint endPoint = new IPEndPoint(ip, ContactCommunicationPort);
         using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -139,6 +136,7 @@ internal static partial class Utilities
         {
             Utilities.Log("Could not establish connection, closing connection!");
             await CloseConnection(client);
+            Utilities.Log("Closed connection!");
             return new Tuple<bool, User?>(false, user);
         }
         

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using FileTransfer.Exceptions;
@@ -12,8 +13,21 @@ internal static partial class Utilities
     internal const int NormalPort = 31415;
     internal const int ContactCommunicationPort = 31416;
     internal const int CheckOnlineStatusPort = 31417;
-    
-    internal static async Task<IPAddress> GetIpAddressAsync()
+
+    private static string _ipKey = string.Empty;
+
+    internal static string IPKey
+    {
+        get => _ipKey;
+        set
+        {
+            if (_ipKey == string.Empty) // Can only be set once, assuming the default value of the `_ipKey` field is `string.Empty`
+                _ipKey = value;
+        }
+    }
+
+    // TODO: Temporary for testing
+    internal static async Task<IPAddress> GetLocalIpAddressAsync()
     {
         IPAddress[] ipAddresses = await Dns.GetHostAddressesAsync(Dns.GetHostName());
         IPAddress? finalIp;
@@ -21,6 +35,23 @@ internal static partial class Utilities
             return finalIp;
 
         throw new InvalidIpException("No inter network IP address found.");
+    }
+    
+    internal static async Task<IPAddress> GetIpAddressAsync()
+    {
+        try
+        {
+            HttpClient client = new HttpClient();
+            string ip = await client.GetStringAsync($"https://api.whatismyip.com/ip.php?key={IPKey}");
+            if (IPAddress.TryParse(ip, out IPAddress? ipAddress))
+                return ipAddress;
+            throw new InvalidIpException("Invalid IP-address obtained!");
+        }
+        catch (Exception e)
+        {
+            Log($"Couldn't get IP-address: {e}");
+            throw;
+        }
     }
 
     internal static async Task<bool> EstablishConnection(IPEndPoint endPoint, Socket client)
@@ -51,7 +82,8 @@ internal static partial class Utilities
         if (client is null)
             return;
         
-        await client.DisconnectAsync(false);
+        if(client.Connected)
+            await client.DisconnectAsync(false);
         client.Shutdown(SocketShutdown.Both);
         client.Close();
     }
