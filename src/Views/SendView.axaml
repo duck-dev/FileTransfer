@@ -56,9 +56,8 @@
                                         <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Grid ColumnDefinitions="Auto,Auto">
-                                                <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico"
+                                                <Image Grid.Column="0" Source="/Assets/Person-Purple.png"
                                                        Width="34" Height="34" Margin="-7.5,0,15,0"/>
-                                                <!-- TODO: Image: "Contacts-Purple.png" -->
                                                 <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                            Foreground="{StaticResource AppPurple}"
                                                            VerticalAlignment="Center" Text="{Binding Nickname}"
@@ -133,8 +132,7 @@
                                                                 CommandParameter="{Binding}" VerticalAlignment="Center">
                                                             <Button.Template>
                                                                 <ControlTemplate>
-                                                                    <Image Source="/Assets/avalonia-logo.ico" 
-                                                                           Width="36" Height="36"/> <!-- TODO: Trash.png -->
+                                                                    <Image Source="/Assets/Trash.png" Width="36" Height="36"/>
                                                                 </ControlTemplate>
                                                             </Button.Template>
                                                         </Button>
@@ -156,10 +154,9 @@
                                           DragDrop.AllowDrop="True">
                                         <Grid Grid.Row="0" RowDefinitions="*,Auto" DragDrop.AllowDrop="True"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Margin="0,5"
+                                            <Image Grid.Row="0" Source="/Assets/Upload-Purple.png" Margin="0,5"
                                                    HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                                    MaxWidth="85" MaxHeight="85" DragDrop.AllowDrop="True"/>
-                                            <!-- TODO: Icon: Upload-Purple.png-->
                                             <TextBlock Grid.Row="1" FontSize="24" FontWeight="Bold"
                                                        DragDrop.AllowDrop="True" Margin="0,10"
                                                        Foreground="{StaticResource AppPurple}"

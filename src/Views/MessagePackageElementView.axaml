@@ -60,8 +60,8 @@
                 <Grid Grid.Column="1" RowDefinitions="*,*" VerticalAlignment="Stretch" Margin="30,0,0,0">
                     <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto"
                           HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Grid.Column="0" Source="/Assets/avalonia-logo.ico" Width="30"
-                               Height="30" Margin="0,0,7.5,0"/> <!-- TODO: Icon: File-Light.png -->
+                        <Image Grid.Column="0" Source="/Assets/File-Light.png" Width="30"
+                               Height="30" Margin="0,0,7.5,0"/>
                         <TextBlock Grid.Column="1" FontSize="28" FontWeight="Bold" Foreground="{StaticResource White}"
                                    Text="{Binding Files.Length}"/>
                     </Grid>
@@ -77,7 +77,7 @@
                 IsVisible="{Binding HasFiles}">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="/Assets/avalonia-logo.ico" Width="70" Height="70"/>
+                    <Image Source="/Assets/Download-Purple.png" Width="70" Height="70"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>
