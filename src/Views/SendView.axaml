@@ -55,9 +55,21 @@
                                     <DataTemplate>
                                         <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
                                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Grid ColumnDefinitions="Auto,Auto">
+                                            <Grid ColumnDefinitions="Auto,Auto" VerticalAlignment="Center">
                                                 <Image Grid.Column="0" Source="/Assets/Person-Purple.png"
-                                                       Width="34" Height="34" Margin="-7.5,0,15,0"/>
+                                                       Width="34" Height="34" Margin="-7.5,0,15,0"
+                                                       IsVisible="{Binding !IsOnline}" VerticalAlignment="Center"/>
+                                                <Panel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0"
+                                                       IsVisible="{Binding IsOnline}">
+                                                    <Ellipse Fill="{Binding ColorBrush}" Width="36" Height="36"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <Viewbox StretchDirection="UpOnly" HorizontalAlignment="Stretch"
+                                                             VerticalAlignment="Stretch" Stretch="Uniform" MaxHeight="28" MaxWidth="34">
+                                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                   Foreground="{StaticResource White}"
+                                                                   Text="{Binding Initials}" FontSize="15"/>
+                                                    </Viewbox>
+                                                </Panel>
                                                 <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                            Foreground="{StaticResource AppPurple}"
                                                            VerticalAlignment="Center" Text="{Binding Nickname}"
