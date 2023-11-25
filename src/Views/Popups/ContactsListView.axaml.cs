@@ -43,9 +43,9 @@ public class ContactsListView : UserControl
         bool isSendingEnabled = user.IsOnline;
         var items = new MenuItem[]
         {
-            new() { Header = "Send message", Command = commands[0], CommandParameter = button.DataContext, IsEnabled = isSendingEnabled},
-            new() { Header = "Edit contact", Command = commands[1], CommandParameter = button.DataContext },
-            new() { Header = "Remove contact", Command = commands[2], CommandParameter = button.DataContext }
+            new() { Header = "Send message", Command = commands[0], CommandParameter = button.DataContext, IsEnabled = isSendingEnabled, Foreground = ResourcesNamespace.Resources.AppPurpleBrush},
+            new() { Header = "Edit contact", Command = commands[1], CommandParameter = button.DataContext, Foreground = ResourcesNamespace.Resources.MainBlueBrush },
+            new() { Header = "Remove contact", Command = commands[2], CommandParameter = button.DataContext, Foreground = ResourcesNamespace.Resources.MainRedBrush }
         };
         Utilities.ShowFlyout(button, items, FlyoutPlacementMode.BottomEdgeAlignedLeft);
     }
