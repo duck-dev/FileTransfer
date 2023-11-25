@@ -45,7 +45,7 @@
                          BorderBrush="{StaticResource AppPurple}" BorderThickness="1"
                          Background="{StaticResource White}" Text="{Binding SearchbarText}"/>
                 <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0"
-                        Command="{Binding SearchNewContact}">
+                        Command="{Binding SearchNewContact}" IsVisible="{Binding IsSearchingNewContact}">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
