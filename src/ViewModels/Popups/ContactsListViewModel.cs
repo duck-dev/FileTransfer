@@ -286,7 +286,12 @@ internal class ContactsListViewModel : ViewModelBase
 
     private void EditContact(User user)
     {
+        foreach(User otherUser in ExposedOnlineContacts)
+            otherUser.DiscardChanges();
+        foreach(User otherUser in ExposedOfflineContacts)
+            otherUser.DiscardChanges();
         
+        user.IsEditingContact = true;
     }
 
     private void RemoveContact(User user)
