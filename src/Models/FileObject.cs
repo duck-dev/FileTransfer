@@ -55,6 +55,8 @@ internal class FileObject
             break;
         }
 
+        FileIcon ??= Utilities.CreateImage($"{Utilities.AssetsPath}/File-Purple.png");
+
         DownloadCommand = ReactiveCommand.Create<bool, Task>(Download);
     }
     
