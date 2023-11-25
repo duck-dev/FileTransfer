@@ -20,8 +20,8 @@ internal class ContactsListViewModel : ViewModelBase
 {
     private const string SearchNewContactWatermark = "Enter an ID to find a new contact...";
     private const string SearchExistingContactWatermark = "Find a contact...";
-    private const string AddContactIconPath = $"{Utilities.AssetsPath}avalonia-logo.ico"; // TODO: Change to actual icon
-    private const string CheckmarkIconPath = $"{Utilities.AssetsPath}App-Icon.png"; // TODO: Change to actual icon
+    private const string AddContactIconPath = $"{Utilities.AssetsPath}avalonia-logo.ico"; // TODO: Change to AddUser-Green.png
+    private const string CheckmarkIconPath = $"{Utilities.AssetsPath}avalonia-logo.ico"; // TODO: Change to Checkmark-Green.png
     
     private string _searchbarText = string.Empty;
     private ObservableCollection<User> _exposedOnlineContacts = null!;
