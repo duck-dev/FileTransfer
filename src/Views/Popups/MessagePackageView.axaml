@@ -159,7 +159,7 @@
                 <ScrollViewer Grid.Row="3" x:Name="TextSpace" Classes="standard" HorizontalAlignment="Stretch"
                               HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,0,0,20"
                               IsVisible="{Binding Message.HasText}">
-                    <TextBox x:Name="TextMessage" Classes="text-acting-textbox" HorizontalAlignment="Left" FontSize="24" 
+                    <TextBox x:Name="TextMessage" Classes="text-acting-textbox" HorizontalAlignment="Stretch" FontSize="24" 
                              Foreground="{StaticResource White}" TextAlignment="Left" TextWrapping="Wrap" 
                              Text="{Binding Message.TextMessage}"/>
                 </ScrollViewer>
