@@ -142,6 +142,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             this.RaisePropertyChanged(nameof(SendingEnabled));
         }
     }
+
+    private string OverallFilesSizeStr => Utilities.DataSizeRepresentation(Files.Sum(x => x.FileInformation.Length));
     
     internal void EvaluateFiles(IEnumerable<string> result)
     {
@@ -157,6 +159,8 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
             }
             Files.Add(new FileObject(path));
         }
+        
+        this.RaisePropertyChanged(nameof(OverallFilesSizeStr));
 
         if (largeFiles is null || largeFiles.Count <= 0)
             return;
@@ -164,7 +168,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         
         string dialogTitle = $"The following files cannot be sent, because they are larger than {MaxSizePerFile / 1_000_000_000} GB:";
         var dialog = new InformationDialogViewModel(this, dialogTitle, new SolidColorBrush[] { Resources.AppPurpleBrush}, 
-            new SolidColorBrush[]{ Resources.WhiteBrush }, new string[] { "Understood!" });
+            new SolidColorBrush[]{ Resources.WhiteBrush }, new string[] { "Ok!" });
         dialog.OnViewInitialized += (sender, args) =>
         {
             if (sender is not UserControl control) 
@@ -188,7 +192,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         
         async Task ConfirmAction()
         {
-            if (user?.IP is not { } ip)
+            if (user.IP is not { } ip)
                 throw new InvalidIpException("Selected user has a null IP.");
             var client = new NetworkClient(ip);
             await client.InvokeSendingPackageAsync(Files, Message, user, this);
@@ -224,6 +228,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private void RemoveFile(FileObject file)
     {
         Files.Remove(file);
+        this.RaisePropertyChanged(nameof(OverallFilesSizeStr));
     }
 
     private void Reset()
@@ -231,6 +236,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
         ReceiverIndex = -1;
         Message = string.Empty;
         Files.Clear();
+        this.RaisePropertyChanged(nameof(OverallFilesSizeStr));
     }
 
     private void UserOnlineStatusChange(object? sender, User user)
