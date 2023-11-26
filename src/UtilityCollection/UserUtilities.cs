@@ -157,7 +157,7 @@ internal static partial class Utilities
                 return new Tuple<bool, User?>(false, user);
             }
 
-            id = $"{correctUsername}{id.Substring(separatorIndex, id.Length - separatorIndex - 1)}";
+            id = $"{correctUsername}{id.Substring(separatorIndex, id.Length - separatorIndex)}";
             username = correctUsername;
         }
 
