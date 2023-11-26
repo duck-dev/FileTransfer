@@ -122,7 +122,7 @@
                         Command="{Binding $parent[UserControl;1].DataContext.SetMessage}">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" Width="40" Height="40"/> <!-- TODO: Icon: Close-Light.png (X)-->
+                            <Image Source="/Assets/X-Light.png" Width="40" Height="40"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
@@ -144,14 +144,20 @@
                                    FontSize="18" Foreground="{StaticResource SameAccent}"/>
                     </Border>
                     <Grid Grid.Column="1" ColumnDefinitions="Auto,Auto" HorizontalAlignment="Right">
-                        <Button Grid.Column="0" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
-                                Background="{StaticResource MainGrey}" CornerRadius="20" Margin="0,0,3,0"
-                                Command="{Binding CopyToClipboard}">
-                            <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Copy-Light.png -->
+                        <Button Grid.Column="0" Classes="selectable-button-effect highlight-no-change"
+                                Margin="0,0,7.5,0" Command="{Binding CopyToClipboard}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Assets/Copy-Light.png" Width="28" Height="28"/>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
-                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Width="36" Height="36"
-                                Background="{StaticResource MainGrey}" CornerRadius="20" Margin="3,0,0,0">
-                            <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/> <!-- TODO: Maximize-Light.png -->
+                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Margin="7.5,0,0,0">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Assets/Maximize-Light.png" Width="28" Height="28"/>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
                     </Grid>
                 </Grid>

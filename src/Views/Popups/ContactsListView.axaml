@@ -24,8 +24,8 @@
                         Command="{Binding ToggleSearchbar}" CommandParameter="False">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Width="36" Height="36"/>
+                            <Image Source="/Assets/Search-Purple.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="26" Height="26"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
@@ -33,8 +33,8 @@
                         Command="{Binding ToggleSearchbar}" CommandParameter="True">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Width="36" Height="36"/>
+                            <Image Source="/Assets/Add-Contact-Purple.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="32" Height="32"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
@@ -42,14 +42,14 @@
             <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch" Margin="0,0,0,15"
                   IsVisible="{Binding IsSearchbarVisible}">
                 <TextBox Grid.Column="0" Watermark="{Binding SearchbarWatermark}" HorizontalAlignment="Stretch" Height="32"
-                         BorderBrush="{StaticResource AppPurple}" BorderThickness="1"
+                         BorderBrush="{StaticResource AppPurple}" BorderThickness="1" Margin="0,0,5,0"
                          Background="{StaticResource White}" Text="{Binding SearchbarText}"/>
                 <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0"
                         Command="{Binding SearchNewContact}" IsVisible="{Binding IsSearchingNewContact}">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Width="36" Height="36"/>
+                            <Image Source="/Assets/Search-Purple.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="26" Height="26"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
@@ -57,8 +57,8 @@
                         Command="{Binding ToggleSearchbar}" CommandParameter="False">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/avalonia-logo.ico" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Width="36" Height="36"/>
+                            <Image Source="/Assets/X-Red.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Width="26" Height="26"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
@@ -118,20 +118,18 @@
                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
                                                       IsVisible="{Binding IsEditingContact}">
                                                     <Button Grid.Column="0" Classes="selectable-button-effect" Margin="0,0,5,0"
-                                                            Command="{Binding DiscardChanges}"> <!-- TODO: Icon - Red circle with white X -->
+                                                            Command="{Binding DiscardChanges}">
                                                         <Button.Template>
                                                             <ControlTemplate>
-                                                                <!-- <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/> -->
-                                                                <Ellipse Width="30" Height="30" Fill="{StaticResource MainRed}"/>
+                                                                <Image Source="/Assets/Cancel-Red.png" Width="30" Height="30"/>
                                                             </ControlTemplate>
                                                         </Button.Template>
                                                     </Button>
                                                     <Button Grid.Column="1" Classes="selectable-button-effect" Margin="0,0,5,0"
-                                                            Command="{Binding ConfirmChanges}"> <!-- TODO: Icon - Blue circle with white checkmark -->
+                                                            Command="{Binding ConfirmChanges}">
                                                         <Button.Template>
                                                             <ControlTemplate>
-                                                                <!-- <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/> -->
-                                                                <Ellipse Width="30" Height="30" Fill="DodgerBlue"/>
+                                                                <Image Source="/Assets/Confirm-Blue.png" Width="30" Height="30"/>
                                                             </ControlTemplate>
                                                         </Button.Template>
                                                     </Button>
@@ -143,7 +141,7 @@
                                                         IsVisible="{Binding !IsEditingContact}">
                                                     <Button.Template>
                                                         <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                            <Image Source="/Assets/Kebab-Menu-Purple.png" Width="26" Height="26"/>
                                                         </ControlTemplate>
                                                     </Button.Template>
                                                 </Button>
@@ -202,20 +200,18 @@
                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
                                                       IsVisible="{Binding IsEditingContact}">
                                                     <Button Grid.Column="0" Classes="selectable-button-effect" Margin="0,0,5,0"
-                                                            Command="{Binding DiscardChanges}"> <!-- TODO: Icon - Red circle with white X -->
+                                                            Command="{Binding DiscardChanges}">
                                                         <Button.Template>
                                                             <ControlTemplate>
-                                                                <!-- <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/> -->
-                                                                <Ellipse Width="30" Height="30" Fill="{StaticResource MainRed}"/>
+                                                                <Image Source="/Assets/Cancel-Red.png" Width="30" Height="30"/>
                                                             </ControlTemplate>
                                                         </Button.Template>
                                                     </Button>
                                                     <Button Grid.Column="1" Classes="selectable-button-effect" Margin="0,0,5,0"
-                                                            Command="{Binding ConfirmChanges}"> <!-- TODO: Icon - Blue circle with white checkmark -->
+                                                            Command="{Binding ConfirmChanges}">
                                                         <Button.Template>
                                                             <ControlTemplate>
-                                                                <!-- <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/> -->
-                                                                <Ellipse Width="30" Height="30" Fill="DodgerBlue"/>
+                                                                <Image Source="/Assets/Confirm-Blue.png" Width="30" Height="30"/>
                                                             </ControlTemplate>
                                                         </Button.Template>
                                                     </Button>
@@ -227,7 +223,7 @@
                                                         IsVisible="{Binding !IsEditingContact}">
                                                     <Button.Template>
                                                         <ControlTemplate>
-                                                            <Image Source="/Assets/avalonia-logo.ico" Width="30" Height="30"/>
+                                                            <Image Source="/Assets/Kebab-Menu-Purple.png" Width="26" Height="26"/>
                                                         </ControlTemplate>
                                                     </Button.Template>
                                                 </Button>
