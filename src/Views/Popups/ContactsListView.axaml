@@ -113,7 +113,8 @@
                                                          Foreground="{StaticResource AppPurple}"
                                                          TextAlignment="Left" TextWrapping="NoWrap" Text="{Binding NewNickname}"
                                                          HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                                         IsVisible="{Binding IsEditingContact}"/>
+                                                         IsVisible="{Binding IsEditingContact}"
+                                                         Watermark="Nickname..."/>
                                                 <Grid Grid.Column="2" ColumnDefinitions="Auto,Auto" Margin="10,0,0,0"
                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
                                                       IsVisible="{Binding IsEditingContact}">
@@ -195,7 +196,8 @@
                                                          Foreground="{StaticResource AppPurple}"
                                                          TextAlignment="Left" TextWrapping="NoWrap" Text="{Binding NewNickname}"
                                                          HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                                         IsVisible="{Binding IsEditingContact}"/>
+                                                         IsVisible="{Binding IsEditingContact}"
+                                                         Watermark="Nickname..."/>
                                                 <Grid Grid.Column="2" ColumnDefinitions="Auto,Auto" Margin="10,0,0,0"
                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
                                                       IsVisible="{Binding IsEditingContact}">
