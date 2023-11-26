@@ -152,8 +152,8 @@ internal class NetworkServer : NetworkObject
                 Files = filesArray, TextMessage = textMessage, Time = DateTime.Now, Sender = sender
             };
             MessageReceived?.Invoke(this, eventArgs);
-
-            await Utilities.CloseConnection(handler);
+            
+            Utilities.CloseConnection(handler);
         }
     }
 
@@ -209,7 +209,7 @@ internal class NetworkServer : NetworkObject
                     throw new ArgumentOutOfRangeException();
             }
             
-            await Utilities.CloseConnection(handler);
+            Utilities.CloseConnection(handler);
         }
     }
 
@@ -229,7 +229,7 @@ internal class NetworkServer : NetworkObject
             // Send acknowledgment
             await SendAcknowledgementAsync(handler);
             
-            await Utilities.CloseConnection(handler);
+            Utilities.CloseConnection(handler);
         }
     }
 

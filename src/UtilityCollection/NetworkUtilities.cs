@@ -77,14 +77,13 @@ internal static partial class Utilities
         return false;
     }
 
-    internal static async Task CloseConnection(Socket? client)
+    internal static void CloseConnection(Socket? client)
     {
         if (client is null)
             return;
         
         if(client.Connected)
-            await client.DisconnectAsync(false);
-        client.Shutdown(SocketShutdown.Both);
+            client.Shutdown(SocketShutdown.Both);
         client.Close();
     }
 }

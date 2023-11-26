@@ -134,9 +134,7 @@ internal static partial class Utilities
         bool establishedConnection = await EstablishConnection(endPoint, client);
         if (!establishedConnection)
         {
-            Utilities.Log("Could not establish connection, closing connection!");
-            await CloseConnection(client);
-            Utilities.Log("Closed connection!");
+            CloseConnection(client);
             return new Tuple<bool, User?>(false, user);
         }
         
@@ -155,7 +153,7 @@ internal static partial class Utilities
             {
                 Log("Invalid ID!");
                 // Close connection
-                await CloseConnection(client);
+                CloseConnection(client);
                 return new Tuple<bool, User?>(false, user);
             }
 
@@ -166,7 +164,7 @@ internal static partial class Utilities
         user = new User(id, username, GetRandomUserColor().ToUint32());
         
         // Close connection
-        await CloseConnection(client);
+        CloseConnection(client);
         
         return new Tuple<bool, User?>(true, user);
     }
@@ -185,7 +183,7 @@ internal static partial class Utilities
         Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(new byte[1] { (byte)CommunicationCode.UpdateOnlineStatus }, client);
         await NetworkClient.InvokeSendingAsync(sendTask);
         
-        await CloseConnection(client);
+        CloseConnection(client);
         return true;
     }
     
