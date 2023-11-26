@@ -238,7 +238,7 @@
                     </StackPanel>
                 </ScrollViewer>
                 <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Image Source="/Assets/Eclipse-Loading-Spinner.png" Classes="rotating" Width="40" Height="40"
+                    <Image Source="/Assets/Normal-Loading-Spinner.png" Classes="rotating" Width="40" Height="40"
                            HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsConnecting}"/>
                     <TextBlock FontSize="32" Text="No user found" Foreground="{StaticResource MainGrey}"
                                TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center"
