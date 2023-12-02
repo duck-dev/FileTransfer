@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -7,8 +8,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Media;
 using FileTransfer.Interfaces;
+using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
 using FileTransfer.UtilityCollection;
+using FileTransfer.ViewModels;
+using FileTransfer.ViewModels.Dialogs;
+
 #pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 
 namespace FileTransfer.Models;
@@ -21,6 +26,7 @@ public class User : INotifyPropertyChangedHelper
     private string _id = string.Empty;
     private string _username = string.Empty;
     private string _initials = string.Empty;
+    private string _newNickname = string.Empty;
     private bool _isOnline = false;
     private bool _isEditingContact;
 
@@ -118,7 +124,16 @@ public class User : INotifyPropertyChangedHelper
         }
     }
 
-    internal string NewNickname { get; set; } = string.Empty;
+    internal string NewNickname
+    {
+        get => _newNickname;
+        set
+        {
+            _newNickname = value;
+            NotifyPropertyChanged();
+            NotifyPropertyChanged(nameof(IsNicknameEqual));
+        }
+    }
 
     internal bool IsEditingContact
     {
@@ -129,8 +144,11 @@ public class User : INotifyPropertyChangedHelper
                 return;
             _isEditingContact = value;
             NotifyPropertyChanged();
+            NotifyPropertyChanged(nameof(IsNicknameEqual));
         }
     }
+
+    private bool IsNicknameEqual => string.IsNullOrEmpty(NewNickname) ? Nickname.Equals(Username) : NewNickname.Equals(Nickname);
     
     public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -143,27 +161,47 @@ public class User : INotifyPropertyChangedHelper
 
     internal void ConfirmChanges()
     {
-        string oldNickname = Nickname;
-        if (string.IsNullOrEmpty(NewNickname) || string.IsNullOrWhiteSpace(NewNickname))
-            Nickname = Username;
-        else
-            Nickname = NewNickname;
-
-        if (Nickname.Equals(oldNickname))
+        if (IsNicknameEqual)
         {
             DiscardChanges();
             return;
         }
+
+        if (string.IsNullOrEmpty(NewNickname) || string.IsNullOrWhiteSpace(NewNickname))
+        {
+            Action action = () => ChangeNickname(Username);
+            if (ReceiveViewModel.Instance is not { } receiveViewModel)
+            {
+                action();
+            }
+            else
+            {
+                string dialogTitle = $"Do you want to change the nickname back to the username '{Username}'?";
+                receiveViewModel.CurrentDialog = new ConfirmationDialogViewModel(receiveViewModel, dialogTitle,
+                    new[] { Resources.MainRed, Resources.MainGrey },
+                    new[] { Colors.White, Colors.White },
+                    new[] { "Yes", "Cancel" },
+                    action);
+            }
+            
+            return;
+        }
         
-        UpdateInitials();
-        DiscardChanges();
-        DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+        ChangeNickname(NewNickname);
     }
 
     internal void DiscardChanges()
     {
         IsEditingContact = false;
         NewNickname = string.Empty;
+    }
+
+    private void ChangeNickname(string newNickname)
+    {
+        Nickname = newNickname;
+        UpdateInitials();
+        DiscardChanges();
+        DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
     }
 
     private void UpdateInitials()

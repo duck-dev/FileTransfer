@@ -23,6 +23,7 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxLines" Value="2"/>
         <Setter Property="Margin" Value="30, 20, 30, 0"/>
     </Style>
 
