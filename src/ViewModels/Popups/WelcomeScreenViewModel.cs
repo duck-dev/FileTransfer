@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FileTransfer.Exceptions;
@@ -5,12 +6,25 @@ using FileTransfer.Models;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
 using FileTransfer.UtilityCollection;
+using ReactiveUI;
 
 namespace FileTransfer.ViewModels;
 
 public class WelcomeScreenViewModel : ViewModelBase
 {
-    private string Username { get; set; } = string.Empty;
+    private string _username = string.Empty;
+    
+    private string Username 
+    { 
+        get => _username;
+        set
+        {
+            _username = value;
+            this.RaisePropertyChanged(nameof(IsSubmitEnabled));
+        } 
+    }
+
+    private bool IsSubmitEnabled => !string.IsNullOrEmpty(Username) && !string.IsNullOrWhiteSpace(Username) && !Username.Any(char.IsWhiteSpace);
 
     private void Submit()
     {
