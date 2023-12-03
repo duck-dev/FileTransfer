@@ -12,14 +12,13 @@
         <viewModels:ContactsListViewModel/>
     </UserControl.DataContext>
     
-    <Border Width="350" Height="500" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,10,0"
+    <Border Width="350" Height="500" VerticalAlignment="Top" Margin="0,10,10,0" CornerRadius="20"
             Background="{StaticResource MainBackground}" BorderBrush="{StaticResource AppPurple}"
-            BorderThickness="4" CornerRadius="20">
+            BorderThickness="4">
         <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
             <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" HorizontalAlignment="Stretch" Margin="0,0,0,15"
                   IsVisible="{Binding !IsSearchbarVisible}">
-                <TextBlock Grid.Column="0" FontSize="36" FontWeight="Bold" Foreground="{StaticResource AppPurple}"
-                           Text="Contacts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Classes="subtitle-text" Text="Contacts" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button Grid.Column="1" Classes="selectable-button-effect" VerticalAlignment="Center" Margin="5,0"
                         Command="{Binding ToggleSearchbar}" CommandParameter="False">
                     <Button.Template>

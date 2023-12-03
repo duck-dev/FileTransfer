@@ -68,12 +68,6 @@
                 </Setter>
         </Style>
         
-        <!-- TextBox -->
-        
-        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-                <Setter Property="BorderThickness" Value="{TemplateBinding BorderThickness}"/>
-        </Style>
-        
         <!-- ScrollViewer -->
         
         <Style Selector="ScrollViewer[VerticalScrollBarVisibility=Visible].standard, ScrollViewer[VerticalScrollBarVisibility=Auto].standard">
@@ -83,7 +77,19 @@
                 <Setter Property="Padding" Value="0,0,0,26"/>
         </Style>
         
+        <!-- TextBlock -->
+        
+        <Style Selector="TextBlock.subtitle-text">
+                <Setter Property="FontSize" Value="36"/>
+                <Setter Property="Foreground" Value="{DynamicResource AppPurple}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
         <!-- TextBox -->
+        
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+                <Setter Property="BorderThickness" Value="{TemplateBinding BorderThickness}"/>
+        </Style>
         
         <Style Selector="TextBox.text-acting-textbox">
                 <Setter Property="Background" Value="{DynamicResource FullyTransparent}"/>
@@ -120,6 +126,12 @@
         
         <Style Selector="NotificationCard /template/ Panel#PART_HeaderBar">
                 <Setter Property="Height" Value="6"/>
+        </Style>
+        
+        <!-- TabControl -->
+        
+        <Style Selector="TabItem:selected /template/ Border#PART_SelectedPipe">
+                <Setter Property="Background" Value="{DynamicResource AppPurple}"/>
         </Style>
         
 </Styles>

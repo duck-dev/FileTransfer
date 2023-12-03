@@ -196,7 +196,7 @@ public class User : INotifyPropertyChangedHelper
         NewNickname = string.Empty;
     }
 
-    private void ChangeNickname(string newNickname)
+    internal void ChangeNickname(string newNickname)
     {
         Nickname = newNickname;
         UpdateInitials();
@@ -204,6 +204,26 @@ public class User : INotifyPropertyChangedHelper
         DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
     }
 
+    internal void ChangeUsername(string newUsername)
+    {
+        Username = newUsername;
+        Nickname = newUsername;
+        if (this.IP is not { } ip)
+        {
+            if (ReceiveViewModel.Instance is not { } receiveViewModel)
+                return;
+            
+            const string dialogTitle = "The username cannot be changed. Try again later!";
+            var dialog = new InformationDialogViewModel(receiveViewModel, dialogTitle, new [] { Resources.AppPurpleBrush}, 
+                new []{ Resources.WhiteBrush }, new [] { "Ok!" });
+            
+            return;
+        }
+        this.ID = Utilities.EncryptID(newUsername, ip);
+        UpdateInitials();
+        DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+    }
+    
     private void UpdateInitials()
     {
         string[] wordsInNickname = Nickname.Split(char.Parse(" "), 2);

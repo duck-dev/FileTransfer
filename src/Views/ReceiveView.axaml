@@ -38,8 +38,10 @@
                        FontSize="38" FontWeight="Bold" Foreground="{StaticResource MainGrey}"
                        Text="No messages received yet." IsVisible="{Binding !MessagesAvailable}"/>
         </Grid>
-        <views:ContactsListView HorizontalAlignment="Right" VerticalAlignment="Stretch" 
+        <views:ContactsListView HorizontalAlignment="Right" VerticalAlignment="Top" 
                                 IsVisible="{Binding $parent[views:MainWindow].DataContext.IsContactsListVisible}"/>
+        <views:ProfilePageView HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                               IsVisible="{Binding $parent[views:MainWindow].DataContext.IsProfilePageVisible}"/>
         <ContentControl Content="{Binding MessageViewModel}"/>
         <UserControl Content="{Binding CurrentDialog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Panel>

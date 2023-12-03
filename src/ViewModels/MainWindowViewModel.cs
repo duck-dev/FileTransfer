@@ -12,7 +12,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
 {
     private bool _isNotificationListVisible;
     private bool _isContactsListVisible;
-    private bool _isAccountPanelVisible;
+    private bool _isProfilePageVisible;
     
     private bool _isWelcomeScreenVisible;
 
@@ -48,10 +48,10 @@ internal sealed class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isContactsListVisible, value);
     }
 
-    private bool IsAccountPanelVisible
+    private bool IsProfilePageVisible
     {
-        get => _isAccountPanelVisible; 
-        set => this.RaiseAndSetIfChanged(ref _isAccountPanelVisible, value);
+        get => _isProfilePageVisible; 
+        set => this.RaiseAndSetIfChanged(ref _isProfilePageVisible, value);
     }
 
     internal static void ShowNotification(Notification notification)
@@ -73,14 +73,14 @@ internal sealed class MainWindowViewModel : ViewModelBase
     {
         IsNotificationListVisible = false;
         IsContactsListVisible = false;
-        IsAccountPanelVisible = false;
+        IsProfilePageVisible = false;
     }
 
     internal void OpenMenu(MenuType menuType)
     {
         bool oldNotificationVisibility = IsNotificationListVisible;
         bool oldContactsVisibility = IsContactsListVisible;
-        bool oldAccountVisibility = IsAccountPanelVisible;
+        bool oldAccountVisibility = IsProfilePageVisible;
         CloseMenus();
 
         switch (menuType)
@@ -92,7 +92,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
                 IsContactsListVisible = !oldContactsVisibility;
                 break;
             case MenuType.Account:
-                IsAccountPanelVisible = !oldAccountVisibility;
+                IsProfilePageVisible = !oldAccountVisibility;
                 break;
             default:
                 return;
