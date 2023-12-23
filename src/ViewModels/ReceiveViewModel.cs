@@ -15,7 +15,7 @@ public sealed class ReceiveViewModel : NetworkViewModelBase, IDialogContainer
     private MessagePackageViewModel? _messageViewModel;
     private DialogViewModelBase? _currentDialog;
     
-    public ReceiveViewModel() : base(ApplicationVariables.MetaData.UsersList)
+    public ReceiveViewModel() : base(ApplicationVariables.MetaData!.UsersList)
     {
         Instance = this;
         

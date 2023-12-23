@@ -11,7 +11,7 @@ internal abstract class NetworkObject
     {
         ipAddress ??= IPAddress.Any;
         IpEndPoint = new IPEndPoint(ipAddress, Utilities.NormalPort);
-        MetaDataInstance = ApplicationVariables.MetaData;
+        MetaDataInstance = ApplicationVariables.MetaData!;
     }
     
     protected IPEndPoint IpEndPoint { get; }

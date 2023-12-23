@@ -16,7 +16,7 @@ internal class ProfilePageViewModel : ViewModelBase
     private bool _isEditingUsername;
     private string _newUsername = string.Empty;
 
-    private MetaData MetaDataInstance { get; set; } = ApplicationVariables.MetaData;
+    private MetaData MetaDataInstance { get; set; } = ApplicationVariables.MetaData!;
 
     private bool IsEditingUsername
     {

@@ -91,7 +91,7 @@ internal class MessagePackageViewModel : ViewModelBase
             return;
         
         const string title = "Select a destination";
-        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData!.RecentDownloadLocation;
 
         string? location = null; // TODO: Replace `null` with default location set in the settings (default: "Downloads" folder)
         if (showDialog)

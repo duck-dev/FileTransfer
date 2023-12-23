@@ -230,7 +230,7 @@ internal class ContactsListViewModel : ViewModelBase
     
     private void Initialize()
     {
-        _metaData = ApplicationVariables.MetaData;
+        _metaData = ApplicationVariables.MetaData!;
         
         _addContactIcon = Utilities.CreateImage(AddContactIconPath);
         _checkmarkIcon = Utilities.CreateImage(CheckmarkIconPath);

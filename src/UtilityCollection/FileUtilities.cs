@@ -61,6 +61,6 @@ internal static partial class Utilities
         string directory = location;
         if(pathContainsFile)
             directory = Path.GetDirectoryName(location) ?? throw new DirectoryNotFoundException($"{nameof(location)} refers to a root directory.");
-        ApplicationVariables.MetaData.RecentDownloadLocation = directory;
+        ApplicationVariables.MetaData!.RecentDownloadLocation = directory;
     }
 }

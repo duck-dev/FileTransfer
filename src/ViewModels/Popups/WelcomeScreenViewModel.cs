@@ -35,8 +35,9 @@ public class WelcomeScreenViewModel : ViewModelBase
         }).Wait();
         if (ownIp is null)
             throw new InvalidIpException("Own IP is null!");
-        
-        ApplicationVariables.MetaData.LocalUser = new User(Utilities.EncryptID(Username, ownIp), Username, Resources.MattBlue.ToUint32(), true)
+
+        string id = Utilities.EncryptID(Username, ownIp);
+        ApplicationVariables.MetaData!.LocalUser = new User(id, Username, Resources.MattBlue.ToUint32(), id, true)
         {
             IsOnline = true
         };

@@ -32,7 +32,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
     private string _loadingTitle = string.Empty;
     private string _loadingSubtitle = string.Empty;
 
-    public SendViewModel() : base(ApplicationVariables.MetaData.UsersList)
+    public SendViewModel() : base(ApplicationVariables.MetaData!.UsersList)
     {
         Instance = this;
         
@@ -216,7 +216,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private async Task BrowseFiles()
     {
-        string? directory = ApplicationVariables.MetaData.RecentUploadLocation;
+        string? directory = ApplicationVariables.MetaData!.RecentUploadLocation;
         string[]? result = await Utilities.InvokeOpenFileDialog("Select one or multiple files", true, directory);
         if (result is null || result.Length <= 0)
             return;
@@ -241,7 +241,7 @@ public sealed class SendViewModel : NetworkViewModelBase, IDialogContainer
 
     private void UserOnlineStatusChange(object? sender, User user)
     {
-        if (!ApplicationVariables.MetaData.UsersList.Contains(user))
+        if (!ApplicationVariables.MetaData!.UsersList.Contains(user))
             return;
         
         if (user.IsOnline)

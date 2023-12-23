@@ -185,7 +185,7 @@ internal class NetworkServer : NetworkObject
             switch ((CommunicationCode)communicationCode)
             {
                 case CommunicationCode.CheckUsername:
-                    Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.Username), handler);
+                    Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData!.LocalUser!.Username), handler);
                     await NetworkClient.InvokeSendingAsync(sendTask);
                     break;
                 case CommunicationCode.UsernameChanged:

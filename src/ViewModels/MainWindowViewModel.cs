@@ -19,7 +19,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
     internal MainWindowViewModel()
     {
         Instance = this;
-        MetaDataInstance = ApplicationVariables.MetaData;
+        MetaDataInstance = ApplicationVariables.MetaData!;
         
         if (MetaDataInstance.IsFirstLogin)
             IsWelcomeScreenVisible = true;

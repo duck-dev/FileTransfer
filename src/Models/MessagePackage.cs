@@ -92,7 +92,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private async Task DownloadZip()
     {
-        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData!.RecentDownloadLocation;
         string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
         if (result is null)
             return;
@@ -104,7 +104,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
 
     private async Task DownloadToFolder()
     { 
-        string? directory = ApplicationVariables.MetaData.RecentDownloadLocation;
+        string? directory = ApplicationVariables.MetaData!.RecentDownloadLocation;
         string? result = await Utilities.InvokeOpenFolderDialog("Select the destination folder", directory);
         if (result is null)
             return;
