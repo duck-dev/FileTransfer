@@ -24,14 +24,14 @@ public class MetaData : INotifyPropertyChangedHelper
         this.UsersList = usersList ?? new ObservableCollection<User>();
         this.UsersAddedMeList = usersAddedMeList ?? new List<User>();
 
-        if (LocalUser is not null)
-        {
-            IPAddress? ownIP = null;
-            Task.Run(async () => ownIP = await Utilities.GetLocalIpAddressAsync()).Wait(); // TODO: Change to public IP address
-            if ((LocalUser.IP is null || !LocalUser.IP.Equals(ownIP)) && ownIP is not null)
-                this.LocalUser.ChangeIP(ownIP);
-        }
-
+        if (LocalUser is null) 
+            return;
+        
+        IPAddress? ownIP = null;
+        Task.Run(async () => ownIP = await Utilities.GetLocalIpAddressAsync()).Wait(); // TODO: Change to public IP address
+        if ((LocalUser.IP is null || !LocalUser.IP.Equals(ownIP)) && ownIP is not null)
+            this.LocalUser.ChangeIP(ownIP);
+            
         foreach (User user in UsersAddedMeList)
             user.CheckLocalUserData();
     }
