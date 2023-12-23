@@ -14,29 +14,29 @@ internal class FileObject
     private static readonly Dictionary<string[], string> _knownExtensions = new()
     {
         // General file extensions
-        { new [] { "DOC", "DOCX", "DOCM", "DOT", "DOTM", "DOTX", "ODT" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Word
-        { new [] { "XLS", "XLSL", "XLSM", "XLSX", "XLT", "XLTM", "XLTX", "XLW", "XLSB", "UOS", "ODS", "CSV" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Excel
-        { new [] { "PPT", "PPTX", "ODP", "POT", "POTM", "POTX", "PPA", "PPAM", "PPS", "PPTM", "UOP" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // PowerPoint
-        { new [] { "PDF" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // PDF
-        { new [] { "TXT", "RTF", "XML", "XAML", "AXAML, JSON" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Text
-        { new [] { "ZIP", "Z", "7Z", "DEB", "PKG", "RAR", "TAR.GZ", "RPM", "ARJ", "JAR" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Archives (ZIP etc.)
-        { new [] { "PNG", "JPG", "JPEG", "GIF", "BMP", "ICO", "SGV", "RAW", "TIF", "TIFF" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Images
-        { new [] { "PSD" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Photoshop
-        { new [] { "MP3", "WAV", "PCM", "AIF", "AIFF", "AAC", "OGG", "WMA", "FLAC", "ALAC", "CDA", "MPA", "WPL" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Audio
-        { new [] { "MP4", "MOV", "WMV", "AVI", "MKV", "AVCHD", "MPEG2", "FLV", "H264", "M4V", "MPG", "MPEG" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Video
+        { new [] { "DOC", "DOCX", "DOCM", "DOT", "DOTM", "DOTX", "ODT" }, $"{Utilities.AssetsPath}File-Word.png" }, // Word
+        { new [] { "XLS", "XLSL", "XLSM", "XLSX", "XLT", "XLTM", "XLTX", "XLW", "XLSB", "UOS", "ODS", "CSV" }, $"{Utilities.AssetsPath}File-Excel.png" }, // Excel
+        { new [] { "PPT", "PPTX", "ODP", "POT", "POTM", "POTX", "PPA", "PPAM", "PPS", "PPTM", "UOP" }, $"{Utilities.AssetsPath}File-PowerPoint.png" }, // PowerPoint
+        { new [] { "PDF" }, $"{Utilities.AssetsPath}File-PDF.png" }, // PDF
+        { new [] { "TXT", "RTF", "XML", "XAML", "AXAML, JSON" }, $"{Utilities.AssetsPath}File-Text.png" }, // Text
+        { new [] { "ZIP", "Z", "7Z", "DEB", "PKG", "RAR", "TAR.GZ", "RPM", "ARJ", "JAR" }, $"{Utilities.AssetsPath}File-ZIP.png" }, // Archives (ZIP etc.)
+        { new [] { "PNG", "JPG", "JPEG", "GIF", "BMP", "ICO", "SGV", "RAW", "TIF", "TIFF" }, $"{Utilities.AssetsPath}File-Image.png" }, // Images
+        { new [] { "PSD" }, $"{Utilities.AssetsPath}File-Image.png" }, // Photoshop
+        { new [] { "MP3", "WAV", "PCM", "AIF", "AIFF", "AAC", "OGG", "WMA", "FLAC", "ALAC", "CDA", "MPA", "WPL" }, $"{Utilities.AssetsPath}File-Audio.png" }, // Audio
+        { new [] { "MP4", "MOV", "WMV", "AVI", "MKV", "AVCHD", "MPEG2", "FLV", "H264", "M4V", "MPG", "MPEG" }, $"{Utilities.AssetsPath}File-Video.png" }, // Video
         // Programming languages
-        { new [] { "CS" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // C#
-        { new [] { "PY" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Python
-        { new [] { "JAVA", "CLASS", "JSP", "JAD" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Java
-        { new [] { "CPP", "HPP", "CC", "HH", "C++", "H++", "CP", "CXX", "HXX", "C", "H", "II", "IXX", "IPP", "INL", "CPPM" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // C/C++
-        { new [] { "PHP" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // PHP
-        { new [] { "SH" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Bash
-        { new [] { "VB" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Visual Basic
-        { new [] { "SWIFT" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Swift
-        { new [] { "CGI", "PL" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // Perl
-        { new [] { "JS" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // JavaScript
-        { new [] { "HTML", "HTM" }, $"{Utilities.AssetsPath}avalonia-logo.ico" }, // HTML
-        { new [] { "CSS" }, $"{Utilities.AssetsPath}avalonia-logo.ico" } // CSS
+        { new [] { "CS" }, $"{Utilities.AssetsPath}File-Text.png" }, // C#
+        { new [] { "PY" }, $"{Utilities.AssetsPath}File-Text.png" }, // Python
+        { new [] { "JAVA", "CLASS", "JSP", "JAD" }, $"{Utilities.AssetsPath}File-Text.png" }, // Java
+        { new [] { "CPP", "HPP", "CC", "HH", "C++", "H++", "CP", "CXX", "HXX", "C", "H", "II", "IXX", "IPP", "INL", "CPPM" }, $"{Utilities.AssetsPath}File-Text.png" }, // C/C++
+        { new [] { "PHP" }, $"{Utilities.AssetsPath}File-Text.png" }, // PHP
+        { new [] { "SH" }, $"{Utilities.AssetsPath}File-Text.png" }, // Bash
+        { new [] { "VB" }, $"{Utilities.AssetsPath}File-Text.png" }, // Visual Basic
+        { new [] { "SWIFT" }, $"{Utilities.AssetsPath}File-Text.png" }, // Swift
+        { new [] { "CGI", "PL" }, $"{Utilities.AssetsPath}File-Text.png" }, // Perl
+        { new [] { "JS" }, $"{Utilities.AssetsPath}File-Text.png" }, // JavaScript
+        { new [] { "HTML", "HTM" }, $"{Utilities.AssetsPath}File-Text.png" }, // HTML
+        { new [] { "CSS" }, $"{Utilities.AssetsPath}File-Text.png" } // CSS
     };
 
     internal FileObject(string path)
@@ -55,7 +55,7 @@ internal class FileObject
             break;
         }
 
-        FileIcon ??= Utilities.CreateImage($"{Utilities.AssetsPath}/File-Purple.png");
+        FileIcon ??= Utilities.CreateImage($"{Utilities.AssetsPath}File-Dark-Minimized.png");
 
         DownloadCommand = ReactiveCommand.Create<bool, Task>(Download);
     }

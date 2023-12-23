@@ -51,8 +51,8 @@
                     </ContextMenu>
                 </Border.ContextMenu>
                 <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Image Grid.Column="0" Source="{Binding File.FileIcon}" Width="36" Height="36"
-                           Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> 
+                    <Image Grid.Column="0" Source="{Binding File.FileIcon}" Width="32" Height="40"
+                           Margin="7.5,0,7.5,0" VerticalAlignment="Center"/> <!-- Width always 80% of Height (native resolution: 800x1000) -->
                     <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                FontSize="20" FontWeight="Bold" TextWrapping="Wrap" MaxLines="2"
                                TextTrimming="CharacterEllipsis" Text="{Binding File.FileInformation.Name}"
@@ -122,7 +122,7 @@
                         Command="{Binding $parent[UserControl;1].DataContext.SetMessage}">
                     <Button.Template>
                         <ControlTemplate>
-                            <Image Source="/Assets/X-Light.png" Width="40" Height="40"/>
+                            <Image Source="/Assets/X-Light.png" Width="36" Height="36"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>

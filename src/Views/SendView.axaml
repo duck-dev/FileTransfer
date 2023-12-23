@@ -123,8 +123,8 @@
                                                             <Grid ColumnDefinitions="Auto,*,Auto"
                                                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                                 <Image Grid.Column="0" Source="{Binding FileIcon}"
-                                                                       Width="40" Height="40" Margin="0,0,12,0"
-                                                                       VerticalAlignment="Center"/>
+                                                                       Width="32" Height="40" Margin="0,0,12,0"
+                                                                       VerticalAlignment="Center"/> <!-- Width always 80% of Height (native resolution: 800x1000) -->
                                                                 <TextBlock Grid.Column="1" FontSize="24" FontWeight="Bold"
                                                                            Foreground="{StaticResource OppositeAccent}"
                                                                            Text="{Binding FileInformation.Name}" 
