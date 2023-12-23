@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -64,7 +65,7 @@ internal static partial class Utilities
         return result;
     }
     
-    internal static bool DecryptID(string id, out string? username, out string? ipString)
+    internal static bool DecryptID(string id, [NotNullWhen(true)] out string? username, [NotNullWhen(true)] out string? ipString)
     {
         username = null;
         ipString = null;
@@ -161,7 +162,7 @@ internal static partial class Utilities
             username = correctUsername;
         }
 
-        user = new User(id, username, GetRandomUserColor().ToUint32());
+        user = new User(id, username, GetRandomUserColor().ToUint32(), ApplicationVariables.MetaData!.LocalUser?.ID ?? string.Empty);
         
         // Close connection
         CloseConnection(client);
@@ -189,10 +190,10 @@ internal static partial class Utilities
     
     internal static void RaiseUpdateOnlineStatusEvent(User user) => OnUserOnlineStatusChanged?.Invoke(null, user);
 
-    private static async Task SendCommunicationCode(CommunicationCode code, Socket client)
+    internal static async Task SendCommunicationCode(CommunicationCode code, Socket client)
     {
         // Send own ID
-        Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData.LocalUser!.ID), client);
+        Task<Tuple<bool, int>> sendTask = NetworkClient.SendDataAsync(Encoding.UTF8.GetBytes(ApplicationVariables.MetaData!.LocalUser!.ID), client);
         await NetworkClient.InvokeSendingAsync(sendTask);
         
         // Send communication code

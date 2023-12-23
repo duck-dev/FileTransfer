@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FileTransfer.Enums;
 using FileTransfer.Events;
 using FileTransfer.Exceptions;
+using FileTransfer.Services;
 using FileTransfer.UtilityCollection;
 
 namespace FileTransfer.Models.NetworkTransmission;
@@ -189,21 +190,29 @@ internal class NetworkServer : NetworkObject
                     await NetworkClient.InvokeSendingAsync(sendTask);
                     break;
                 case CommunicationCode.UsernameChanged:
-                    if (!decryptedID || MetaDataInstance.UsersList.FirstOrDefault(x => x.IP is {} ip && ip.ToString().Equals(decryptedIP)) is not { } userUsernameChanged)
+                    if (!decryptedID || MetaDataInstance.UsersAddedMeList.FirstOrDefault(x => x.IP is {} ip && ip.ToString().Equals(decryptedIP)) is not { } userUsernameChanged)
                         break;
-                    userUsernameChanged.Username = decryptedUsername!;
+                    userUsernameChanged.ChangeUsername(decryptedUsername!);
                     break;
                 case CommunicationCode.IPChanged:
-                    if (!decryptedID || MetaDataInstance.UsersList.FirstOrDefault(x => x.Username is {} username && username.Equals(decryptedUsername)) is not { } userIPChanged)
+                    if (!decryptedID || MetaDataInstance.UsersAddedMeList.FirstOrDefault(x => x.Username is {} username && username.Equals(decryptedUsername)) is not { } userIPChanged)
                         break;
                     try
                     {
-                        userIPChanged.IP = IPAddress.Parse(decryptedIP!);
+                        IPAddress newIp = IPAddress.Parse(decryptedIP!);
+                        userIPChanged.ChangeIP(newIp);
                     }
                     catch (Exception e)
                     {
                         Utilities.Log($"Could not parse IP ({decryptedIP}): {e}");
                     }
+                    break;
+                case CommunicationCode.UpdateOnlineStatus:
+                    break;
+                case CommunicationCode.AddedAsContact:
+                    User senderUser = new User(senderID, decryptedUsername!, Utilities.GetRandomUserColor().ToUint32(), ApplicationVariables.MetaData!.LocalUser!.ID, false);
+                    ApplicationVariables.MetaData.UsersAddedMeList.Add(senderUser);
+                    DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

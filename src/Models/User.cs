@@ -1,12 +1,15 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Media;
+using FileTransfer.Enums;
 using FileTransfer.Interfaces;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
@@ -33,13 +36,13 @@ public class User : INotifyPropertyChangedHelper
     private readonly Timer _onlineStatusTimer = new(10_000);
     
     [JsonConstructor]
-    public User(string id, string nickname, uint colorCode, bool isLocalUser = false)
+    public User(string id, string nickname, uint colorCode, string localUserID, bool isLocalUser = false)
     {
         this.ID = id;
 
         if (!Utilities.DecryptID(id, out string? username, out string? ipString))
             throw new InvalidDataException("Could not Decrypt ID (invalid User ID): `User` ctor.");
-        this.Username = username!;
+        this.Username = username;
         this.Nickname = nickname;
 
         UpdateInitials();
@@ -52,6 +55,7 @@ public class User : INotifyPropertyChangedHelper
             this.IP = tempIp;
 
         this.IsLocalUser = isLocalUser;
+        this.LocalUserID = localUserID;
 
         if (isLocalUser)
         {
@@ -83,11 +87,16 @@ public class User : INotifyPropertyChangedHelper
         {
             _id = value;
             NotifyPropertyChanged();
+
+            if (this.IsLocalUser)
+                LocalUserID = _id;
         }
     }
     public uint ColorCode { get; set; } // For JSON
     
     public bool IsLocalUser { get; }
+    
+    public string LocalUserID { get; set; }
 
     internal string Username
     {
@@ -118,9 +127,13 @@ public class User : INotifyPropertyChangedHelper
         {
             _isOnline = value;
             NotifyPropertyChanged();
+
+            if (IsLocalUser) 
+                return;
             
-            if (!IsLocalUser)
-                Utilities.RaiseUpdateOnlineStatusEvent(this);
+            Utilities.RaiseUpdateOnlineStatusEvent(this);
+            if(_isOnline)
+                CheckLocalUserData();
         }
     }
 
@@ -206,8 +219,11 @@ public class User : INotifyPropertyChangedHelper
 
     internal void ChangeUsername(string newUsername)
     {
+        bool usernameEqualsNickname = Username.Equals(Nickname);
         Username = newUsername;
-        Nickname = newUsername;
+        if(IsLocalUser || usernameEqualsNickname)
+            Nickname = newUsername;
+        
         if (this.IP is not { } ip)
         {
             if (ReceiveViewModel.Instance is not { } receiveViewModel)
@@ -222,6 +238,35 @@ public class User : INotifyPropertyChangedHelper
         this.ID = Utilities.EncryptID(newUsername, ip);
         UpdateInitials();
         DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+
+        if (!IsLocalUser) 
+            return;
+        
+        foreach(User user in ApplicationVariables.MetaData!.UsersAddedMeList.Where(x => x.IsOnline))
+            user.CheckLocalUserData();
+    }
+
+    internal void ChangeIP(IPAddress ip)
+    {
+        this.IP = ip;
+        this.ID = Utilities.EncryptID(Username, ip);
+        DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
+    }
+    
+    internal void CheckLocalUserData()
+    {
+        if (ApplicationVariables.MetaData is null)
+            return;
+        
+        User? localUser = ApplicationVariables.MetaData.LocalUser;
+        if (localUser is null || !Utilities.DecryptID(LocalUserID, out string? localUsername, out string? localUserIpString) || !IPAddress.TryParse(localUserIpString, out IPAddress? localUserIP))
+            return;
+
+        if (!localUsername.Equals(localUser.Username))
+            CorrectData(CommunicationCode.UsernameChanged);
+
+        if (!localUserIP.Equals(localUser.IP) && localUser.IP is not null)
+            CorrectData(CommunicationCode.IPChanged);
     }
     
     private void UpdateInitials()
@@ -229,6 +274,27 @@ public class User : INotifyPropertyChangedHelper
         string[] wordsInNickname = Nickname.Split(char.Parse(" "), 2);
         this.Initials = wordsInNickname.Length == 1 ? Nickname[0].ToString() : $"{wordsInNickname[0][0]}{wordsInNickname[1][0]}";
         this.Initials = Initials.ToUpperInvariant();
+    }
+
+    private void CorrectData(CommunicationCode code)
+    {
+        if (this.IP is null)
+            return;
+        
+        Task.Run(async () =>
+        {
+            IPEndPoint endPoint = new IPEndPoint(IP, Utilities.ContactCommunicationPort);
+            using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            bool establishedConnection = await Utilities.EstablishConnection(endPoint, client);
+            if (!establishedConnection)
+            {
+                Utilities.CloseConnection(client);
+                return;
+            }
+
+            await Utilities.SendCommunicationCode(code, client);
+            this.LocalUserID = ApplicationVariables.MetaData!.LocalUser!.ID;
+        });
     }
     
     public override bool Equals(object? obj)

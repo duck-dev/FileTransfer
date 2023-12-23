@@ -10,7 +10,6 @@ namespace FileTransfer.Models;
 
 internal class FileObject
 {
-    // TODO: Add path to real icons once integrated
     private static readonly Dictionary<string[], string> _knownExtensions = new()
     {
         // General file extensions

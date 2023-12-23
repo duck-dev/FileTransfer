@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using FileTransfer.Enums;
 using FileTransfer.Models;
 using FileTransfer.ResourcesNamespace;
 using FileTransfer.Services;
@@ -377,7 +380,7 @@ internal class ContactsListViewModel : ViewModelBase
         _oldSearchbarText = SearchbarText;
     }
 
-    private void AddNewContact()
+    private async Task AddNewContact()
     {
         if (NewContact is null || _metaData.UsersList.Contains(NewContact))
             return;
@@ -385,6 +388,17 @@ internal class ContactsListViewModel : ViewModelBase
         _metaData.UsersList.Add(NewContact);
         DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
         CheckAddingContact();
+        
+        IPEndPoint endPoint = new IPEndPoint(NewContact.IP!, Utilities.ContactCommunicationPort);
+        using Socket client = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        bool establishedConnection = await Utilities.EstablishConnection(endPoint, client);
+        if (!establishedConnection)
+        {
+            Utilities.CloseConnection(client);
+            return;
+        }
+
+        await Utilities.SendCommunicationCode(CommunicationCode.AddedAsContact, client);
     }
 
     private void CheckAddingContact()

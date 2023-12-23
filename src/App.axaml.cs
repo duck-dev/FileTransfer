@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -23,7 +24,7 @@ public class App : Application
         {
             if (!DataManager.LoadData(Utilities.MetaDataPath, out MetaData? metaData))
             {
-                metaData = new MetaData(true, null, new ObservableCollection<User>());
+                metaData = new MetaData(true, null, new ObservableCollection<User>(), new List<User>());
                 DataManager.SaveData(metaData, Utilities.MetaDataPath);
             }
 
