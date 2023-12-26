@@ -31,7 +31,11 @@ public class WelcomeScreenViewModel : ViewModelBase
         IPAddress? ownIp = null;
         Task.Run(async () =>
         {
+#if DEBUG
             ownIp = await Utilities.GetLocalIpAddressAsync();
+#else
+            ownIp = await Utilities.GetIpAddressAsync();
+#endif
         }).Wait();
         if (ownIp is null)
             throw new InvalidIpException("Own IP is null!");

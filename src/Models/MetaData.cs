@@ -28,7 +28,11 @@ public class MetaData : INotifyPropertyChangedHelper
             return;
         
         IPAddress? ownIP = null;
-        Task.Run(async () => ownIP = await Utilities.GetLocalIpAddressAsync()).Wait(); // TODO: Change to public IP address
+#if DEBUG
+        Task.Run(async () => ownIP = await Utilities.GetLocalIpAddressAsync()).Wait();
+#else
+        Task.Run(async () => ownIP = await Utilities.GetIpAddressAsync()).Wait();
+#endif
         if ((LocalUser.IP is null || !LocalUser.IP.Equals(ownIP)) && ownIP is not null)
             this.LocalUser.ChangeIP(ownIP);
             
