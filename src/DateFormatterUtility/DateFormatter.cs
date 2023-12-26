@@ -1,4 +1,8 @@
 using System;
+using System.Threading.Tasks;
+using FileTransfer.Enums;
+using FileTransfer.Extensions;
+using FileTransfer.Interfaces;
 
 namespace FileTransfer.DateFormatterUtility;
 
@@ -17,5 +21,32 @@ public static class DateFormatter
             return $"Yesterday, {dateTime.ToShortTimeString()}";
         
         return $"{dateTime.ToShortDateString()}, {dateTime.ToShortTimeString()}";
+    }
+    
+    // ReSharper disable once RedundantAssignment
+    internal static void UpdateTime(WaitTime waitTimeType, IFormattableTime formattableTime, DateTime time, Action? action = null)
+    {
+        formattableTime.FormattedTimeString = FormatDate(time);
+        action?.Invoke();
+
+        if (waitTimeType == WaitTime.ConstantDate)
+            return;
+        
+        TimeSpan waitTime;
+        switch (waitTimeType)
+        {
+            case WaitTime.OneMinute:
+                waitTime = TimeSpan.FromSeconds(60);
+                break;
+            case WaitTime.EndOfCurrentDay:
+            case WaitTime.EndOfNextDay:
+                DateTime tomorrow = DateTime.Now.Date.AddDays(1);
+                waitTime = tomorrow.Subtract(DateTime.Now);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(waitTimeType), waitTimeType, null);
+        }
+        
+        Task.Delay(waitTime).ContinueWith(x => { UpdateTime(waitTimeType.Next(), formattableTime, time); });
     }
 }

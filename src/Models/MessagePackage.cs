@@ -5,36 +5,29 @@ using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using FileTransfer.DateFormatterUtility;
+using FileTransfer.Enums;
 using FileTransfer.Events;
-using FileTransfer.Extensions;
 using FileTransfer.Interfaces;
 using FileTransfer.UtilityCollection;
 using ReactiveUI;
 
 namespace FileTransfer.Models;
 
-internal sealed class MessagePackage : INotifyPropertyChangedHelper
+internal sealed class MessagePackage : INotifyPropertyChangedHelper, IFormattableTime
 {
-    private enum WaitTime
-    {
-        OneMinute, 
-        EndOfCurrentDay, 
-        EndOfNextDay,
-        ConstantDate
-    }
-    
     public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler? TimeChanged;
 
     private bool _isRead;
-    private string _formattedTimeString = null!;
+    private string _formattedTimeString = string.Empty;
+    private readonly DateTime _time;
 
     internal MessagePackage(DateTime time, User? sender, FileObject[] files, string? textMessage = null)
     {
         this.Files = files;
         this.TextMessage = textMessage;
-        this.Time = time;
         this.Sender = sender;
+        _time = time;
 
         if (files.Length > 0)
         {
@@ -43,7 +36,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         }
 
         this.TimeString = $"{time.ToShortDateString()}    {time.ToLongTimeString()}";
-        UpdateTime(WaitTime.OneMinute);
+        DateFormatter.UpdateTime(WaitTime.OneMinute, this, _time, () => TimeChanged?.Invoke(this, EventArgs.Empty));
 
         DownloadZipCommand = ReactiveCommand.Create(DownloadZip);
         DownloadToFolderCommand = ReactiveCommand.Create(DownloadToFolder);
@@ -53,9 +46,18 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         : this(args.Time, args.Sender, args.Files, args.TextMessage)
     { }
     
+    public string FormattedTimeString 
+    { 
+        get => _formattedTimeString;
+        set
+        {
+            _formattedTimeString = value;
+            NotifyPropertyChanged();
+        } 
+    }
+    
     internal FileObject[] Files { get; }
     internal string? TextMessage { get; }
-    internal DateTime Time { get; }
     internal User? Sender { get; }
 
     internal bool IsRead
@@ -69,15 +71,6 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     }
     
     internal string TimeString { get; }
-    internal string FormattedTimeString 
-    { 
-        get => _formattedTimeString;
-        private set
-        {
-            _formattedTimeString = value;
-            NotifyPropertyChanged();
-        } 
-    }
 
     internal string OverallFilesSize { get; } = "0 B";
     
@@ -97,7 +90,7 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
         if (result is null)
             return;
         
-        string zipName = $"{Sender?.Nickname}_{Time.Year}-{Time.Month}-{Time.Day}_{Time.Hour}-{Time.Minute}-{Time.Second}";
+        string zipName = $"{Sender?.Nickname}_{_time.Year}-{_time.Month}-{_time.Day}_{_time.Hour}-{_time.Minute}-{_time.Second}";
         Utilities.CreateZip(result, zipName, Files);
         ApplicationVariables.MetaData.RecentDownloadLocation = result;
     }
@@ -113,30 +106,4 @@ internal sealed class MessagePackage : INotifyPropertyChangedHelper
     }
 
     private void ToggleReadStatus() => IsRead = !IsRead;
-
-    private void UpdateTime(WaitTime waitTimeType)
-    {
-        this.FormattedTimeString = DateFormatter.FormatDate(Time);
-        TimeChanged?.Invoke(this, EventArgs.Empty);
-
-        if (waitTimeType == WaitTime.ConstantDate)
-            return;
-        
-        TimeSpan waitTime;
-        switch (waitTimeType)
-        {
-            case WaitTime.OneMinute:
-                waitTime = TimeSpan.FromSeconds(60);
-                break;
-            case WaitTime.EndOfCurrentDay:
-            case WaitTime.EndOfNextDay:
-                DateTime tomorrow = DateTime.Now.Date.AddDays(1);
-                waitTime = tomorrow.Subtract(DateTime.Now);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(waitTimeType), waitTimeType, null);
-        }
-        
-        Task.Delay(waitTime).ContinueWith(x => { UpdateTime(waitTimeType.Next()); });
-    }
 }
