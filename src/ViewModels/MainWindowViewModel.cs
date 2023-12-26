@@ -18,6 +18,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
     private bool _isWelcomeScreenVisible;
 
     private MessagePackage? _maximizedMessage;
+    private NotificationsViewModel? _notificationsViewModelInstance;
 
     internal MainWindowViewModel()
     {
@@ -26,6 +27,9 @@ internal sealed class MainWindowViewModel : ViewModelBase
         
         if (MetaDataInstance.IsFirstLogin)
             IsWelcomeScreenVisible = true;
+
+        if (NotificationsViewModel.Instance is { } notificationsViewModel)
+            NotificationsViewModelInstance = notificationsViewModel;
     }
     
     internal static WindowNotificationManager? NotificationManager { get; set; }
@@ -35,6 +39,12 @@ internal sealed class MainWindowViewModel : ViewModelBase
     {
         get => _isWelcomeScreenVisible;
         set => this.RaiseAndSetIfChanged(ref _isWelcomeScreenVisible, value);
+    }
+
+    internal NotificationsViewModel? NotificationsViewModelInstance
+    {
+        get => _notificationsViewModelInstance; 
+        set => this.RaiseAndSetIfChanged(ref _notificationsViewModelInstance, value);
     }
 
     private MetaData MetaDataInstance { get; }
@@ -72,6 +82,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
     internal static void ShowNotification(Notification notification)
     {
         NotificationManager?.Show(notification);
+        if(NotificationsViewModel.Instance is { } notificationsViewModel)
+            notificationsViewModel.AddNotification(notification);
     }
 
     internal static void ShowNotification(string title, string message, NotificationType type, TimeSpan expiration, 

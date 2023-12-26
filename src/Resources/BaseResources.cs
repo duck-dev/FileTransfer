@@ -16,6 +16,9 @@ public static partial class Resources
     public static readonly SolidColorBrush AppPurpleBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "AppPurple", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#660099"));
+    public static readonly SolidColorBrush TransparentAppPurpleBrush =
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "TransparentAppPurple", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#26660099"));
     public static readonly SolidColorBrush WhiteBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "White", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#FFFFFF"));
@@ -35,6 +38,9 @@ public static partial class Resources
     public static readonly SolidColorBrush MainBlueBrush = 
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainBlue", StyleIndex)
         ?? new SolidColorBrush(Color.Parse("#2A97F7"));
+    public static readonly SolidColorBrush MainYellowBrush = 
+        Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainYellow", StyleIndex)
+        ?? new SolidColorBrush(Color.Parse("#DDB800"));
 
     public static readonly SolidColorBrush MainGreyBrush =
         Utilities.GetResourceFromStyle<SolidColorBrush, Application>(Application.Current, "MainGrey", StyleIndex)
@@ -54,13 +60,15 @@ public static partial class Resources
 
     public static readonly Color FullyTransparent = FullyTransparentBrush.Color;
     public static readonly Color AppPurple = AppPurpleBrush.Color;
+    public static readonly Color TransparentAppPurple = TransparentAppPurpleBrush.Color;
     public static readonly Color White = WhiteBrush.Color;
     public static readonly Color Black = BlackBrush.Color;
 
     public static readonly Color MattBlue = MattBlueBrush.Color;
     public static readonly Color MainRed = MainRedBrush.Color;
     public static readonly Color MainGreen = MainGreenBrush.Color;
-    public static readonly Color MainBlue = MainGreenBrush.Color;
+    public static readonly Color MainBlue = MainBlueBrush.Color;
+    public static readonly Color MainYellow = MainYellowBrush.Color;
     
     public static readonly Color MainGrey = MainGreyBrush.Color;
     public static readonly Color LightGrey = LightGreyBrush.Color;

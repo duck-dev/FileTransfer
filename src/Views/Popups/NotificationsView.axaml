@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FileTransfer.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FileTransfer.Views.NotificationsView">
+    
+    <UserControl.DataContext>
+        <viewModels:NotificationsViewModel/>
+    </UserControl.DataContext>
+    
+    <Border Width="450" Height="300" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0"
+            Background="{StaticResource MainBackground}" CornerRadius="20" BorderBrush="{StaticResource AppPurple}"
+            BorderThickness="4">
+        <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock Foreground="{StaticResource MainGrey}" FontSize="28" TextWrapping="Wrap" 
+                       Text="No notifications available." HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       IsVisible="{Binding !NotificationsAvailable}"/>
+            <ScrollViewer Classes="standard" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                          IsVisible="{Binding NotificationsAvailable}">
+                <ItemsControl Items="{Binding Notifications}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" Height="75" Margin="5">
+                                <Ellipse Grid.Column="0" Width="25" Height="25" Fill="{StaticResource MattBlue}"
+                                         Margin="10,0,15,0" VerticalAlignment="Center" IsVisible="{Binding !IsRead}"/>
+                                <Border Grid.Column="1" Background="{StaticResource TransparentAppPurple}"
+                                        CornerRadius="20" BorderThickness="5,0,0,0" 
+                                        BorderBrush="{Binding Color}" HorizontalAlignment="Stretch">
+                                    <Grid RowDefinitions="*,*" ColumnDefinitions="*,Auto" Margin="12.5,0,5,0"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="18" FontWeight="Bold"
+                                                   VerticalAlignment="Center" Foreground="{StaticResource Black}"
+                                                   Text="{Binding NotificationInstance.Title}" TextWrapping="NoWrap" 
+                                                   TextTrimming="CharacterEllipsis" Margin="0,0,7.5,0"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Light"
+                                                   Foreground="{StaticResource MainGrey}" Margin="15,0,0,0"
+                                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                   Text="{Binding FormattedTimeString}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                                   FontSize="14" Foreground="{StaticResource Black}"
+                                                   TextWrapping="NoWrap" TextAlignment="Left" TextTrimming="CharacterEllipsis" 
+                                                   Text="{Binding NotificationInstance.Message}"/>
+                                    </Grid>
+                                </Border>
+                                <Button Grid.Column="2" Classes="selectable-button-effect" VerticalAlignment="Center"
+                                        Command="{Binding $parent[UserControl].DataContext.RemoveNotification}"
+                                        CommandParameter="{Binding}" Margin="15,0,10,0">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Source="/Assets/Trash.png" Width="40" Height="40"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Panel>
+    </Border>
+    
+</UserControl>
