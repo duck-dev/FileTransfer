@@ -219,22 +219,22 @@ public class User : INotifyPropertyChangedHelper
 
     internal void ChangeUsername(string newUsername)
     {
-        bool usernameEqualsNickname = Username.Equals(Nickname);
-        Username = newUsername;
-        if(IsLocalUser || usernameEqualsNickname)
-            Nickname = newUsername;
-        
         if (this.IP is not { } ip)
         {
             if (ReceiveViewModel.Instance is not { } receiveViewModel)
                 return;
             
-            const string dialogTitle = "The username cannot be changed. Try again later!";
-            var dialog = new InformationDialogViewModel(receiveViewModel, dialogTitle, new [] { Resources.AppPurpleBrush}, 
+            const string dialogTitle = "The username could not be changed. Try again later!";
+            receiveViewModel.CurrentDialog = new InformationDialogViewModel(receiveViewModel, dialogTitle, new [] { Resources.AppPurpleBrush}, 
                 new []{ Resources.WhiteBrush }, new [] { "Ok!" });
             
             return;
         }
+        bool usernameEqualsNickname = Username.Equals(Nickname);
+        Username = newUsername;
+        if(IsLocalUser || usernameEqualsNickname)
+            Nickname = newUsername;
+        
         this.ID = Utilities.EncryptID(newUsername, ip);
         UpdateInitials();
         DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);

@@ -7,8 +7,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using FileTransfer.Exceptions;
+using FileTransfer.ResourcesNamespace;
 using FileTransfer.UtilityCollection;
 using FileTransfer.ViewModels;
+using FileTransfer.ViewModels.Dialogs;
 
 namespace FileTransfer.Models.NetworkTransmission;
 
@@ -22,8 +24,13 @@ internal class NetworkClient : NetworkObject
         bool establishedConnection = await Utilities.EstablishConnection(IpEndPoint, client);
         if (!establishedConnection)
         {
-            // TODO: Handle failure
             Utilities.Log(":( NetworkClient: FAILED TO ESTABLISH CONNECTION... :(");
+            if (ReceiveViewModel.Instance is not { } receiveViewModel)
+                return;
+            
+            string dialogTitle = $"The connection could not be established. {user.Nickname} could be offline. Try again later!";
+            receiveViewModel.CurrentDialog = new InformationDialogViewModel(receiveViewModel, dialogTitle, new [] { Resources.AppPurpleBrush}, 
+                new [] { Resources.WhiteBrush }, new [] { "Ok!" });
             return;
         }
         

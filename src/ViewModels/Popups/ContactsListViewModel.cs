@@ -31,6 +31,7 @@ internal class ContactsListViewModel : ViewModelBase
     private ObservableCollection<User> _exposedOfflineContacts = null!;
     private User? _newContact = null;
     private MetaData _metaData = null!;
+    private ReceiveViewModel? _receiveViewModel;
 
     private bool _isSearchbarVisible;
     private bool _onlineUsersExpanded;
@@ -234,6 +235,7 @@ internal class ContactsListViewModel : ViewModelBase
     private void Initialize()
     {
         _metaData = ApplicationVariables.MetaData!;
+        _receiveViewModel = ReceiveViewModel.Instance;
         
         _addContactIcon = Utilities.CreateImage(AddContactIconPath);
         _checkmarkIcon = Utilities.CreateImage(CheckmarkIconPath);
@@ -299,7 +301,7 @@ internal class ContactsListViewModel : ViewModelBase
 
     private void RemoveContact(User user)
     {
-        if (!_metaData.UsersList.Contains(user) || ReceiveViewModel.Instance is not {} receiveViewModel)
+        if (!_metaData.UsersList.Contains(user) || _receiveViewModel is null)
             return;
         
         string dialogTitle = $"Are you sure you want to remove '{user.Nickname}' from your contact list?";
@@ -308,7 +310,7 @@ internal class ContactsListViewModel : ViewModelBase
             _metaData.UsersList.Remove(user);
             DataManager.SaveData(ApplicationVariables.MetaData, Utilities.MetaDataPath);
         };
-        receiveViewModel.CurrentDialog = new ConfirmationDialogViewModel(receiveViewModel, dialogTitle,
+        _receiveViewModel.CurrentDialog = new ConfirmationDialogViewModel(_receiveViewModel, dialogTitle,
             new[] { Resources.MainRed, Resources.MainGrey },
             new[] { Colors.White, Colors.White },
             new[] { $"Yes, remove '{user.Nickname}'!", "Cancel" },
