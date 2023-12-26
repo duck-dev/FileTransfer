@@ -31,7 +31,7 @@
                                       Height="50" CornerRadius="20" Background="{StaticResource FullyTransparent}"
                                       BorderThickness="5" BorderBrush="{StaticResource AppPurple}"
                                       PlaceholderText="None (select a receiver)" IsTextSearchEnabled="True"
-                                      PlaceholderForeground="{StaticResource AppPurple}">
+                                      PlaceholderForeground="{StaticResource AppPurple}" Padding="12,5,0,5">
                                 <ComboBox.Styles>
                                     <Style Selector="ComboBox[SelectedIndex=-1] /template/ TextBlock#PlaceholderTextBlock">
                                         <Setter Property="FontSize" Value="24"/>
@@ -54,7 +54,7 @@
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <ComboBoxItem Classes="highlight-no-change" VerticalContentAlignment="Center"
-                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="11,5">
                                             <Grid ColumnDefinitions="Auto,Auto" VerticalAlignment="Center">
                                                 <Image Grid.Column="0" Source="/Assets/Person-Purple.png"
                                                        Width="34" Height="34" Margin="-7.5,0,15,0"
