@@ -13,8 +13,11 @@ internal sealed class MainWindowViewModel : ViewModelBase
     private bool _isNotificationListVisible;
     private bool _isContactsListVisible;
     private bool _isProfilePageVisible;
-    
+
+    private bool _isMaximizedMessageVisible;
     private bool _isWelcomeScreenVisible;
+
+    private MessagePackage? _maximizedMessage;
 
     internal MainWindowViewModel()
     {
@@ -52,6 +55,18 @@ internal sealed class MainWindowViewModel : ViewModelBase
     {
         get => _isProfilePageVisible; 
         set => this.RaiseAndSetIfChanged(ref _isProfilePageVisible, value);
+    }
+
+    private bool IsMaximizedMessageVisible
+    {
+        get => _isMaximizedMessageVisible;
+        set => this.RaiseAndSetIfChanged(ref _isMaximizedMessageVisible, value);
+    }
+
+    private MessagePackage? MaximizedMessage
+    {
+        get => _maximizedMessage;
+        set => this.RaiseAndSetIfChanged(ref _maximizedMessage, value);
     }
 
     internal static void ShowNotification(Notification notification)
@@ -97,5 +112,11 @@ internal sealed class MainWindowViewModel : ViewModelBase
             default:
                 return;
         }
+    }
+
+    internal void ToggleMaximizedMessage(MessagePackage? message)
+    {
+        MaximizedMessage = message;
+        IsMaximizedMessageVisible = message is not null;
     }
 }

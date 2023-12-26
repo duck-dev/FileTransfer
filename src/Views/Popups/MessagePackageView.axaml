@@ -152,7 +152,9 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Margin="7.5,0,0,0">
+                        <Button Grid.Column="1" Classes="selectable-button-effect highlight-no-change" Margin="7.5,0,0,0"
+                                Command="{Binding $parent[views:MainWindow].DataContext.ToggleMaximizedMessage}"
+                                CommandParameter="{Binding Message}">
                             <Button.Template>
                                 <ControlTemplate>
                                     <Image Source="/Assets/Maximize-Light.png" Width="28" Height="28"/>

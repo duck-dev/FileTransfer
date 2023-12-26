@@ -20,6 +20,8 @@
                 <views:ReceiveView Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </Grid>
         </DockPanel>
+        <popups:MaximizedTextView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsVisible="{Binding $parent[views:MainWindow].DataContext.IsMaximizedMessageVisible}"/>
         <popups:WelcomeScreenView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                                   IsVisible="{Binding $parent[views:MainWindow].DataContext.IsWelcomeScreenVisible}"/>
     </Panel>
