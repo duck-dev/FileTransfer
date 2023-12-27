@@ -14,8 +14,8 @@
         <CFBundleName>FileTransfer</CFBundleName> <!-- Also defines .app file name -->
         <CFBundleDisplayName>FileTransfer</CFBundleDisplayName>
         <CFBundleIdentifier>com.duck-dev.file-transfer</CFBundleIdentifier>
-        <CFBundleVersion>0.1.0</CFBundleVersion>
-        <CFBundleShortVersionString>0.1.0</CFBundleShortVersionString>
+        <CFBundleVersion>0.1.1</CFBundleVersion>
+        <CFBundleShortVersionString>0.1.1</CFBundleShortVersionString>
         <CFBundlePackageType>APPL</CFBundlePackageType>
         <CFBundleSignature>????</CFBundleSignature>
         <CFBundleExecutable>FileTransfer</CFBundleExecutable>
