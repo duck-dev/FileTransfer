@@ -82,6 +82,7 @@ internal class NetworkServer : NetworkObject
                     Directory.CreateDirectory(directory);
                 
                 files = new List<FileObject>();
+                bool isDiskFull = false;
                 // Receive files
                 for (int i = 0; i < fileCount; i++)
                 {
@@ -125,7 +126,15 @@ internal class NetworkServer : NetworkObject
                             tempBufferSize = (int)(fileSize - j);
                         buffer = new byte[tempBufferSize];
                         _ = await handler.ReceiveAsync(buffer, SocketFlags.None);
-                        await fileStream.WriteAsync(buffer, 0, buffer.Length);
+                        try
+                        {
+                            await fileStream.WriteAsync(buffer, 0, buffer.Length);
+                        }
+                        catch (IOException e)
+                        {
+                            if (Utilities.IsDiskFull(e))
+                                isDiskFull = true;
+                        }
 
                         // Send Acknowledgement
                         await SendAcknowledgementAsync(handler);
@@ -133,8 +142,16 @@ internal class NetworkServer : NetworkObject
                     
                     await fileStream.FlushAsync();
                     fileStream.Close();
+
+                    if (!isDiskFull)
+                    {
+                        files.Add(new FileObject(path));
+                        continue;
+                    }
                     
-                    files.Add(new FileObject(path));
+                    Utilities.ShowDiskFullDialog();
+                    File.Delete(path);
+                    break;
                 }
             }
             

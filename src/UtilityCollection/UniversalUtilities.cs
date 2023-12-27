@@ -128,7 +128,19 @@ internal static partial class Utilities
         {
             string filePath = file.FileInformation.FullName;
             string fileName = file.FileInformation.Name;
-            archive.CreateEntryFromFile(filePath, fileName);
+            try
+            {
+                archive.CreateEntryFromFile(filePath, fileName);
+            }
+            catch (IOException e)
+            {
+                if (!IsDiskFull(e)) 
+                    continue;
+                
+                ShowDiskFullDialog();
+                File.Delete(zipPath);
+                break;
+            }
         }
 
         const string title = "ZIP downloaded";
