@@ -18,7 +18,9 @@ namespace FileTransfer.UtilityCollection;
 internal static partial class Utilities
 {
     internal const string AssetsPath = "avares://FileTransfer/Assets/";
-    
+
+    internal static string ExecutingAssemblyPath { get; } = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? throw new DirectoryNotFoundException("Directory name of the currently executing assembly is null.");
+
     /// <summary>
     /// The parent path of all settings- and data-files
     /// </summary>
