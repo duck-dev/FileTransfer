@@ -58,8 +58,9 @@ internal static partial class Utilities
                 ShowDiskFullDialog();
         }
         
-        if (setRecentDirectory) 
-            SetRecentDirectory(location, pathContainsFile);
+        if (!setRecentDirectory) 
+            return;
+        SetRecentDirectory(location, pathContainsFile);
             
         string title = $"{file.FileInformation.Name} downloaded";
         string message = $"{file.FileInformation.Name} was downloaded.";
